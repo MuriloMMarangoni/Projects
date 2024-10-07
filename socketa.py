@@ -1,9 +1,9 @@
 import socket # módulo de comunicação de processos ou de máquinas da mesma rede
-import ftplib # transferência de arquivos
-host = socket.gethostname() # nome do host ou ip
+host = socket.gethostname() # nome do host ou ip, gethostname usa o localhost
+ip = socket.gethostbyname(host) # diz o ip de um dispositivo
 port = 12345 # porta de acesso 1-65000
 obj = socket.socket(socket.AF_INET,socket.SOCK_STREAM) # cria um socket com comunicação(ipv4,tcp)
-
+obj.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # deixa o servidor elegivel a ser iniciado 1s depois do encerramento
 def ask() -> bool:
     perm = input("Press 0 for server or 1 for client\n")
     try:
@@ -33,11 +33,11 @@ def client(host,port,obj):
     while i != '':
         i = input("[Client] ")
         obj.sendall(i.encode())
-        data = obj.recv(1024)
+        data = obj.recv(1024) # para a execução e espera uma resposta
         print(f"[Server] {data.decode()}")
     obj.close()
 
 if ask():
-    client(host,port,obj)
+    client(ip,port,obj)
 else:
-    server(host,port,obj)
+    server(ip,port,obj)
