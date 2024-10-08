@@ -30,8 +30,15 @@ def client(d:dict):
     if mostrar_ip:
         ip = input('Insira o ip do servidor:\n')
     c.connect((ip,port))
-    print(c.recv(1024).decode())
     c.send("O cliente está funcionando".encode())
+    print(c.recv(1024).decode())
+    while True:
+        sendit = input("[Client] ")
+        c.send(sendit.encode())
+        message = c.recv(1024).decode()
+        if message == 'quit' or message == '':
+            break
+        print(f"[Client] {message}")
     c.close()
 def server(d:dict):
     s = d['s']
@@ -46,10 +53,15 @@ def server(d:dict):
         print(f"o ip pra acesso remoto é {socket.gethostbyname(socket.gethostname())}")
     s.listen(1)
     c,adr = s.accept()
-    c.send(f"O servidor está funcionando!".encode())
     print(c.recv(1024).decode())
+    c.send(f"O servidor está funcionando!".encode())
     while True:
-        break
+        message = c.recv(1024).decode()
+        if message == 'quit' or message == '':
+            break
+        print(f"[Client] {message}")
+        sendit = input("[Server] ")
+        c.send(sendit.encode())
     c.close()
 if __name__ == '__main__':
     print(f"{30*'-'}\nEscolha qual o tipo de comunicação Cliente-Servidor")
