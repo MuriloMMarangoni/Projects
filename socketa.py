@@ -22,12 +22,22 @@ def tcpl():
         'type': 'tcp'
     }
     return d
-def udp():
+def udplh():
     d = {
         "s":socket.socket(socket.AF_INET,socket.SOCK_DGRAM),
         "c":socket.socket(socket.AF_INET,socket.SOCK_DGRAM),
         'ip' : socket.gethostbyname(socket.gethostname()),
         'localhost' : socket.gethostname(),
+        "port": 12345,
+        'type': 'udp'
+    }
+    return d
+def udpl():
+    d = {
+        "s":socket.socket(socket.AF_INET,socket.SOCK_DGRAM),
+        "c":socket.socket(socket.AF_INET,socket.SOCK_DGRAM),
+        'ip' : socket.gethostbyname(socket.gethostname()),
+        'ip_server' : '0.0.0.0',
         "port": 12345,
         'type': 'udp'
     }
@@ -52,6 +62,8 @@ def client(d:dict):
         c.close()
     if d['type'] == 'udp':
         c = d['c']
+        if mostrar_ip:
+            i = input("Insira o ip do servidor:\n")
         i = input("[Client] ")
         c.sendto(i.encode(),(d['ip'],d['port'])) # envia pro endereço
         print(f"[Server] {c.recvfrom(1024)[0].decode()}")
@@ -82,7 +94,11 @@ def server(d:dict):
     if d['type'] == 'udp':
         s = d['s']
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        s.bind((d['ip'],d['port']))
+        if mostrar_ip:
+            s.bind(('0.0.0.0',d['port']))
+            print(f"O ip do servidor é :{d['ip']}")
+        else:
+            s.bind((d['ip'],d['port']))
         msg,adr = s.recvfrom(1024)
         print(f"[Client] {msg.decode()}")
         i = input("[Server] ")
@@ -90,12 +106,12 @@ def server(d:dict):
         
 if __name__ == '__main__':
     print(f"{30*'-'}\nEscolha qual o tipo de comunicação Cliente-Servidor")
-    tipo = input("1-TCP Localhost\n2-TCP Local\n3-UDP\n")
-    if tipo not in '123':
+    tipo = input("1-TCP Localhost\n2-TCP Local\n3-UDP Localhost\n4-UDP Local")
+    if tipo not in '1234':
         raise SystemExit
     print(f"{30*'-'}\nEscolha qual o seu papel na comunicação")
     papel = input("1-Servidor\n2-Cliente\n")
-    if papel not in '123':
+    if papel not in '12':
         raise SystemExit
     mostrar_ip = False #mostrar o ip pra conexão remota (tcpl)
     if tipo == '1':
@@ -109,8 +125,14 @@ if __name__ == '__main__':
             server(tcpl())
         if papel == '2':
             client(tcpl())
-    else:
+    elif tipo == '3':
         if papel == '1':
-            server(udp())
+            server(udplh())
         if papel == '2':
-            client(udp())
+            client(udplh())
+    elif tipo == '4':
+        mostrar_ip = True
+        if papel == '1':
+            server(udpl())
+        if papel == '2':
+            client(udpl())
