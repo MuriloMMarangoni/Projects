@@ -63,9 +63,9 @@ def client(d:dict):
     if d['type'] == 'udp':
         c = d['c']
         if mostrar_ip:
-            i = input("Insira o ip do servidor:\n")
+            ip_server = input("Insira o ip do servidor:\n")
         i = input("[Client] ")
-        c.sendto(i.encode(),(d['ip'],d['port'])) # envia pro endereço
+        c.sendto(i.encode(),(ip_server,d['port'])) # envia pro endereço
         print(f"[Server] {c.recvfrom(1024)[0].decode()}")
 def server(d:dict):
     if d['type'] == 'tcp':
