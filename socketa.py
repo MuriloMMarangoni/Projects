@@ -1,6 +1,4 @@
 import socket
-import threading # incluir depois
-import pickle # não sei o que é mas da pra aprender
 
 def tcplh():
     d = {
