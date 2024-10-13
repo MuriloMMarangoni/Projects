@@ -1,0 +1,9 @@
+Pela GUI-----
+Modificação Local     |  Alteração -> RESCAN -> STAGE CHANGED -> SIGNOFF -> COMMIT
+Modificação Remota    |  Local + PUSH -> REMOTE(branch,repositório)
+Criar Branch Local    |  BRANCH -> CREATE -> nome
+Criar Branch Remota   |  Local + PUSH -> REMOTE(branch,repositório)
+Remover Branch Local  |  BRANCH -> DELETE 
+Remover Branch Remota |  REMOTE -> Delete branch
+Pelo terminal-----
+Baixar repositório    |  git clone linkhttps
