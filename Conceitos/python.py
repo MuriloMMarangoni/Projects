@@ -305,6 +305,8 @@ ConnectionRefusedError # Cliente não consegue conectar (connect)
 socket.gaierror # Procurou nome que não existe (gethostbyname)
 socket.herror # se o ip não corresponde a um host (gethostbyaddr)
 TimeoutError # se o client demorar muito pra conectar no servidor via socket ou interagir
+import sqlite3
+sqlite3.OperationalError # erro de comandos
 #keywords--------------------------------------------------------------------------------------------------------------------
 from math import sin as sen #from módulo import função sin, mas escreva como sen
 sen() == math.sin()
