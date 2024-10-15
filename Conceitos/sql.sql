@@ -5,3 +5,4 @@
 /*PRAGMA returns rows with 6 columns, each row contains info about  the columns of the table
 the order is (number of column,name,datatype,notnull,defaultvalue,primarykey)*/
 "PRAGMA table_info(tabela)"
+/* PRIMARY KEY sets autoincrement automatically and ignores DEFAULT values
