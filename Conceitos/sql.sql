@@ -7,4 +7,5 @@ the order is (number of column,name,datatype,notnull,defaultvalue,primarykey)*/
 "PRAGMA table_info(tabela)"
 /* PRIMARY KEY sets autoincrement automatically and ignores DEFAULT values*/
 /* Atualiza dados de uma tabela, mudando o id onde a coluna é algo*/
-"UPDATE tabela SET id=numero where coluna='algo'"
+/*Updates in table the ID column , setting to 10 in the row where column A is str*/
+"UPDATE tabela SET id=10 where a='str'"
