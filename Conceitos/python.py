@@ -957,4 +957,18 @@ if __name__ == '__main__': # obrigatório usar no multiprocessing
     p1.start() # inicia processo
     p2.start() # inicia processo simultâneo
     p1.join() # espera processo finalizar
-    p2.join() 
+    p2.join()
+
+from bs4 import BeautifulSoup
+import requests
+url = "https://en.wikipedia.org/wiki/Web_scraping" # link
+resp = requests.get(url) # acessa o url
+status = resp.status_code # 200 se o link abre, 404 se não existir
+html = resp.text # parte html da página
+soup = BeautifulSoup(features="lxml",markup=html) # objeto scraper
+titulo = soup.title # pega o código da tag <title>
+titulo_legivel = soup.title.text # pega só o texto da tag
+codigos_h2 = soup.find_all('h2') # códigos dos h2s
+textos_h2 = [each.text for each in codigos_h2] # procura o conteúdo dos h2
+codigo_identado = codigos_h2[0].prettify() # código identado
+links = [each['href'] for each in soup.find_all('a')] # pega os links
