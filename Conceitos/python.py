@@ -307,6 +307,8 @@ socket.herror # se o ip não corresponde a um host (gethostbyaddr)
 TimeoutError # se o client demorar muito pra conectar no servidor via socket ou interagir
 import sqlite3
 sqlite3.OperationalError # erro de comandos
+import requests
+requests.exceptions.JSONDecodeError # quando vc tenta transformar um url não json, em json
 #keywords--------------------------------------------------------------------------------------------------------------------
 from math import sin as sen #from módulo import função sin, mas escreva como sen
 sen() == math.sin()
@@ -660,30 +662,6 @@ from functools import lru_cache
 def somas(n):
     return n+1
 
-from pathlib import Path # no linux é o caminho completo
-
-path = Path('/home/maxinne/Downloads/rasc/algo.txt') # caminho do arquivo
-leitura = path.read_text() # ler
-linhas = leitura.splitlines() # lista com o conteúdo de cada linha
-path.write_text('texto') # sobrescreve o arquivo e/ou cria ele
-path.exists() # se o arquivo existe
-
-import json # com Path
-
-sample = ['texto','de','exemplo']
-path = Path('/home/maxinne/Downloads/rasc/algo.json') # json
-escritajson = json.dumps(sample,indent=4,ensure_ascii=False) # converte python pra json e formata pra suporte UNICODE
-path.write_text(escritajson) # sobrescreve json o texto convertido e/ou cria o json
-leiturajson = path.read_text() # lê o código json
-novasample = json.loads(leiturajson) # converte json pra python
-
-import requests # Solicitações HTTP
-
-url = "https://hacker-news.firebaseio.com/v0/item/31353677.json"
-r = requests.get(url) # solicitação GET HTTP
-status = r.status_code # vê status da solicitação HTTP (200 é sucesso)
-respostaJson = r.json() # pega a resposta json e transforma em dict
-
 from collections import namedtuple,deque
 
 cliente = namedtuple('cliente',['Nome','Gastos']) # cria uma via de regra
@@ -959,16 +937,43 @@ if __name__ == '__main__': # obrigatório usar no multiprocessing
     p1.join() # espera processo finalizar
     p2.join()
 
-from bs4 import BeautifulSoup
-import requests
-url = "https://en.wikipedia.org/wiki/Web_scraping" # link
-resp = requests.get(url) # acessa o url
-status = resp.status_code # 200 se o link abre, 404 se não existir
-html = resp.text # parte html da página
-soup = BeautifulSoup(features="lxml",markup=html) # objeto scraper
-titulo = soup.title # pega o código da tag <title>
-titulo_legivel = soup.title.text # pega só o texto da tag
-codigos_h2 = soup.find_all('h2') # códigos dos h2s
-textos_h2 = [each.text for each in codigos_h2] # procura o conteúdo dos h2
-codigo_identado = codigos_h2[0].prettify() # código identado
-links = [each['href'] for each in soup.find_all('a')] # pega os links
+from pathlib import Path # no linux é o caminho completo
+
+path = Path('/home/maxinne/Downloads/rasc/algo.txt') # caminho do arquivo
+leitura = path.read_text() # ler
+linhas = leitura.splitlines() # lista com o conteúdo de cada linha
+path.write_text('texto') # sobrescreve o arquivo e/ou cria ele
+path.exists() # se o arquivo existe
+
+import json # com Path
+
+sample = ['texto','de','exemplo']
+path = Path('/home/maxinne/Downloads/rasc/algo.json') # json
+escritajson = json.dumps(sample,indent=4,ensure_ascii=False) # converte python pra json e formata pra suporte UNICODE
+path.write_text(escritajson) # sobrescreve json o texto convertido e/ou cria o json
+leiturajson = path.read_text() # lê o código json
+novasample = json.loads(leiturajson) # converte json pra python
+with open("novojson.json",'w') as f: json.dump({},f,indent=4) # salva qualquer dict em json
+
+import requests # Solicitações HTTP
+
+url = "https://hacker-news.firebaseio.com/v0/item/31353677.json" # link de um json
+url = "https://en.wikipedia.org/wiki/Web_scraping" # link regular
+url = "https://tabok.s3.eu-central-1.amazonaws.com/tabs_ready/Metallica%20-%20Don%27t%20Tread%20On%20Me.pdf" # link de um pdf
+resp:requests.Response = requests.get(url) # solicitação GET HTTP, retorna um objeto Response
+status = resp.status_code # vê status da solicitação HTTP ,200 se o link abre, 404 se não existir
+respostaJson = resp.json() # SE o link for .json; pega a resposta json e transforma em dict
+repr_str = resp.text # pega a representação da página em str (html em str,json em str, ou binário em str)
+binar = resp.content # pega a representação da página em binário, útil pra mídias e docs
+with open("nomeDoArquivo.algumacoisa","wb") as f: f.write(binar) # baixa qualquer tipo de mídia de um site, usando binário
+
+from bs4 import BeautifulSoup # filtra conteúdos de um HTML
+soup = BeautifulSoup(features="html.parser",markup=repr_str) # objeto parser
+tag = soup.find_all('span') # filtra todas as ocorrências dessa tag HTML
+conteudo = [each.text for each in tag] # pega o conteúdo dessas tags
+for atributes in tag:
+    a = atributes.get('width') # pega o atributo de uma tag
+    url_do_elemento = atributes.get('src') # pega a url de um elemento
+
+from urllib.parse import urljoin # transforma URLs
+url_de_acesso = urljoin(url,url_do_elemento) # transforma a url do elemento em uma url de acesso
