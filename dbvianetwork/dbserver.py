@@ -79,9 +79,6 @@ def remover_tabelas():
             sql.close()
         except sqlite3.OperationalError:
             print("[!] Essa tabela não existe")
-# deixar o usuário poder visualizar, adicionar,remover e filtrar o banco de dados
-# deixando ele escrever comandos sql via terminal, se eles derem ele vai, se não da o erro sqlite3.OperationalError
-# modificar dado específico da coluna (col3, linha10)
 def ver_tabela():
     show_tables()
     print("Qual das tabelas você quer ver?")
@@ -225,6 +222,14 @@ def modify_data():
     data = sql4.execute(s).fetchall()
     sql4.close()
     for each in data: print(each)
+def commands():
+    show_tables()
+    print("Execute um comando sql em alguma dessas tabelas")
+    s = input()
+    sql.execute(s)
+    data = sql.fetchall()
+    print(data)
+
 if __name__ == '__main__':
     id_system() #alternative for autoincrement that is consistent with user's removal of rows
     print("Select an option:")
@@ -235,6 +240,7 @@ if __name__ == '__main__':
     print("5- Show Data from Table")
     print("6- Modify Data from Table")
     print("7- Remove row from Table")
+    print("8- Comandos SQL")
     menu = input()
     match (menu):
         case '1': show_tables()       # working
@@ -244,8 +250,14 @@ if __name__ == '__main__':
         case '5': show_data()         # working
         case '6': modify_data()       # working
         case '7': remove_row()        # working
+        case '8': commands()
         case _: raise NotImplementedError
     db_connection.commit()
     db_connection.close()
     # escolher arquivo.db ou se não existir criar um, e pedir pra colocar um nome
     # exportar banco de dados como csv ou excel fds
+def client():
+    pass
+def server():
+    pass
+# pensar em como o sistema TCP vai interpretar as solicitações ao banco de dados
