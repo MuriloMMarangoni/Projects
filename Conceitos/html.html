@@ -1,17 +1,32 @@
+{% extends "index.html" %} <!--(outro arquivo na mesma pasta) de index html-->
+{% block titulovar %}Título Outro Html {% endblock %} <!-- substitua o bloco por esse texto-->
 <!DOCTYPE html> 
 <html lang="en"> <!--linguagem -->
 <head> <!--metadados-->
     <meta charset="UTF-8"> <!--tipo de caracteres -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--escala da tela -->
     <title>Aba</title> <!--Nome da aba-->
-    <link rel="stylesheet" href="css.css"> <!-- -->
+    <link rel="stylesheet" href="css.css"> <!-- chama css-->
 </head>
 <body class="classe" id="identificador"> <!--conteúdo da página-->
-    <h1></h1> <!-- -->
-    <p></p> <!-- -->
-    <br> <!-- -->
-    <img src="" alt=""> <!-- -->
-    <form action=""> <!-- -->
+    <h1></h1> <!-- titulo-->
+    <h1>
+        {% block titulovar %} <!-- serve de "molde" pra outros htmls-->
+        {% endblock %}
+    </h1>
+    <p></p> <!-- paragrafo-->
+    <p>
+        {{variavel}} <!-- Valor de uma varíavel em outro código-->
+        {% for x in variavel %} <!-- for loop -->
+            <p>{{x}}</p>
+        {% endfor %} <!-- fim do for-->
+        {% if %} <!--if -->
+            <p>{{variavel}}</p>
+        {% endif %}
+    </p>
+    <br> <!-- quebraDeLinha-->
+    <img src="" alt=""> <!--imagem -->
+    <form action=""> <!--formulario-->
         <input type="text"> <!-- -->
         <select name="" id=""></select> <!-- -->
             <option value=""></option> <!-- -->

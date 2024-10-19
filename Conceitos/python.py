@@ -977,3 +977,24 @@ for atributes in tag:
 
 from urllib.parse import urljoin # transforma URLs
 url_de_acesso = urljoin(url,url_do_elemento) # transforma a url do elemento em uma url de acesso
+
+from flask import Flask,redirect,url_for,render_template # microframework pra manipular websites
+
+app = Flask(__name__) # objeto do site
+@app.route("/") # roteamento: urls do site, quando acessadas executam essa função
+# / é a página principal
+def pagina_principal(): # view: página do roteamento
+    return render_template("nomedo.html") # usa essa página HTML, precisa estar em uma pasta chamada templates
+    return render_template("index.html",variavel='algo') # no HTML substitui {{variável}}
+
+@app.route("/redirecionar")
+def redirecionar():
+    return redirect(url_for("pagina_principal")) # quando acessar /redirecionar, ele vai pra /
+
+@app.route("/<arg>") # qualquer outra url
+def outros(arg):
+    return f"Você acessou /{arg}"
+
+if __name__ == '__main__': 
+    app.run() # precisa pra rodar
+    app.run(debug=True) # o site atualiza as modificações com o F5 sem precisar reiniciar
