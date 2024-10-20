@@ -1,10 +1,36 @@
 import sqlite3 # interagir com um banco de dados
 import socket # usar sockets pra comunicar via rede
 import threading # threads pra conexão e threads pro banco de dados
-# criar ou/e conectar
-db_connection = sqlite3.connect('database.db')
-sql = db_connection.cursor()
+import subprocess
 # se for ter while loop, tem que fazer um cursor pra cada funcionalidade, que abre e fecha
+def bancos():
+    s = subprocess.run("ls",shell=True,capture_output=True,text=True)
+    files = s.stdout.splitlines()
+    available_databases = []
+    for each in files:
+        if each.endswith(".db"):
+            available_databases.append(each)
+    if available_databases == []:
+        print("! Não tem bancos de dados disponíveis")
+        print("Deseja criar um?\n1-Sim\n2-Não")
+        op = input()
+        if op == '2':
+            return 0
+        elif op == '1':
+            print("Insira o nome dele:")
+            op = input()
+            subprocess.run(f"touch {op}.db",shell=True,text=True)
+            return 0
+    else:
+        print("Os bancos disponíveis são:")
+        count = 1
+        for each in available_databases:
+            print(f"{count}-{each}")
+            count +=1
+        print("Escolha um deles")
+        op = input()
+        if available_databases[int(op)-1] in available_databases:
+            return sqlite3.connect(available_databases[int(op)-1])
 def id_system():
     sql0 = db_connection.cursor()
     s = "SELECT name FROM sqlite_master WHERE type='table';"
@@ -231,31 +257,36 @@ def commands():
     print(data)
 
 if __name__ == '__main__':
-    id_system() #alternative for autoincrement that is consistent with user's removal of rows
-    print("Select an option:")
-    print("1- Show All Tables")
-    print("2- Add Table")
-    print("3- Remove Table")
-    print("4- Insert Rows")
-    print("5- Show Data from Table")
-    print("6- Modify Data from Table")
-    print("7- Remove row from Table")
-    print("8- Comandos SQL")
-    menu = input()
-    match (menu):
-        case '1': show_tables()       # working
-        case '2': adicionar_tabelas() # working
-        case '3': remover_tabelas()   # working
-        case '4': inserir_dados()     # working
-        case '5': show_data()         # working
-        case '6': modify_data()       # working
-        case '7': remove_row()        # working
-        case '8': commands()
-        case _: raise NotImplementedError
-    db_connection.commit()
-    db_connection.close()
-    # escolher arquivo.db ou se não existir criar um, e pedir pra colocar um nome
-    # exportar banco de dados como csv ou excel fds
+    # criar ou/e conectar
+    db_connection = bancos()
+    if db_connection == 0:
+        pass
+    else:
+        sql = db_connection.cursor()
+        id_system() #alternative for autoincrement that is consistent with user's removal of rows
+        print("Select an option:")
+        print("1- Show All Tables")
+        print("2- Add Table")
+        print("3- Remove Table")
+        print("4- Insert Rows")
+        print("5- Show Data from Table")
+        print("6- Modify Data from Table")
+        print("7- Remove row from Table")
+        print("8- Comandos SQL")
+        menu = input()
+        match (menu):
+            case '1': show_tables()       # working
+            case '2': adicionar_tabelas() # working
+            case '3': remover_tabelas()   # working
+            case '4': inserir_dados()     # working
+            case '5': show_data()         # working
+            case '6': modify_data()       # working
+            case '7': remove_row()        # working
+            case '8': commands()
+            case _: raise NotImplementedError
+        db_connection.commit()
+        db_connection.close()
+        # exportar banco de dados como csv ou excel fds
 def client():
     pass
 def server():
