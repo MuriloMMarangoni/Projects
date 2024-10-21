@@ -644,6 +644,7 @@ filename = codigo.save("codigo_de_barras") # gera a imagem
 from datetime import datetime # opera com datas
 
 base = datetime.now() # dia e hora
+f"{base:%X}" # horas:minutos:segundos
 hora = base.strftime("%H:%M:%S") # hora
 dia = base.date() # data
 diaf = dia.strftime("%d/%m/%Y") # data padrão BR

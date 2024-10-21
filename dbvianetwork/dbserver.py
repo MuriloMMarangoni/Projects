@@ -3,7 +3,7 @@ import socket # usar sockets pra comunicar via rede
 import threading # threads pra conexão e threads pro banco de dados
 import subprocess
 # se for ter while loop, tem que fazer um cursor pra cada funcionalidade, que abre e fecha
-def bancos():
+def databases():
     s = subprocess.run("ls",shell=True,capture_output=True,text=True)
     files = s.stdout.splitlines()
     available_databases = []
@@ -11,23 +11,23 @@ def bancos():
         if each.endswith(".db"):
             available_databases.append(each)
     if available_databases == []:
-        print("! Não tem bancos de dados disponíveis")
-        print("Deseja criar um?\n1-Sim\n2-Não")
+        print("! There is no database in the FileSystem")
+        print("Want to create a Database?\n1-Yes\n2-No")
         op = input()
         if op == '2':
             return 0
         elif op == '1':
-            print("Insira o nome dele:")
+            print("Insert Name:")
             op = input()
             subprocess.run(f"touch {op}.db",shell=True,text=True)
             return 0
     else:
-        print("Os bancos disponíveis são:")
+        print("Available Databases:")
         count = 1
         for each in available_databases:
             print(f"{count}-{each}")
             count +=1
-        print("Escolha um deles")
+        print("Choose one database:")
         op = input()
         if available_databases[int(op)-1] in available_databases:
             return sqlite3.connect(available_databases[int(op)-1])
@@ -68,23 +68,23 @@ def show_tables():
     sql.execute(s)
     tables = sql.fetchall()[1:]
     if len(tables) == 0:
-        print("[!] Esse banco não tem tabelas")
+        print("[!] This database doesn't have any tables")
         return 0
     else:
         print("The database has the following tables:")
         for each in tables: 
             print(*each) # [()]
-def adicionar_tabelas():
-    print("Insira os dados da tabela:")
-    name = input('Nome: ')
-    quantity = input('Quantidade de Colunas: ')
+def add_table():
+    print("Insert basic information for the table:")
+    name = input('Name: ')
+    quantity = input('Amount of Columns: ')
     quantity = int(quantity)
     colums = []
     for each in range(quantity):
         if each == quantity - 1:
-            colums.append(f"{input(f"Coluna {each+1}:")} TEXT")
+            colums.append(f"{input(f"Column {each+1}:")} TEXT")
         else:
-            colums.append(f"{input(f"Coluna {each+1}:")} TEXT,")
+            colums.append(f"{input(f"Column {each+1}:")} TEXT,")
     temp = ""
     for each in colums:
         temp += each
@@ -93,52 +93,38 @@ def adicionar_tabelas():
     {temp}
     )'''
     sql.execute(command)
-def remover_tabelas():
+def remove_table():
     if show_tables() == 0:
-        print("[!] O banco não tem tabelas pra remover")
+        print("[!] The Database doesn't have tables to remove")
     else:
-        print("Qual das tabelas vai remover?")
+        print("Which table you want to remove?")
         op = input()
         try:
             s = f"DROP TABLE {op}"
             sql.execute(s)
             sql.close()
         except sqlite3.OperationalError:
-            print("[!] Essa tabela não existe")
-def ver_tabela():
+            print("[!] This table doesn't exist")
+def insert_data():
     show_tables()
-    print("Qual das tabelas você quer ver?")
-    op = input()
-    try:
-        s = f"SELECT * FROM {op}"
-        sql.execute(s)
-    except sqlite3.OperationalError:
-        print("[!] Essa tabela não existe")
-    else:
-        data = sql.fetchall()
-        sql.close()
-        for each in data:
-            print(each)
-def inserir_dados():
-    show_tables()
-    print("Qual das tabelas você quer inserir dados?")
+    print("Which table you want to insert data?")
     op = input()
     try:
         pass # tem que testar se a tabela existe
     except sqlite3.OperationalError:
-        print("[!] Essa tabela não existe")
+        print("[!] This table doesn't exist")
     else:
         s = f"PRAGMA table_info({op})"
         # PRAGMA returns rows with 6 columns, each row contains info about each column of the table
         # the order is (number of column,name,datatype,notnull,defaultvalue,primarykey)
         sql.execute(s)
         data = sql.fetchall()[1:]
-        print("A tabela tem as seguintes colunas:")
+        print("This table have the following columns:")
         count = 0
         for each in data: # not include IDs
             print(each[1]) # only the names of the columns
             count += 1
-        print(f"Essa tabela tem {count} colunas, então insira cada dado em uma linha:")
+        print(f"This table have {count} columns, so insert one cell of data on each line:")
         inps = []
         for each in range(count):
             inps.append(input())
@@ -164,7 +150,7 @@ def inserir_dados():
         sql2.close()
 def show_data():
     show_tables()
-    print("Qual tabela você quer visualizar?")
+    print("Which table you want to see?")
     op = input()
     try:
         s = f"SELECT * FROM {op}"
@@ -172,7 +158,7 @@ def show_data():
         data = sql.fetchall()
         sql.close()
     except sqlite3.OperationalError:
-        print("[!] A tabela não existe")
+        print("[!] This table doesn't exist")
     else:
         sql2 = db_connection.cursor()
         s = f"PRAGMA table_info({op})"
@@ -183,19 +169,19 @@ def show_data():
         for each in data_c:
             columns.append(each[1])
         columns = tuple(columns)
-        print(columns) # nome das colunas
-        for each in data: # conteudo das linhas
+        print(columns)
+        for each in data:
             print(each)
 def remove_row():
     show_tables()
-    print("Escolha uma tabela")
+    print("Choose a table")
     op = input("")
     s = f"SELECT * FROM {op}"
     sql1 = db_connection.cursor()
     sql1.execute(s)
     data = sql1.fetchall()
     sql1.close()
-    print("Qual das linhas você quer remover? (por id)")
+    print("Which row you want to remove? (choose by ID)")
     for each in data:
         print(each)
     op2 = input()
@@ -212,7 +198,7 @@ def remove_row():
         print(each)
 def modify_data():
     show_tables()
-    print("Escolha uma das tabelas")
+    print("Choose only one table:")
     op = input()
     s = f"SELECT * FROM {op}"
     sql1 = db_connection.cursor()
@@ -221,14 +207,14 @@ def modify_data():
     sql1.close()
     for each in data:
         print(each)
-    print("Escolha qual a linha que tem o dado a ser modificado:")
+    print("Which row has the data that you want to remove?")
     op2 = input()
     s = f"SELECT * FROM {op} WHERE id={op2}"
     sql2 = db_connection.cursor()
     data = sql2.execute(s).fetchall()
     sql2.close()
     for each in data: print(each)
-    print("Qual desses dados você vai querer modificar?")
+    print("Which cell you want to change?")
     op3 = input()
     sql3 = db_connection.cursor()
     s = f"PRAGMA table_info({op})"
@@ -239,7 +225,7 @@ def modify_data():
         for s in t:
             datanew.append(s)
     i = datanew.index(op3)
-    print("Insira o dado novo:")
+    print("Insert new cell:")
     op4 = input()
     sql4 = db_connection.cursor()
     s = f"UPDATE {op} SET {coluna[i]}='{op4}' WHERE id={op2}"
@@ -250,16 +236,17 @@ def modify_data():
     for each in data: print(each)
 def commands():
     show_tables()
-    print("Execute um comando sql em alguma dessas tabelas")
+    print("Execute any SQL command in one of the following tables:")
     s = input()
     sql.execute(s)
     data = sql.fetchall()
     print(data)
 
 if __name__ == '__main__':
-    # criar ou/e conectar
-    db_connection = bancos()
-    if db_connection == 0:
+    db_connection = 0
+    while db_connection == 0:
+        db_connection = databases() # identify all possible databases
+    if db_connection == 0: # if identifies none
         pass
     else:
         sql = db_connection.cursor()
@@ -272,20 +259,20 @@ if __name__ == '__main__':
         print("5- Show Data from Table")
         print("6- Modify Data from Table")
         print("7- Remove row from Table")
-        print("8- Comandos SQL")
+        print("8- SQL commands")
         menu = input()
         match (menu):
-            case '1': show_tables()       # working
-            case '2': adicionar_tabelas() # working
-            case '3': remover_tabelas()   # working
-            case '4': inserir_dados()     # working
-            case '5': show_data()         # working
-            case '6': modify_data()       # working
-            case '7': remove_row()        # working
+            case '1': show_tables()       
+            case '2': add_table() 
+            case '3': remove_table()   
+            case '4': insert_data()     
+            case '5': show_data()         
+            case '6': modify_data()       
+            case '7': remove_row()        
             case '8': commands()
             case _: raise NotImplementedError
-        db_connection.commit()
-        db_connection.close()
+    db_connection.commit()
+    db_connection.close()
         # exportar banco de dados como csv ou excel fds
 def client():
     pass
