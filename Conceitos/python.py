@@ -227,7 +227,7 @@ hex(int) # pega um valor e retorna o hexadecimal                                
 oct(int) # pega um valor e retorna o octal                                                           (num) -> str
 ord('d') # diz o valor unicode de um caractere                                                       (str) -> int
 chr(100) # diz o caractere de um unicode                                                             (int) -> str
-isinstance(inteiro,int) # diz se um dado é de um tipo                                                        (object,type) -> bool
+isinstance(inteiro,int) # diz se um dado é de uma classe (pode ser o construtor ou a referência da classe [int ou <class 'int'>])                                                        (object,type) -> bool
 iterador = iter([1,2,3]) # converte um iterável em um iterador
 dir(object) # diz todos os métodos e atributos que um objeto tem
 hasattr(inteiro,'__call__') # diz se o objeto tem esse atributo/nome do método
