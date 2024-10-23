@@ -1,16 +1,5 @@
 import time
 import sys
-test = 1
-def mesure_time(fun):
-    '''
-    Decorator that shows the time of execution of any function
-    '''
-    def wrapper():
-        t0 = time.time()
-        fun()
-        tf = time.time()
-        print(f"{tf-t0:.5f}s")
-    return wrapper
 
 class Benchmark():
     '''
@@ -100,6 +89,71 @@ class Benchmark():
                 functions.append(k)
         return functions
 
+# numero de instruçoes e big O e omega
+
+def mesure_time(fun):
+    '''
+    Decorator that shows the time of execution of any function
+    '''
+    def wrapper():
+        t0 = time.time()
+        fun()
+        tf = time.time()
+        print(f"{tf-t0:.5f}s")
+    return wrapper
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     Benchmark.show_objects(globals().copy())
     Benchmark.show_objects(locals().copy())
@@ -109,4 +163,3 @@ if __name__ == '__main__':
     print(Benchmark.get_variables(locals().copy()))
     print(Benchmark.get_functions(globals().copy()))
     print(Benchmark.get_functions(locals().copy()))
-# numero de instruçoes e big O e omega

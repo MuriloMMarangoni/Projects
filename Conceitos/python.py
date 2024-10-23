@@ -558,6 +558,27 @@ import sys #---------------------------------------------------------
 
 sys.getsizeof(object) # diz o espaço em bytes que algo ocupa
 sys.exit() # encerra o programa
+def abb():
+    for each in range(10):
+        pass
+contador_instrucoes = 0
+def tracer(frame, event, arg): # informações do estado do programa
+    frame = sys._getframe() # objeto do frame,info da execução
+    if event in ['call','return','line','exception']: pass # eventos da execução do programa
+    print(arg) # complemento do evento, se for return 0, o arg = 0
+    global contador_instrucoes
+    print(f"função: {frame.f_code.co_name}") # nome da função
+    print(f"linha: {frame.f_lineno}") # número da linha int
+    print(f"locais: {frame.f_locals}") # dict com as variáveis locais e os valores (útil pra loops)
+    print(f"instrução: {frame.f_globals['contador_instrucoes']}") # diz qual instrução está agora
+    if event == 'line':  # conta cada linha executada
+        contador_instrucoes += 1
+    return tracer # precisa pra continuar executando a cada evento encontrado
+
+sys.settrace(tracer) # usa uma função que busca eventos no programa
+abb()
+sys.settrace(None) # para de buscar eventos
+print(contador_instrucoes)
 
 import cProfile #--------------------------------------------------
 
