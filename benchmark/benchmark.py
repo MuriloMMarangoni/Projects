@@ -1,6 +1,6 @@
 import time
 import sys
-
+import dis
 class Benchmark():
     '''
     Reusable class with benchmark information
@@ -88,9 +88,22 @@ class Benchmark():
             if str(v).startswith('<function'):
                 functions.append(k)
         return functions
-
-# numero de instruçoes e big O e omega
-
+    @staticmethod
+    def disassemble_function(func) -> None:
+        '''
+        Shows a representation of bytecode after the interpreter's optimizations
+        '''
+        instructions = 0
+        bytecode = dis.Bytecode(func)
+        print(f"{38*'-'}Bytecode{38*'-'}")
+        for each in bytecode:
+            instructions += 1
+            instruction_name = each.opname
+            instruction_arg = each.argrepr
+            print(f"{instruction_name} {instruction_arg}")
+        print(f"The function {func.__name__} have {instructions} instructions")
+        print(f"{38*'-'}Bytecode{38*'-'}")
+        
 def mesure_time(fun):
     '''
     Decorator that shows the time of execution of any function
@@ -155,11 +168,4 @@ def mesure_time(fun):
 
 
 if __name__ == '__main__':
-    Benchmark.show_objects(globals().copy())
-    Benchmark.show_objects(locals().copy())
-    Benchmark.variables_info(globals().copy())
-    Benchmark.variables_info(locals().copy())
-    print(Benchmark.get_variables(globals().copy()))
-    print(Benchmark.get_variables(locals().copy()))
-    print(Benchmark.get_functions(globals().copy()))
-    print(Benchmark.get_functions(locals().copy()))
+    Benchmark.disassemble_function(Benchmark.get_functions)

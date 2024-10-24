@@ -558,27 +558,22 @@ import sys #---------------------------------------------------------
 
 sys.getsizeof(object) # diz o espaço em bytes que algo ocupa
 sys.exit() # encerra o programa
-def abb():
-    for each in range(10):
-        pass
-contador_instrucoes = 0
-def tracer(frame, event, arg): # informações do estado do programa
-    frame = sys._getframe() # objeto do frame,info da execução
+frame_duma_func = sys._getframe() # pega o frame atual da função que está dentro
+def fun():
+    for each in range(10):pass
+def tracer(frame, event, arg): # tracer é uma função especial que tem informações do estado do programa
+    #frame é automaticamente definido, é o frame atual da função observada por settrace() 
     if event in ['call','return','line','exception']: pass # eventos da execução do programa
-    print(arg) # complemento do evento, se for return 0, o arg = 0
-    global contador_instrucoes
-    print(f"função: {frame.f_code.co_name}") # nome da função
-    print(f"linha: {frame.f_lineno}") # número da linha int
-    print(f"locais: {frame.f_locals}") # dict com as variáveis locais e os valores (útil pra loops)
-    print(f"instrução: {frame.f_globals['contador_instrucoes']}") # diz qual instrução está agora
-    if event == 'line':  # conta cada linha executada
-        contador_instrucoes += 1
+    arg # complemento do evento, se for return 0, o arg = 0
+    frame.f_code.co_name # nome da função
+    frame.f_lineno # número da linha int
+    frame.f_locals # dict com as variáveis locais e os valores (útil pra loops)
+    frame.f_globals# dict com variáveis globais em nível de frames
     return tracer # precisa pra continuar executando a cada evento encontrado
 
 sys.settrace(tracer) # usa uma função que busca eventos no programa
-abb()
-sys.settrace(None) # para de buscar eventos
-print(contador_instrucoes)
+fun()
+sys.settrace(None) # encerra a buscar eventos
 
 import cProfile #--------------------------------------------------
 
