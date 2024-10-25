@@ -100,8 +100,8 @@ class Benchmark():
             instructions += 1
             instruction_name = each.opname
             instruction_arg = each.argrepr
-            print(f"{instruction_name} {instruction_arg}")
-        print(f"The function {func.__name__} have {instructions} instructions")
+            print(f"{instructions} | {instruction_name} {instruction_arg}")
+        
         print(f"{38*'-'}Bytecode{38*'-'}")
         
 def mesure_time(fun):
@@ -115,57 +115,20 @@ def mesure_time(fun):
         print(f"{tf-t0:.5f}s")
     return wrapper
 
+def checkevents(fun):
+    '''
+    Decorator that executes a function and logs the steps for manual debugging
+    '''
+    def wrapper():
+        def tracer(frame,event,arg):
+            match(event):
+                case 'call':  print(f"Start of {frame.f_code.co_name}")
+                case 'line':  print(f"Line |{frame.f_lineno}")
+                case 'return':  print(f"End of {frame.f_code.co_name}")
+            return tracer
+        sys.settrace(tracer)
+        fun()
+        sys.settrace(None)
+    return wrapper
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if __name__ == '__main__':
-    Benchmark.disassemble_function(Benchmark.get_functions)
+# criar função que executa o código inteiro sem saída no terminal e diz os passos que o programa tomou

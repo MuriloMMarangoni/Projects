@@ -104,11 +104,21 @@ o /= 1 # o = o / 1
 o %= 1 # o = o % 1
 o **= 1  # o = o ** 1
 o //= 1  # o = o // 1
-#outros-----------------------
+#listas-----------------------
 lista[0] # acessa uma posição (0)
 lista[0:2] # acessa um começo e um fim (0,1)
 lista[0:10:3] # acessa um começo e um fim num passo(0,3,6,9)
 lista = [x**2 for x in range(0,11) if x!=0] # cria uma lista baseada em uma regra
+#binarios---------------------
+4 & 8 # 100 and 1000 = 0000 = 0
+4 | 8 # 100 or 1000 = 1100 = 12
+~ 4 # not , ele aumenta em 1 e troca o sinal = -5
+4 ^ 8 # 100 xor 1000 = 1100 = 12
+4 << 1 # 100 <- 1000 = 8
+4 >> 1 # 100 -> 10 = 4
+i & 255 == i % 256
+i & 1 == i % 2
+i ^ 0 == i
 #classes---------------------------------------------------------------------------------------------------------------------
 type(object) # diz a classe que um objeto pertence
 range(comeco=int,fim=int,passo=int) # iterador com começo,fim e passo
@@ -865,7 +875,6 @@ while window:                       # em loops infinitos, capture eventos e use 
 available_fonts = pygame.font.get_fonts()         # lista de fontes disponíveis do sistema operacional
 print(available_fonts)
 
-import flask
 import django
 import sqlalchemy
 import asyncio
@@ -1015,3 +1024,6 @@ def outros(arg):
 if __name__ == '__main__': 
     app.run() # precisa pra rodar
     app.run(debug=True) # o site atualiza as modificações com o F5 sem precisar reiniciar
+
+import dis
+cpython = dis.Bytecode(function) # lista com o bytecode otimizado pelo interpretador
