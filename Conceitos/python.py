@@ -94,7 +94,7 @@ not True # Não
 while True: # loop infinito
     if True==True: # quebra do loop infinito
         break
-#sinais----------------------------------------------------------------------------------
+#operações----------------------------------------------------------------------------------
 o = object # faz uma variável apontar pra um objeto na memória
 (value := 1*1) # atribuição dinâmica sem ter que inicializar
 o += 1 # o = o + 1
@@ -104,12 +104,6 @@ o /= 1 # o = o / 1
 o %= 1 # o = o % 1
 o **= 1  # o = o ** 1
 o //= 1  # o = o // 1
-#listas-----------------------
-lista[0] # acessa uma posição (0)
-lista[0:2] # acessa um começo e um fim (0,1)
-lista[0:10:3] # acessa um começo e um fim num passo(0,3,6,9)
-lista = [x**2 for x in range(0,11) if x!=0] # cria uma lista baseada em uma regra
-#binarios---------------------
 4 & 8 # 100 and 1000 = 0000 = 0
 4 | 8 # 100 or 1000 = 1100 = 12
 ~ 4 # not , ele aumenta em 1 e troca o sinal = -5
@@ -119,6 +113,11 @@ lista = [x**2 for x in range(0,11) if x!=0] # cria uma lista baseada em uma regr
 i & 255 == i % 256
 i & 1 == i % 2
 i ^ 0 == i
+lista[0] # acessa uma posição (0)
+lista[0:2] # acessa um começo e um fim (0,1)
+lista[0:10:3] # acessa um começo e um fim num passo(0,3,6,9)
+lista = [x**2 for x in range(0,11) if x!=0] # cria uma lista baseada em uma regra
+dict['1'] # acessa o valor da chave '1'
 #classes---------------------------------------------------------------------------------------------------------------------
 type(object) # diz a classe que um objeto pertence
 range(comeco=int,fim=int,passo=int) # iterador com começo,fim e passo
@@ -294,7 +293,6 @@ dict.values() #iteravel sobre os valores de um dict                             
 dict.items() #iteravel sobre chave,valor                                                          (dict) -> iterável
 dict.update({}) # adiciona um par {chave:valor} no dict                                           (dict) -> None
 dict.fromkeys(list) # cria um dicionário apartir de uma lista                                     (list) -> dict
-dict['1'] # acessa a chave '1'
 #exceções-------------------------------------------------------------------------------------------------------------------
 ValueError # Quando o problema está no valor, não no tipo
 TypeError # Quando o problema está no tipo
@@ -432,7 +430,7 @@ math.sin() # seno em radianos
 math.cos() # cosseno em radianos
 math.tan() # tangente em radianos
 
-import numpy as np
+import numpy as np # pip install numpy
 
 produto_escalar = np.inner(matriz,matriz) #produto escalar de duas matrizes
 multiplicacao = np.matmul(matriz,matriz) # multiplicação de matrizes
@@ -458,7 +456,7 @@ listacomzeros = np.zeros(100000000,dtype='uint8') # cria um array de zeros usand
 array.min() #menor elemento
 array.max() # maior elemento
 
-import sympy as sp
+import sympy as sp # pip install sympy
 #função
 funcao = '2*x'
 f = sp.lambdify(sp.Symbol('x'), sp.sympify(funcao),'numpy') #pega o x da função e da significado algébrico
@@ -474,7 +472,7 @@ simplificar = sp.simplify(expressao_algebrica)
 equacao = 2*x+1 # forma da equação
 resolucao = sp.solve(equacao) # resolver ela = 0
 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt # pip install matplotlib
 
 fonte = {'family':'serif','color':'red','size':12}
 x0 = 1
@@ -518,13 +516,13 @@ plt.suptitle('Vários Gráficos') # Título de um conjunto de tabelas
 plt.savefig('arquivo.png') # baixa uma print do gráfico
 plt.show() # abre a tela com o gráfico
 
-from scipy.interpolate import *
+from scipy.interpolate import * # pip install scipy
 
 pontox = [1,2,3,4]
 pontoy = [5,6,7,8]
 interpolacao = lagrange(pontox,pontoy) # função que passa pelos pontos (pontox[n],pontoy[n])
 
-import pandas as pd
+import pandas as pd # pip install pandas
 
 media = vetorpd.mean() # media de um vetor
 moda = vetorpd.mode().iloc[0] # moda de um vetor, com suporte a excessões
@@ -532,7 +530,7 @@ mediana = vetorpd.median() # mediana de um vetor
 variancia = vetorpd.var() # variância de um vetor
 desvio_padrao = vetorpd.std() # desvio padrão de um vetor
 
-from tkinter import * #----------------------------------------------
+from tkinter import * # pip install tkinter
 
 menu = Tk() # janela nova
 menu.title("Janela") # nome da janela
@@ -602,7 +600,7 @@ saida = p.communicate() # tupla com a saída e o erro, usar saida[0] pra pegar a
 p.wait() # Espera que o comando seja executado pra continuar o script (só com Popen)
 subprocess.run('pyinstaller arquivo.py',shell=True) # cria um executável de um arquivo.py
 
-from fpdf import FPDF #Pdfs------------------------------------------------------------------
+from fpdf import FPDF # pip install fpdf
 
 class PDF(FPDF): # Coloca métodos além dos da FPDF que se repetem pra ter menos boilerplate
     def header(self): # Cabeçalho
@@ -648,7 +646,7 @@ pdf.set_text_color(200,100,100) # Diz a cor de um texto em rgb
 pdf.image(name="caminho completo",x=60,y=120,w=120) # coloca uma imagem (posição absoluta)
 pdf.output('out.pdf') # Cria arquivo ou sobrescreve
 
-import qrcode # gera um qrcode de uma string
+import qrcode # pip install qrcode
 
 qr = qrcode.QRCode(
     version=1, # quantidade de dados (1-40)
@@ -661,7 +659,7 @@ qr.make(fit=True) # faz correção do tamanho do qrcode
 img = qr.make_image(fill_color="black", back_color="white") # preto e branco
 img.save("qrcode.png") # gera a imagem
 
-from barcode import Code128 # gera um código de barras
+from barcode import Code128 # pip install python-barcode
 from barcode.writer import ImageWriter
 
 codigo = Code128("algo", writer=ImageWriter()) # faz no formato code128 um texto
@@ -677,7 +675,7 @@ diaf = dia.strftime("%d/%m/%Y") # data padrão BR
 dia_semana = datetime.now().weekday() # dia da semana segunda -> 0 domingo -> 6
 data = datetime(2024,8,15,20,56) # horas manuais (com restrições)
 
-import pytz # fuso horários
+import pytz # pip install pytz
 
 l = pytz.all_timezones # todos os fuso-horários
 fuso = pytz.timezone('Asia/Dubai') # fuso horário manual
@@ -792,7 +790,7 @@ for linha in linhas:
 conectar.commit()                       # enviar
 conectar.close()                        # terminar conexão
 
-from pynput import keyboard                                 # Pega informações do teclado
+from pynput import keyboard # pip install pynput                                 # Pega informações do teclado
 
 def pressionado(tecla): # dizer a tecla pressionada 
     try:
@@ -825,7 +823,7 @@ keyboard.press('a')  # Pressiona a tecla
 keyboard.release('a')  # Solta a tecla
 Key.enter # tecla enter
 
-import pygame # módulo de jogos
+import pygame # pip install pygame
 
 pygame.init()                                    # inicia a janela
 window = pygame.display.set_mode((578,324),pygame.RESIZABLE) # tamanho da janela; quadrado de trocar de resolução
@@ -981,7 +979,7 @@ leiturajson = path.read_text() # lê o código json
 novasample = json.loads(leiturajson) # converte json pra python
 with open("novojson.json",'w') as f: json.dump({},f,indent=4) # salva qualquer dict em json
 
-import requests # Solicitações HTTP
+import requests # Solicitações HTTP  # pip install requests
 
 url = "https://hacker-news.firebaseio.com/v0/item/31353677.json" # link de um json
 url = "https://en.wikipedia.org/wiki/Web_scraping" # link regular
@@ -993,7 +991,7 @@ repr_str = resp.text # pega a representação da página em str (html em str,jso
 binar = resp.content # pega a representação da página em binário, útil pra mídias e docs
 with open("nomeDoArquivo.algumacoisa","wb") as f: f.write(binar) # baixa qualquer tipo de mídia de um site, usando binário
 
-from bs4 import BeautifulSoup # filtra conteúdos de um HTML
+from bs4 import BeautifulSoup # filtra conteúdos de um HTML # pip install beautifulsoup4
 soup = BeautifulSoup(features="html.parser",markup=repr_str) # objeto parser
 tag = soup.find_all('span') # filtra todas as ocorrências dessa tag HTML
 conteudo = [each.text for each in tag] # pega o conteúdo dessas tags
@@ -1004,7 +1002,7 @@ for atributes in tag:
 from urllib.parse import urljoin # transforma URLs
 url_de_acesso = urljoin(url,url_do_elemento) # transforma a url do elemento em uma url de acesso
 
-from flask import Flask,redirect,url_for,render_template # microframework pra manipular websites
+from flask import Flask,redirect,url_for,render_template # microframework pra manipular websites # pip install flask
 
 app = Flask(__name__) # objeto do site
 @app.route("/") # roteamento: urls do site, quando acessadas executam essa função
