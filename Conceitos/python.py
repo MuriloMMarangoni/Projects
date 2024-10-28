@@ -530,9 +530,9 @@ mediana = vetorpd.median() # mediana de um vetor
 variancia = vetorpd.var() # variância de um vetor
 desvio_padrao = vetorpd.std() # desvio padrão de um vetor
 
-from tkinter import * # pip install tkinter
+import tkinter as tk # pip install tkinter
 
-menu = Tk() # janela nova
+menu = tk.Tk() # janela nova
 menu.title("Janela") # nome da janela
 altura = 300 # altura da janela
 largura = 500 # largura da janela
@@ -546,11 +546,11 @@ menu.minsize(720,586) # tamanho mínimo (x,y) (não tem tela cheia)
 menu.maxsize(1280,720) # tamanho máximo (x,y) (não tem tela cheia)
 menu.state('iconic') # abre minimizado
 menu['bg'] = 'black' # muda a cor de fundo da janela
-botao = Button(menu , # janela que vai estar o botao
+botao = tk.Button(menu , # janela que vai estar o botao
                text='textodobotao', # texto do botão
                command= lambda: print("e")) # o que acontece ao clique
 botao.pack() # exibe o botão
-texto = Label(menu, # janela que vai estar o texto
+texto = tk.Label(menu, # janela que vai estar o texto
                text='Texto Qualquer1\noutroTexto', # texto 
                bg = 'gray', # cor de fundo
                fg = 'white', # cor da letra
@@ -560,6 +560,35 @@ texto = Label(menu, # janela que vai estar o texto
                relief='solid', # borda
                borderwidth= 1) #espessura da borda
 texto.pack() # exibe o texto
+campo_de_texto = tk.Entry(menu) # cria um campo de inserir texto
+campo_de_texto.pack()
+mostrar = lambda:print(campo_de_texto.get()) # pega o que tiver dentro dele ao ser acionado, retorna uma str
+mudar = lambda:texto.config(text='mudei o texto') # muda argumentos de widgets
+checar = tk.BooleanVar() # objeto de bools (verificações)
+estado = lambda: print('true') if checar.get() else print('false') # diz se foi ou não selecionado
+s = tk.Checkbutton(menu,text='algo',variable=checar,command=estado) # cria uma caixa de selecionar
+s.pack()
+opcao = tk.StringVar() # objeto de checar strings (opções)
+r1 = tk.Radiobutton(menu,text='op1',variable=opcao,value='1') # cria uma opção múltipla
+r2 = tk.Radiobutton(menu,text='op2',variable=opcao,value='2') # value,se for igual vale por mais de uma opção,se for diferente vale só por si
+r3 = tk.Radiobutton(menu,text='op3',variable=opcao,value='2') # op1 vale por si só, op2 e op3 valem pelos 2 porque o value é igual
+r1.pack()
+r2.pack()
+r3.pack()
+mostrar = lambda:opcao.get() # diz o 'value' da opção escolhida
+text_area = tk.Text(menu,width=50,height=20) # área de texto
+text_area.pack()
+mostrar = lambda: print(text_area.get('1.0',tk.END)) # mostra o texto a partir da primeira linha até o final
+lista = tk.Listbox(menu) # lista de opções
+lista.insert(1,'primeiro')
+lista.insert(2,'segundo')
+lista.insert(3,'terceiro')
+lista.insert(4,'quarto')
+lista.insert(5,'quinto')
+lista.pack()
+mostrar = lambda:print(lista.get(lista.curselection())) # mostra a opção selecionada
+botao.grid(row=0,column=0) # exibe os elementos de forma linha,coluna
+botao.pack() # exibe centralizado
 menu.mainloop() # janela aberta
 
 import sys #---------------------------------------------------------

@@ -6,15 +6,29 @@
 # trazer o pdf já pronto pro app
 
 import tkinter as tk
-app = tk.Tk() # Objeto da janela
-app.title('Nome da janela') # nome da janela
-app.geometry("1000x500") # tamanho da janela
 
-texto1 = tk.Label(app,text='aqui está escrito algo') # objeto de texto
-texto1.pack() # mostrar o texto
-count=0
-botao1 = tk.Button(app,text='botaozinho',command=lambda:print('algo'))
-botao1.pack()
-# no command, precisa criar usar uma função anonima OU o objeto de uma função, porque se for chamada, ela é executada na criação do objeto do botão
+def campos(obj:tk):
+    return obj.get()
 
-app.mainloop() # abre a janela
+app = tk.Tk()
+app.geometry('1000x500')
+
+tk.Label(app,text="Seja bem vindo a minha calculadora!\nInsira dois números a serem somados").pack()
+primeiro_campo = tk.Entry(app)
+primeiro_campo.pack()
+segundo_campo = tk.Entry(app)
+segundo_campo.pack()
+def pegar():
+    e1 = int(campos(primeiro_campo))
+    e2 = int(campos(segundo_campo))
+    return e1+e2
+def mudar(obj):
+    obj.config(text=pegar())
+label1 = tk.Label(app,text='')
+somar = tk.Button(app,command=lambda:mudar(label1),text='Somar')
+somar.pack()
+label1.pack()
+
+
+
+app.mainloop()
