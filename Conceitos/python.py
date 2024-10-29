@@ -142,7 +142,7 @@ ft = filter(lambda x: x % 2 == 0,l) # filtra a lista
 print(list(ft)) # transforma o objeto do filtro em uma lista
 
 zip() #
-enumerate() #
+enumerate(list) # cria um iterável que pode ser aberto com index,valor
 frozenset() #
 
 class Cobra: # classe
@@ -545,7 +545,6 @@ menu.resizable(True,True) # diz se a janela pode ser redimensionada(x,y)
 menu.minsize(720,586) # tamanho mínimo (x,y) (não tem tela cheia)
 menu.maxsize(1280,720) # tamanho máximo (x,y) (não tem tela cheia)
 menu.state('iconic') # abre minimizado
-menu['bg'] = 'black' # muda a cor de fundo da janela
 botao = tk.Button(menu , # janela que vai estar o botao
                text='textodobotao', # texto do botão
                command= lambda: print("e")) # o que acontece ao clique
@@ -587,8 +586,27 @@ lista.insert(4,'quarto')
 lista.insert(5,'quinto')
 lista.pack()
 mostrar = lambda:print(lista.get(lista.curselection())) # mostra a opção selecionada
-botao.grid(row=0,column=0) # exibe os elementos de forma linha,coluna
+botao.grid(row=0,column=0,padx=0,pady=0) # exibe os elementos de forma linha,coluna; pode ter distância de elementos com 'pad'
 botao.pack() # exibe centralizado
+imagem = tk.PhotoImage(file='imagem.png ou .gif') # objeto de imagem
+l = tk.Label(menu,image=imagem) # aplica a imagem
+menu.iconphoto(False,imagem) # faz o ícone do app ter uma imagem
+menu.config(bg='orange', # cor do fundo
+            bd=100) # borda invisível
+menu.attributes('-fullscreen',True) # tela cheia, sem bordas de janela
+sair = lambda event: print('sair') # funções pro bind precisam da variável 'event' pra identificar o evento
+sair = lambda event: menu.quit() # fecha o app
+menu.bind("<Escape>",sair) # se apertar ESC 
+posicao_mouse = lambda event: print(event.x,event.y) # posição do mouse
+nome_tecla = lambda event: print(event.keysym) # tecla pressionada
+menu.bind("<Key>",posicao_mouse) # quando apertar uma tecla
+menu.bind('<Button-1>',lambda event: print('clicou esquerdo')) # clicar esquerdo
+menu.bind('<Button-3>',lambda event: print('clicou direito')) # clicar direito
+botao.bind("<Enter>",lambda e: print('entrou o mouse')) # mouse entrar no botão
+botao.bind("<Leave>",lambda e: print('sair o mouse')) # mouse sair do botão
+menu.bind_class("Button","<Enter>", lambda e: print('passar o mouse'))# todos os botões tem isso agora
+menu.unbind("<Button-1>") # tira o bind de um widget com evento específico
+
 menu.mainloop() # janela aberta
 
 import sys #---------------------------------------------------------

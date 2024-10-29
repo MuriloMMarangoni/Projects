@@ -7,28 +7,24 @@
 
 import tkinter as tk
 
-def campos(obj:tk):
-    return obj.get()
+menu = tk.Tk()
 
-app = tk.Tk()
-app.geometry('1000x500')
+largura = 1000
+altura= 500
+menu.geometry(f'{largura}x{altura}')
 
-tk.Label(app,text="Seja bem vindo a minha calculadora!\nInsira dois números a serem somados").pack()
-primeiro_campo = tk.Entry(app)
-primeiro_campo.pack()
-segundo_campo = tk.Entry(app)
-segundo_campo.pack()
-def pegar():
-    e1 = int(campos(primeiro_campo))
-    e2 = int(campos(segundo_campo))
-    return e1+e2
-def mudar(obj):
-    obj.config(text=pegar())
-label1 = tk.Label(app,text='')
-somar = tk.Button(app,command=lambda:mudar(label1),text='Somar')
-somar.pack()
-label1.pack()
+estado = tk.BooleanVar()
 
+login = tk.Entry(menu)
+senha = tk.Entry(menu)
+caixa = tk.Checkbutton(menu,variable=estado)
+texto = tk.Label(menu,text='Exibir senha')
+botao = tk.Button(menu,text='Fazer Login')
 
+login.grid(row=0,column=0,padx=0)
+senha.grid(row=1,column=0,padx=0)
+caixa.grid(row=2,column=0,padx=0)
+texto.grid(row=2,column=1,padx=0,ipadx=0)
+botao.grid(row=3,column=0,padx=0)
 
-app.mainloop()
+menu.mainloop()
