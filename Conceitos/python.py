@@ -618,8 +618,14 @@ campo_de_texto.delete(0,tk.END) # Zera o conteúdo de um entry
 campo_de_texto.insert(0,'algo') # coloca um texto em um campo vazios
 tk.Label(fg='red') # muda a cor do texto
 widgets = menu.winfo_children() # lista com o objeto de cada widget de uma janela ou frame
+proximo_widget = lambda event:event.widget.tk_focusNext().focus() # cursor vai pro próximo widget
+widget_anterior = lambda event:event.widget.tk_focusPrev().focus() # cursor vai pro widget anterior
 menu.mainloop() # janela aberta
 
+import tkinter.font as tkFont
+
+fonte_personalizada = tkFont.Font(family="Helvetica",size=18,weight='bold',slant='italic',underline=1) # objeto de fonte
+tk.Label(font=fonte_personalizada) # aplica a fonte Helvetica de tamanho 18 em negrito,itálico e sublinhado
 import sys #---------------------------------------------------------
 
 sys.getsizeof(object) # diz o espaço em bytes que algo ocupa
