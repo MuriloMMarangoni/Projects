@@ -616,6 +616,8 @@ t2 = tk.Label(f2,text='TELA DOIS',bg='yellow',font=('Arial',12)).pack() # texto 
 f1.tkraise() # começa no frame1
 campo_de_texto.delete(0,tk.END) # Zera o conteúdo de um entry
 campo_de_texto.insert(0,'algo') # coloca um texto em um campo vazios
+tk.Label(fg='red') # muda a cor do texto
+widgets = menu.winfo_children() # lista com o objeto de cada widget de uma janela ou frame
 menu.mainloop() # janela aberta
 
 import sys #---------------------------------------------------------
