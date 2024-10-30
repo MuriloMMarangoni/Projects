@@ -614,6 +614,8 @@ b1 = tk.Button(f1,text='botao da tela 1',command= lambda:f2.tkraise()).pack()# b
 b2 = tk.Button(f2,text='botao da tela 2',command= lambda: f1.tkraise()).pack()# botão do frame2 que troca pro frame1
 t2 = tk.Label(f2,text='TELA DOIS',bg='yellow',font=('Arial',12)).pack() # texto com fonte
 f1.tkraise() # começa no frame1
+campo_de_texto.delete(0,tk.END) # Zera o conteúdo de um entry
+campo_de_texto.insert(0,'algo') # coloca um texto em um campo vazios
 menu.mainloop() # janela aberta
 
 import sys #---------------------------------------------------------
