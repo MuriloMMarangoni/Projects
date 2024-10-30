@@ -606,7 +606,14 @@ botao.bind("<Enter>",lambda e: print('entrou o mouse')) # mouse entrar no botão
 botao.bind("<Leave>",lambda e: print('sair o mouse')) # mouse sair do botão
 menu.bind_class("Button","<Enter>", lambda e: print('passar o mouse'))# todos os botões tem isso agora
 menu.unbind("<Button-1>") # tira o bind de um widget com evento específico
-
+f1 = tk.Frame(menu) # cria frames (telas)
+f2 = tk.Frame(menu) # cria frames (telas)
+f1.place(relwidth=1, relheight=1) # frames vão ocupar a janela inteira
+f2.place(relwidth=1, relheight=1) # frames vão ocupar a janela inteira
+b1 = tk.Button(f1,text='botao da tela 1',command= lambda:f2.tkraise()).pack()# botão do frame1 que troca pro frame2
+b2 = tk.Button(f2,text='botao da tela 2',command= lambda: f1.tkraise()).pack()# botão do frame2 que troca pro frame1
+t2 = tk.Label(f2,text='TELA DOIS',bg='yellow',font=('Arial',12)).pack() # texto com fonte
+f1.tkraise() # começa no frame1
 menu.mainloop() # janela aberta
 
 import sys #---------------------------------------------------------
