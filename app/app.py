@@ -7,10 +7,11 @@
 # fazer um app com tela de cadastro
 # quando der enter, ativar o botão
 # bugs: senhas em * não correspondem pro login
-#
 # sugestões: colocar indicadores nos Entrys
-# colocar indicador de tela de login,registro e principal
-#
+# fazer um arquivo que tem o 'login' do ultimo usuário conectado, assim quando abrir o app, se tiver o nome de algum login la, essa conta vai ser logada automaticamente, mas se o usuário clicar em 'sair', o arquivo fica vazio
+# suporte pra email no lugar do login
+# apagar mensagens de erro quando trocar de tela
+# enviar um email de registro, com um numero aleatorio de 6 digitos, daí se o usuario colocar o codigo correto, registre, se não, espere 45s pra enviar outro codigo
 import tkinter as tk
 import tkinter.font as tkFont
 import sqlite3
@@ -48,6 +49,7 @@ def validar():
         if senha.get() == 'admin':
             tela_principal.tkraise()
             menu.title("Utilitários")
+            clear_fields()
         else:
             if len(tela_de_login.winfo_children()) == 6: # se na tela tiver 2 entry,caixa,botao,registre  e mensagem de erro
                 temp.destroy()
@@ -90,12 +92,28 @@ def registre():
     '''
     tela_de_registro.tkraise()
     menu.title("Registre-se")
+    clear_fields()
+
 def logue():
     '''
     Muda pra tela de login
     '''
     tela_de_login.tkraise()
     menu.title('Login')
+    clear_fields()
+
+def clear_fields():
+    '''
+    Limpa todos os campos da tela de registro e Login
+    '''
+    login.delete(0,tk.END)
+    senha.delete(0,tk.END)
+
+    nome.delete(0,tk.END)
+    email.delete(0,tk.END)
+    registro.delete(0,tk.END)
+    senha_registro.delete(0,tk.END)
+    senha_registro_confirmar.delete(0,tk.END)
 
 ver_senha = tk.Checkbutton(tela_de_login,text='Visualizar Senha',variable=ver_senha_confirmacao,command=lambda:cripto() if ver_senha_confirmacao.get() else discripto())
 confirmar = tk.Button(tela_de_login,text='Próximo',command=validar)
@@ -103,6 +121,8 @@ registrar = tk.Label(tela_de_login,text='Não tem uma conta?\nRegistre-se.',font
 registrar.bind('<Button-1>',lambda event:registre())
 registrar.bind('<Enter>', lambda event:registrar.config(font=fonte_hover))
 registrar.bind('<Leave>', lambda event:registrar.config(font=fonte_padrao))
+
+erro_registro:tk.Label = tk.Label(tela_de_registro,text='',fg='red')
 
 tela1 = [login,senha,ver_senha,confirmar,registrar]
 for each in tela1: each.pack()
@@ -114,20 +134,30 @@ voltar.bind('<Button-1>',lambda event:logue())
 tela2 = [l1,voltar]
 for each in tela2: each.pack()
 
-nome           = tk.Entry(tela_de_registro) 
+nome           = tk.Entry(tela_de_registro)
+email          = tk.Entry(tela_de_registro) 
 registro       = tk.Entry(tela_de_registro) 
 senha_registro = tk.Entry(tela_de_registro)
 senha_registro_confirmar = tk.Entry(tela_de_registro)
+
 def verificar():
-    if senha_registro.get() == senha_registro_confirmar.get():
+    global erro_registro
+    senhas_iguais = senha_registro.get() == senha_registro_confirmar.get()
+    email_valido = '@' in email.get()
+    erro_registro.pack()
+    if senhas_iguais and email_valido:
         tela_principal.tkraise()
-    else:
-        tk.Label(tela_de_registro,text='As senhas são diferentes',bg='red').pack()
+    elif not senhas_iguais:
+        erro_registro.config(text='As senhas são diferentes')
+    elif not email_valido:
+        erro_registro.config(text='O e-mail é inválido')
+    
+
 confirmar_registro = tk.Button(tela_de_registro,text='Verificar',command=verificar)
 l3 = tk.Label(tela_de_registro,text='<-')
 l3.bind('<Button-1>',lambda event: logue())
 
-tela3 = [nome,registro,senha_registro,senha_registro_confirmar,confirmar_registro,l3]
+tela3 = [nome,email,registro,senha_registro,senha_registro_confirmar,confirmar_registro,l3]
 for each in tela3: each.pack()
 
 tela_de_login.tkraise()
