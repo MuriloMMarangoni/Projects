@@ -1,12 +1,9 @@
 # fazer um app que lide com todos os procedimentos de um software full-stack
 # o app deve ter sistema de cadastro e autenticação
-# emails
-# poder enviar relatórios em pdf pra outros emails
 # quando fazer login na conta, o seu email já é utilizado automaticamente pros envios
 # trazer o pdf já pronto pro app
 # fazer um app com tela de cadastro
 # quando der enter, ativar o botão
-# bugs: senhas em * não correspondem pro login
 # sugestões: colocar indicadores nos Entrys
 # fazer um arquivo que tem o 'login' do ultimo usuário conectado, assim quando abrir o app, se tiver o nome de algum login la, essa conta vai ser logada automaticamente, mas se o usuário clicar em 'sair', o arquivo fica vazio
 # suporte pra email no lugar do login
@@ -45,9 +42,12 @@ def validar():
     global login
     global senha
     global temp
+    global senhaReal
+    global ver_senha_confirmacao
     if login.get() == 'admin':
-        if senha.get() == 'admin':
+        if senha.get() == 'admin' or senhaReal == 'admin':
             tela_principal.tkraise()
+            ver_senha_confirmacao.set(False)
             menu.title("Utilitários")
             clear_fields()
         else:

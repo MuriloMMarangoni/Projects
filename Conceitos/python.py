@@ -620,6 +620,7 @@ tk.Label(fg='red') # muda a cor do texto
 widgets = menu.winfo_children() # lista com o objeto de cada widget de uma janela ou frame
 proximo_widget = lambda event:event.widget.tk_focusNext().focus() # cursor vai pro próximo widget
 widget_anterior = lambda event:event.widget.tk_focusPrev().focus() # cursor vai pro widget anterior
+checar.set(False) # muda o valor bool de uma BooleanVar, sem fazer a conversão pra bool
 menu.mainloop() # janela aberta
 
 import tkinter.font as tkFont
