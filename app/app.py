@@ -162,3 +162,68 @@ for each in tela3: each.pack()
 
 tela_de_login.tkraise()
 menu.mainloop()
+
+
+
+dma = [] # se fizer tantos por dia, dá tantos por mes, e tantos por ano
+jc = [] # juros compostos
+prazos = [] # se eu colocar 1/1/2025 ele vai me dizer quantos dias faltam de hoje até essa data
+fisica = [] # fórmulas de física que são uteis no dia a dia, como tempo, energia , etc
+
+m:float = 1 # unidade básica de distância
+h:float = 1 # distância vertical
+km:float = 1000 * m
+mile = 1.60934 * km # unidade americana de distâncias altas
+foot:float = 0.3048 * m # unidade americana de distâncias médias
+inches:float = 25.4/1000 * m # unidade americana de distâncias pequenas
+
+g:float = 1  # unidade básica de massa
+kg:float = 1000 * g
+pound:float = 0.453592 * kg # unidade americana de peso
+
+s:float = 1 # unidade básica de tempo
+mi:float = s / 60
+hr:float = mi / 60
+day:int = hr / 24
+weeks:int = day / 7
+
+def isLeap(year:int)->bool:
+    '''
+    Checks if the year is leap
+    '''
+    condition1 = year % 400 == 0
+    condition2 = year % 100 != 0
+    condition3 = year % 4 == 0
+    return (True if condition1 or (condition2 and condition3) else False)
+
+month:dict = {
+    'january':31,
+    'february':29 if isLeap() else 28,
+    'march':31,
+    'april':30,
+    'may': 31,
+    'june': 30,
+    'july': 31,
+    'august': 31,
+    'september': 30,
+    'october': 31,
+    'november': 30,
+    'december': 31,
+}
+
+year:int = 365 if not isLeap() else 366
+
+v:float = m/s # velocidade no SI
+kmh:float = v / 3.6 # velocidade usual
+a:float = v / s # aceleração
+f:float = g*a # força
+G:float = 9.8 # constante gravitacional
+fp:float = G*g # força peso
+e:float= f * m # trabalho(energia)
+p = f*v # potência
+ec = g*v**2 / 2 # energia cinética
+epg = g*G*h # energia potencial gravitacional
+em = ec + epg # energia mecanica
+units:dict = {
+# mapear as conversões
+}
