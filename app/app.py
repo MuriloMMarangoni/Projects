@@ -2,8 +2,6 @@
 # o app deve ter sistema de cadastro e autenticação
 # quando fazer login na conta, o seu email já é utilizado automaticamente pros envios
 # trazer o pdf já pronto pro app
-# fazer um app com tela de cadastro
-# quando der enter, ativar o botão
 # sugestões: colocar indicadores nos Entrys
 # fazer um arquivo que tem o 'login' do ultimo usuário conectado, assim quando abrir o app, se tiver o nome de algum login la, essa conta vai ser logada automaticamente, mas se o usuário clicar em 'sair', o arquivo fica vazio
 # suporte pra email no lugar do login
@@ -93,6 +91,7 @@ def registre():
     tela_de_registro.tkraise()
     menu.title("Registre-se")
     clear_fields()
+    nome.focus()
 
 def logue():
     '''
@@ -101,6 +100,7 @@ def logue():
     tela_de_login.tkraise()
     menu.title('Login')
     clear_fields()
+    login.focus()
 
 def clear_fields():
     '''
@@ -121,8 +121,18 @@ registrar = tk.Label(tela_de_login,text='Não tem uma conta?\nRegistre-se.',font
 registrar.bind('<Button-1>',lambda event:registre())
 registrar.bind('<Enter>', lambda event:registrar.config(font=fonte_hover))
 registrar.bind('<Leave>', lambda event:registrar.config(font=fonte_padrao))
+def enterProBotao():
+    '''
+    Se apertar enter vai no botão de registro ou de login e executa ele
+    '''
+    if menu.focus_get().master == tela_de_login:
+        confirmar.focus()
+        validar()
+    elif menu.focus_get().master == tela_de_registro: # se ta nesse frame
+        confirmar_registro.focus()
+        verificar()
 
-erro_registro:tk.Label = tk.Label(tela_de_registro,text='',fg='red')
+menu.bind('<Return>',lambda event:enterProBotao())
 
 tela1 = [login,senha,ver_senha,confirmar,registrar]
 for each in tela1: each.pack()
@@ -139,6 +149,7 @@ email          = tk.Entry(tela_de_registro)
 registro       = tk.Entry(tela_de_registro) 
 senha_registro = tk.Entry(tela_de_registro)
 senha_registro_confirmar = tk.Entry(tela_de_registro)
+erro_registro:tk.Label = tk.Label(tela_de_registro,text='',fg='red')
 
 def verificar():
     global erro_registro
@@ -152,9 +163,10 @@ def verificar():
     elif not email_valido:
         erro_registro.config(text='O e-mail é inválido')
     
-
 confirmar_registro = tk.Button(tela_de_registro,text='Verificar',command=verificar)
 l3 = tk.Label(tela_de_registro,text='<-')
+
+menu.bind('<Return>',lambda event: enterProBotao())
 l3.bind('<Button-1>',lambda event: logue())
 
 tela3 = [nome,email,registro,senha_registro,senha_registro_confirmar,confirmar_registro,l3]
@@ -162,8 +174,6 @@ for each in tela3: each.pack()
 
 tela_de_login.tkraise()
 menu.mainloop()
-
-
 
 dma = [] # se fizer tantos por dia, dá tantos por mes, e tantos por ano
 jc = [] # juros compostos
