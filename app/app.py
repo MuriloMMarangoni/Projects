@@ -1,10 +1,5 @@
 # fazer um app que lide com todos os procedimentos de um software full-stack
-# o app deve ter sistema de cadastro e autenticação
-# quando fazer login na conta, o seu email já é utilizado automaticamente pros envios
 # trazer o pdf já pronto pro app
-# sugestões: colocar indicadores nos Entrys
-# fazer um arquivo que tem o 'login' do ultimo usuário conectado, assim quando abrir o app, se tiver o nome de algum login la, essa conta vai ser logada automaticamente, mas se o usuário clicar em 'sair', o arquivo fica vazio
-# suporte pra email no lugar do login
 # enviar um email de registro, com um numero aleatorio de 6 digitos, daí se o usuario colocar o codigo correto, registre, se não, espere 45s pra enviar outro codigo
 import tkinter as tk
 import tkinter.font as tkFont
@@ -18,22 +13,40 @@ def databases():
     s = subprocess.run("ls",shell=True,capture_output=True,text=True)
     files = s.stdout.splitlines()
     if 'appDatabase.db' in files:
-        return [sqlite3.connect('appDatabase.db'),'existe']
+        return sqlite3.connect('appDatabase.db')
     else:
         subprocess.run(f"touch appDatabase.db",shell=True,text=True)
-        return [sqlite3.connect('appDatabase.db'),'criou']
+        return sqlite3.connect('appDatabase.db')
 
 def validar():
     '''
-    Diz se o login e a senha da tela de login é admin
+    Diz se o login e a senha da tela de login estão no banco de dados
     '''
     global login
     global senha
     global erro_login
     global senhaReal
     global ver_senha_confirmacao
-    if login.get() == 'admin':
-        if senha.get() == 'admin' or senhaReal == 'admin':
+    login_banco = f'''SELECT * FROM Contas WHERE email="{login.get()}"
+    '''
+    email_banco = f'''SELECT * FROM Contas WHERE nome="{login.get()}"
+    '''
+    if sql.execute(login_banco).fetchall() == []:
+        ver_login = []
+    else:
+        ver_login = sql.execute(login_banco).fetchall()[0]
+    if sql.execute(email_banco).fetchall() == []:
+        ver_email = []
+    else:
+        ver_email = sql.execute(email_banco).fetchall()[0]
+    if login.get() in ver_login or login.get() in ver_email:
+        if senha.get() in [*ver_login,*ver_email] or senhaReal in [*ver_login,*ver_email]:
+            if senhaReal != '':
+                comando3 = f'''UPDATE Contas SET conectado=1 WHERE senha="{senhaReal}"'''
+                sql.execute(comando3)
+            else:
+                comando3 = f'''UPDATE Contas SET conectado=1 WHERE senha="{senha.get()}"'''
+                sql.execute(comando3)
             tela_principal.tkraise()
             ver_senha_confirmacao.set(False)
             menu.title("Utilitários")
@@ -69,6 +82,7 @@ def discripto():
     global senhaReal
     senha.delete(0,tk.END)
     senha.insert(0,senhaReal)
+    senhaReal=''
 
 def mostrar_widgets():
     validar()
@@ -94,11 +108,16 @@ def logue():
     menu.title('Login')
     clear_fields()
     login.focus()
+    comando = '''UPDATE Contas SET conectado=0 WHERE conectado=1
+    '''
+    sql.execute(comando)
 
 def clear_fields():
     '''
     Limpa todos os campos da tela de registro e Login
     '''
+    global senhaReal
+    senhaReal = ''
     login.delete(0,tk.END)
     senha.delete(0,tk.END)
 
@@ -119,32 +138,49 @@ def enterProBotao():
         verificar()
 
 def verificar():
+    '''
+    Valida as credenciais pro registro
+    '''
     global erro_registro
     senhas_iguais = senha_registro.get() == senha_registro_confirmar.get()
-    email_valido = '@' in email.get()
+    email_valido = '@' in email.get() and '.' in email.get()
+    tamanho_certo = 8
+    existe = False
     erro_registro.pack()
-    if senhas_iguais and email_valido:
-        credenciais = [nome.get(),email.get(),senha_registro.get(),1]
-        comando2 = f"INSERT INTO Contas"f"(nome,email,senha,conectado)"f"VALUES (?,?,?,?)"
-        sql.execute(comando2,tuple(credenciais))
-        tela_principal.tkraise()
+    if senhas_iguais and email_valido and len(senha_registro.get())>=tamanho_certo:
+        for each in sql.execute("SELECT nome FROM Contas").fetchall():
+            if nome.get() in each:
+                erro_registro.config(text='Nome já está registrado')
+                existe = True
+        for each in sql.execute("SELECT email FROM Contas").fetchall():
+            if email.get() in each:
+                erro_registro.config(text='E-Mail já está registrado')
+                existe = True
+        if not existe:
+            credenciais = [nome.get(),email.get(),senha_registro.get()]
+            comando2 = f"INSERT INTO Contas"f"(nome,email,senha)"f"VALUES (?,?,?)"
+            sql.execute(comando2,tuple(credenciais))
+            comando3 = f'''UPDATE Contas SET conectado=1 WHERE nome="{nome.get()}"'''
+            sql.execute(comando3)
+            tela_principal.tkraise()
+            menu.title('Utilitários')
     elif not senhas_iguais:
         erro_registro.config(text='As senhas são diferentes')
     elif not email_valido:
         erro_registro.config(text='O e-mail é inválido')
+    elif len(senha_registro.get())<tamanho_certo:
+        erro_registro.config(text='A Senha deve ter pelo menos 8 caracteres')
 #banco de dados
-db_connection,status = databases()
+db_connection = databases()
 sql = db_connection.cursor()
-if status == 'criou':
-    comando = '''CREATE TABLE IF NOT EXISTS Contas(
-    id INTEGER PRIMARY KEY,
-    nome TEXT,
-    email TEXT,
-    senha TEXT,
-    conectado INTEGER DEFAULT 0
-    )
-    '''
-    sql.execute(comando)
+comando = '''CREATE TABLE IF NOT EXISTS Contas(
+nome TEXT,
+email TEXT,
+senha TEXT,
+conectado INTEGER DEFAULT 0
+)
+'''
+sql.execute(comando)
 #janela 'menu'
 menu = tk.Tk()
 menu.geometry('1000x500')
@@ -200,11 +236,12 @@ l3.bind('<Button-1>',lambda event: logue())
 tela3 = [tk.Label(tela_de_registro,text='Nome'),nome,tk.Label(tela_de_registro,text='E-mail'),email,tk.Label(tela_de_registro,text='Senha'),senha_registro,tk.Label(tela_de_registro,text='Confirmar Senha'),senha_registro_confirmar,confirmar_registro,l3]
 for each in tela3: each.pack()
 #começar na tela de login e usar a janela 'menu'
-tela_de_login.tkraise()
+if sql.execute("SELECT * FROM Contas WHERE conectado=1").fetchall()!=[]:
+    tela_principal.tkraise()
+    menu.title('Utilitários')
+else:
+    tela_de_login.tkraise()
 menu.mainloop()
-
-print(sql.execute("SELECT * FROM Contas").fetchall())
-
 db_connection.commit()
 db_connection.close()
 
