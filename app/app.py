@@ -5,33 +5,23 @@
 # sugestões: colocar indicadores nos Entrys
 # fazer um arquivo que tem o 'login' do ultimo usuário conectado, assim quando abrir o app, se tiver o nome de algum login la, essa conta vai ser logada automaticamente, mas se o usuário clicar em 'sair', o arquivo fica vazio
 # suporte pra email no lugar do login
-# apagar mensagens de erro quando trocar de tela
 # enviar um email de registro, com um numero aleatorio de 6 digitos, daí se o usuario colocar o codigo correto, registre, se não, espere 45s pra enviar outro codigo
 import tkinter as tk
 import tkinter.font as tkFont
 import sqlite3
+import subprocess
 
-menu = tk.Tk()
-menu.geometry('1000x500')
-menu.title("Login")
-ver_senha_confirmacao = tk.BooleanVar()
-fonte_padrao = tkFont.Font(family='Arial',size=12)
-fonte_hover = tkFont.Font(family='Arial',size=12,underline=1)
-
-tela_de_login = tk.Frame(menu)
-tela_principal = tk.Frame(menu)
-tela_de_registro = tk.Frame(menu)
-
-tela_de_login.place(relwidth=1,relheight=1)
-tela_principal.place(relwidth=1,relheight=1)
-tela_de_registro.place(relwidth=1,relheight=1)
-
-login = tk.Entry(tela_de_login)
-senha = tk.Entry(tela_de_login)
-login.bind("<Down>", lambda event:event.widget.tk_focusNext().focus())
-senha.bind("<Up>", lambda event:event.widget.tk_focusPrev().focus())
-senhaReal = '' # variável temporária 
-temp = tk.Label(menu) # variável temporária pra ver se já tem mensagem de erro
+def databases():
+    '''
+    Cria e/ou usa um banco de dados pras contas
+    '''
+    s = subprocess.run("ls",shell=True,capture_output=True,text=True)
+    files = s.stdout.splitlines()
+    if 'appDatabase.db' in files:
+        return [sqlite3.connect('appDatabase.db'),'existe']
+    else:
+        subprocess.run(f"touch appDatabase.db",shell=True,text=True)
+        return [sqlite3.connect('appDatabase.db'),'criou']
 
 def validar():
     '''
@@ -39,7 +29,7 @@ def validar():
     '''
     global login
     global senha
-    global temp
+    global erro_login
     global senhaReal
     global ver_senha_confirmacao
     if login.get() == 'admin':
@@ -49,16 +39,16 @@ def validar():
             menu.title("Utilitários")
             clear_fields()
         else:
-            if len(tela_de_login.winfo_children()) == 6: # se na tela tiver 2 entry,caixa,botao,registre  e mensagem de erro
-                temp.destroy()
-            temp = tk.Label(tela_de_login,text='Senha Incorreta',fg='red')
-            temp.pack()
+            if len(tela_de_login.winfo_children()) == 9: # já tem mensagem de erro
+                erro_login.destroy()
+            erro_login = tk.Label(tela_de_login,text='Senha Incorreta',fg='red')
+            erro_login.pack()
     else:
-        if len(tela_de_login.winfo_children()) == 5: # ainda não tem mensagem de erro
-            temp = tk.Label(tela_de_login,text='Login Incorreto',fg='red')
-            temp.pack()
+        if len(tela_de_login.winfo_children()) == 8: # ainda não tem mensagem de erro
+            erro_login = tk.Label(tela_de_login,text='Login Incorreto',fg='red')
+            erro_login.pack()
         else:
-            temp.config(text='Login Incorreto')
+            erro_login.config(text='Login Incorreto')
 
 def cripto():
     '''
@@ -85,6 +75,7 @@ def mostrar_widgets():
     print(tela_de_login.winfo_children())
 
 def registre():
+    erro_login.config(text='')
     '''
     Muda pra tela de registrar
     '''
@@ -94,6 +85,8 @@ def registre():
     nome.focus()
 
 def logue():
+    erro_registro.config(text='')
+    erro_login.config(text='')
     '''
     Muda pra tela de login
     '''
@@ -111,16 +104,9 @@ def clear_fields():
 
     nome.delete(0,tk.END)
     email.delete(0,tk.END)
-    registro.delete(0,tk.END)
     senha_registro.delete(0,tk.END)
     senha_registro_confirmar.delete(0,tk.END)
 
-ver_senha = tk.Checkbutton(tela_de_login,text='Visualizar Senha',variable=ver_senha_confirmacao,command=lambda:cripto() if ver_senha_confirmacao.get() else discripto())
-confirmar = tk.Button(tela_de_login,text='Próximo',command=validar)
-registrar = tk.Label(tela_de_login,text='Não tem uma conta?\nRegistre-se.',font=fonte_padrao)
-registrar.bind('<Button-1>',lambda event:registre())
-registrar.bind('<Enter>', lambda event:registrar.config(font=fonte_hover))
-registrar.bind('<Leave>', lambda event:registrar.config(font=fonte_padrao))
 def enterProBotao():
     '''
     Se apertar enter vai no botão de registro ou de login e executa ele
@@ -132,48 +118,95 @@ def enterProBotao():
         confirmar_registro.focus()
         verificar()
 
-menu.bind('<Return>',lambda event:enterProBotao())
-
-tela1 = [login,senha,ver_senha,confirmar,registrar]
-for each in tela1: each.pack()
-
-l1 = tk.Label(tela_principal,text='App de utilidades')
-voltar = tk.Label(tela_principal,text='<-')
-voltar.bind('<Button-1>',lambda event:logue())
-
-tela2 = [l1,voltar]
-for each in tela2: each.pack()
-
-nome           = tk.Entry(tela_de_registro)
-email          = tk.Entry(tela_de_registro) 
-registro       = tk.Entry(tela_de_registro) 
-senha_registro = tk.Entry(tela_de_registro)
-senha_registro_confirmar = tk.Entry(tela_de_registro)
-erro_registro:tk.Label = tk.Label(tela_de_registro,text='',fg='red')
-
 def verificar():
     global erro_registro
     senhas_iguais = senha_registro.get() == senha_registro_confirmar.get()
     email_valido = '@' in email.get()
     erro_registro.pack()
     if senhas_iguais and email_valido:
+        credenciais = [nome.get(),email.get(),senha_registro.get(),1]
+        comando2 = f"INSERT INTO Contas"f"(nome,email,senha,conectado)"f"VALUES (?,?,?,?)"
+        sql.execute(comando2,tuple(credenciais))
         tela_principal.tkraise()
     elif not senhas_iguais:
         erro_registro.config(text='As senhas são diferentes')
     elif not email_valido:
         erro_registro.config(text='O e-mail é inválido')
-    
+#banco de dados
+db_connection,status = databases()
+sql = db_connection.cursor()
+if status == 'criou':
+    comando = '''CREATE TABLE IF NOT EXISTS Contas(
+    id INTEGER PRIMARY KEY,
+    nome TEXT,
+    email TEXT,
+    senha TEXT,
+    conectado INTEGER DEFAULT 0
+    )
+    '''
+    sql.execute(comando)
+#janela 'menu'
+menu = tk.Tk()
+menu.geometry('1000x500')
+menu.title("Login")
+ver_senha_confirmacao = tk.BooleanVar()
+fonte_padrao = tkFont.Font(family='Arial',size=12)
+fonte_hover = tkFont.Font(family='Arial',size=12,underline=1)
+tela_de_login = tk.Frame(menu)
+tela_principal = tk.Frame(menu)
+tela_de_registro = tk.Frame(menu)
+tela_de_login.place(relwidth=1,relheight=1)
+tela_principal.place(relwidth=1,relheight=1)
+tela_de_registro.place(relwidth=1,relheight=1)
+#tela de login
+login = tk.Entry(tela_de_login)
+senha = tk.Entry(tela_de_login)
+login.bind("<Down>", lambda event:event.widget.tk_focusNext().focus())
+senha.bind("<Up>", lambda event:event.widget.tk_focusPrev().focus())
+senhaReal = '' # guarda uma cópia da senha
+erro_login = tk.Label(tela_de_login,text='') # mensagem de erro do login
+ver_senha = tk.Checkbutton(tela_de_login,text='Visualizar Senha',variable=ver_senha_confirmacao,command=lambda:cripto() if ver_senha_confirmacao.get() else discripto())
+confirmar = tk.Button(tela_de_login,text='Próximo',command=validar)
+registrar = tk.Label(tela_de_login,text='Não tem uma conta?\nRegistre-se.',font=fonte_padrao)
+registrar.bind('<Button-1>',lambda event:registre())
+registrar.bind('<Enter>', lambda event:registrar.config(font=fonte_hover))
+registrar.bind('<Leave>', lambda event:registrar.config(font=fonte_padrao))
+menu.bind('<Return>',lambda event:enterProBotao())
+tela1 = [tk.Label(tela_de_login,text='Login'),login,tk.Label(tela_de_login,text='Senha'),senha,ver_senha,confirmar,registrar]
+for each in tela1: each.pack()
+#tela pós autenticação
+l1 = tk.Label(tela_principal,text='Olá Nome')
+voltar = tk.Label(tela_principal,text='<-')
+voltar.bind('<Button-1>',lambda event:logue())
+l1.grid(row=0,column=0)
+tk.Label(tela_principal,text=f"{220*' '}").grid(row=0,column=1)
+voltar.grid(row=0,column=2)
+#tela de registro
+nome           = tk.Entry(tela_de_registro)
+email          = tk.Entry(tela_de_registro) 
+senha_registro = tk.Entry(tela_de_registro)
+senha_registro_confirmar = tk.Entry(tela_de_registro)
+erro_registro:tk.Label = tk.Label(tela_de_registro,text='',fg='red')
+nome.bind("<Down>", lambda event:event.widget.tk_focusNext().focus())
+email.bind("<Down>", lambda event:event.widget.tk_focusNext().focus())
+senha_registro.bind("<Down>", lambda event:event.widget.tk_focusNext().focus())
+email.bind("<Up>", lambda event:event.widget.tk_focusPrev().focus())
+senha_registro.bind("<Up>", lambda event:event.widget.tk_focusPrev().focus())
+senha_registro_confirmar.bind("<Up>", lambda event:event.widget.tk_focusPrev().focus())
 confirmar_registro = tk.Button(tela_de_registro,text='Verificar',command=verificar)
 l3 = tk.Label(tela_de_registro,text='<-')
-
 menu.bind('<Return>',lambda event: enterProBotao())
 l3.bind('<Button-1>',lambda event: logue())
-
-tela3 = [nome,email,registro,senha_registro,senha_registro_confirmar,confirmar_registro,l3]
+tela3 = [tk.Label(tela_de_registro,text='Nome'),nome,tk.Label(tela_de_registro,text='E-mail'),email,tk.Label(tela_de_registro,text='Senha'),senha_registro,tk.Label(tela_de_registro,text='Confirmar Senha'),senha_registro_confirmar,confirmar_registro,l3]
 for each in tela3: each.pack()
-
+#começar na tela de login e usar a janela 'menu'
 tela_de_login.tkraise()
 menu.mainloop()
+
+print(sql.execute("SELECT * FROM Contas").fetchall())
+
+db_connection.commit()
+db_connection.close()
 
 dma = [] # se fizer tantos por dia, dá tantos por mes, e tantos por ano
 jc = [] # juros compostos
@@ -208,7 +241,7 @@ def isLeap(year:int)->bool:
 
 month:dict = {
     'january':31,
-    'february':29 if isLeap() else 28,
+    'february':29 if isLeap(0) else 28,
     'march':31,
     'april':30,
     'may': 31,
@@ -221,7 +254,7 @@ month:dict = {
     'december': 31,
 }
 
-year:int = 365 if not isLeap() else 366
+year:int = 365 if not isLeap(0) else 366
 
 v:float = m/s # velocidade no SI
 kmh:float = v / 3.6 # velocidade usual
