@@ -1,11 +1,9 @@
-# fazer um app que lide com todos os procedimentos de um software full-stack
-# trazer o pdf já pronto pro app
-# enviar um email de registro, com um numero aleatorio de 6 digitos, daí se o usuario colocar o codigo correto, registre, se não, espere 45s pra enviar outro codigo
+# fazer um app de redes, que dê varias informações e estabeleça conexões
 import tkinter as tk
 import tkinter.font as tkFont
 import sqlite3
 import subprocess
-
+import socket
 def databases():
     '''
     Cria e/ou usa um banco de dados pras contas
