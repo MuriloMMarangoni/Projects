@@ -854,6 +854,15 @@ cursor.execute('SELECT * FROM planta') # comando sql de selecionar
 linhas = cursor.fetchall() # pega todas as linhas do arquivo.db
 for linha in linhas:
     print(f"ID:{linha[0]},Nome:{linha[1]},Price:{linha[2]}")
+comandos = {
+    'PRAGMA table_info(Tabela)':'metadados da tabela',
+    'SELECT * FROM Tabela':'diz o que tem na tabela',
+    'SELECT Coluna FROM Tabela WHERE ColunaTal="Tal"':'pega todas as linhas que tem coluna que tem algo igual a algo e diz a coluna',
+    'SELECT * FROM Tabela WHERE ColunaTal="Tal"':'pega todas as linhas que tem coluna=algo e diz tudo das linhas',
+    'UPDATE Tabela SET colunaQueVaiMudar=Algo WHERE colunaComparativa=Algo':'muda todas as linhas que tem colunaComparativa igual a algo e muda o dado de ColunaQueVaiMudar pra algo',
+    'DELETE FROM Tabela WHERE coluna="algo"':'apaga todas as linhas com essa ocorrência',
+    '':''
+}
 conectar.commit()                       # enviar
 conectar.close()                        # terminar conexão
 
