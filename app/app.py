@@ -4,6 +4,7 @@ import tkinter.font as tkFont
 import sqlite3
 import subprocess
 import socket
+
 def databases():
     '''
     Cria e/ou usa um banco de dados pras contas
