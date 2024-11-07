@@ -1,8 +1,9 @@
 import requests
 import json
-import tkinter
-# fazer um sistema que vê se a data atual é posterior ao tempo de time_next_update_utc, se for faz a requisição do json, ou se o arquivo ainda não existir
-# assim puxa os dados do arquivo json ao invés de puxar o mesmo json pra não mudar nada
+import tkinter as tk
+import subprocess
+from pathlib import Path
+from datetime import datetime,timezone,timedelta
 # fazer um projeto de interface com conversão automática de moedas de diferentes países
  
 nomes_das_moedas = {
@@ -203,28 +204,91 @@ simbolos_das_moedas = {
     "WST": "WS$", "XAF": "FCFA", "XCD": "$", "XDR": "SDR", "XOF": "CFA",
     "XPF": "₣", "YER": "﷼", "ZAR": "R", "ZMW": "ZK", "ZWL": "$"
 }
-if 'data_posterior ou arquivo não existe':
+s = subprocess.run("ls",shell=True,capture_output=True,text=True)
+files = s.stdout.splitlines()
+jsons = [each for each in files if each=='dados.json']
+pegoujson = False
+if jsons == []:
     api_key = '80b7fffe2afc47478dd0f986' # autentica o uso de uma api
     moeda_relativa = 'USD' # pega a taxa de câmbio baseada nessa moeda
     url = f"https://v6.exchangerate-api.com/v6/{api_key}/latest/{moeda_relativa}" # api de conversão de moedas
-
     r = requests.get(url)
     dados = r.json()
-
+    with open("dados.json",'w') as f: json.dump(dados,f,indent=4)
     ultima_atualizacao = dados['time_last_update_utc'] # ultima atualização em utc+0
     proxima_atualizacao = dados['time_next_update_utc'] # próxima atualização em utc+0
     taxa_de_cambio = dados['conversion_rates'] # taxa de câmbio {valor:moeda} é baseada na moeda do urls
+    pegoujson = True
+# pega o conteúdo do json
+caminho_atual = subprocess.run("pwd",shell=True,capture_output=True,text=True).stdout[:-1] # caminho atual sem /n
+path = Path(f'{caminho_atual}/dados.json')
+conteudo_json = json.loads(path.read_text())
 
-    for moeda,valor in taxa_de_cambio.items():
-        print(f"1 {moeda_relativa} = {valor} {moeda}")
+data_posterior = conteudo_json['time_next_update_unix'] # 1730930400 pra testar a condição
+data_utc = datetime.fromtimestamp(data_posterior, tz=timezone.utc)
+data_utc = data_utc.astimezone(timezone(timedelta(hours=-3))) # data da api em horário de brasília
 
+agora = datetime.now(timezone.utc)
+agora = agora.astimezone(timezone(timedelta(hours=-3))) # horário de brasília
 
-    print('Diz a primeira moeda')
-    first = input('').upper()
-    print('Diz quanto da primeira moeda')
-    qtd = input('')
-    print('Diz a segunda moeda')
-    second = input('').upper()
-    print(f"{qtd} {first} = {simbolos_das_moedas[second]} {float(qtd)*(taxa_de_cambio[second]/taxa_de_cambio[first])}")
-else:
-    'se a data é anterior e o arquivo existe'
+if agora>data_utc and not pegoujson: # o arquivo não existe ou está desatualizado
+    api_key = '80b7fffe2afc47478dd0f986' # autentica o uso de uma api
+    moeda_relativa = 'USD' # pega a taxa de câmbio baseada nessa moeda
+    url = f"https://v6.exchangerate-api.com/v6/{api_key}/latest/{moeda_relativa}" # api de conversão de moedas
+    r = requests.get(url)
+    dados = r.json()
+    with open("dados.json",'w') as f: json.dump(dados,f,indent=4)
+    ultima_atualizacao = dados['time_last_update_utc'] # ultima atualização em utc+0
+    proxima_atualizacao = dados['time_next_update_utc'] # próxima atualização em utc+0
+    taxa_de_cambio = dados['conversion_rates'] # taxa de câmbio {valor:moeda} é baseada na moeda do urls
+else: # o arquivo existe E a data é anterior a time_next_update_utc
+    moeda_relativa = 'USD'
+    ultima_atualizacao = conteudo_json['time_last_update_utc']
+    proxima_atualizacao = conteudo_json['time_next_update_utc']
+    taxa_de_cambio = conteudo_json['conversion_rates']
+# Função chamada quando uma opção for selecionada
+def mostrar_selecao(*args):
+    selecao = var.get() # pega o que ta selecionado
+    label.config(text=f"Você selecionou: {selecao}") # muda no texto
+def mostrar_selecao2(*args):
+    selecao = var2.get()
+    label2.config(text=f"Você selecionou: {selecao}")
+
+# Criando a janela principal
+def conversao(): # pega e muda o texto do resultado, coloca o simbolo do lado do valor direto no label
+    q = quantidade.get()
+    if q == '':
+        q = 0
+    resultado.config(text=f"{float(q)} {var.get()} = {simbolos_das_moedas[var2.get()]} {round(float(q)*(taxa_de_cambio[var2.get()]/taxa_de_cambio[var.get()]),4)}")
+app = tk.Tk()
+app.geometry('1000x500')
+app.title('Conversor de moedas')
+quantidade = tk.Entry(app)
+quantidade.bind('<KeyRelease>',lambda event:conversao())
+quantidade.grid(row=0,column=0)
+# Variável para armazenar o valor selecionado
+var = tk.StringVar() # texto do valor selecionado
+var.set("Moeda base")
+var2 = tk.StringVar() # texto do valor selecionado da outra moeda
+var2.set("Moeda pra comparar")
+opcoes = [k for k,v in conteudo_json['conversion_rates'].items()] # opções
+menu = tk.OptionMenu(app, var, *opcoes)
+menu.grid(row=0,column=1)
+# Ligando a função à mudança na seleção
+var.trace_add("write", mostrar_selecao) # muda o texto pra o que foi selecionado
+# Criando um label para mostrar a seleção
+label = tk.Label(app, text="Selecione um item do menu suspenso.")
+label.grid(row=1,column=1)
+
+igual = tk.Label(app,text='=')
+igual.grid(row=0,column=2)
+
+opcoes2 = [k for k,v in nomes_das_moedas.items()]
+menu2 = tk.OptionMenu(app, var2, *opcoes2)
+menu2.grid(row=0,column=3)
+var2.trace_add("write", mostrar_selecao2)
+label2 = tk.Label(app, text="Selecione um item do menu suspenso.")
+label2.grid(row=1,column=3)
+resultado = tk.Label(app,text='valor')
+resultado.grid(row=0,column=4)
+app.mainloop()
