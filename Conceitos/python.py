@@ -732,7 +732,7 @@ from barcode.writer import ImageWriter
 codigo = Code128("algo", writer=ImageWriter()) # faz no formato code128 um texto
 filename = codigo.save("codigo_de_barras") # gera a imagem
 
-from datetime import datetime # opera com datas
+from datetime import datetime,timezone,timedelta # opera com datas
 
 base = datetime.now() # dia e hora
 f"{base:%X}" # horas:minutos:segundos
@@ -741,6 +741,9 @@ dia = base.date() # data
 diaf = dia.strftime("%d/%m/%Y") # data padrão BR
 dia_semana = datetime.now().weekday() # dia da semana segunda -> 0 domingo -> 6
 data = datetime(2024,8,15,20,56) # horas manuais (com restrições)
+datetime.fromtimestamp()
+timezone.utc
+datetime.astimezone(timedelta(hours=-3))
 
 import pytz # pip install pytz
 
