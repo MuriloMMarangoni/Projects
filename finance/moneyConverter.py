@@ -4,8 +4,6 @@ import tkinter as tk
 import subprocess
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
-# fazer um projeto de interface com conversão automática de moedas de diferentes países
- 
 nomes_das_moedas = {
     "USD": "Dólar Americano",
     "AED": "Dirham dos Emirados Árabes Unidos",
