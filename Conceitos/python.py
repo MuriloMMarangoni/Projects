@@ -19,7 +19,7 @@ valor:int = 1 # forma de tipar uma variável
 '''
 comentário da variável
 '''
-#f-strings-------------------------------------------------------------------------------------------------------------------
+#f-strings-----------------------------------------------------------------------------------------------------------------
 f'{real:.2e}' #-> Notação científica
 f'{real:.5f}' #-> Casas decimais
 f'{string:<10}' #-> alinha um texto a esquerda em tantas casas
