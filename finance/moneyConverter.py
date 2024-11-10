@@ -223,10 +223,10 @@ path = Path(f'{caminho_atual}/dados.json')
 conteudo_json = json.loads(path.read_text())
 
 data_posterior = conteudo_json['time_next_update_unix'] # 1730930400 pra testar a condição
-data_utc = datetime.fromtimestamp(data_posterior, tz=timezone.utc)
+data_utc = datetime.fromtimestamp(data_posterior)
 data_utc = data_utc.astimezone(timezone(timedelta(hours=-3))) # data da api em horário de brasília
 
-agora = datetime.now(timezone.utc)
+agora = datetime.now()
 agora = agora.astimezone(timezone(timedelta(hours=-3))) # horário de brasília
 
 if agora>data_utc and not pegoujson: # o arquivo não existe ou está desatualizado

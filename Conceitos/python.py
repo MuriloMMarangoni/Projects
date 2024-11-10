@@ -732,18 +732,23 @@ from barcode.writer import ImageWriter
 codigo = Code128("algo", writer=ImageWriter()) # faz no formato code128 um texto
 filename = codigo.save("codigo_de_barras") # gera a imagem
 
-from datetime import datetime,timezone,timedelta # opera com datas
+from datetime import datetime,timezone,timedelta,date,time # opera com datas
 
-base = datetime.now() # dia e hora
-f"{base:%X}" # horas:minutos:segundos
-hora = base.strftime("%H:%M:%S") # hora
-dia = base.date() # data
-diaf = dia.strftime("%d/%m/%Y") # data padrão BR
-dia_semana = datetime.now().weekday() # dia da semana segunda -> 0 domingo -> 6
-data = datetime(2024,8,15,20,56) # horas manuais (com restrições)
-datetime.fromtimestamp()
-timezone.utc
-datetime.astimezone(timedelta(hours=-3))
+tempo = datetime.now() # objeto de tempo atual em ano/mes/dia hora/minuto/segundo/milissegundo
+f"{tempo:%X}" # horário atual em hora/minuto/segundo
+tempo.strftime("Dia %d do mês %m do ano %Y com horário %H : %M : %S") # formata o texto com dia mes ano hora minuto segundo
+tempo.date() # dia atual em ano/mes/dia
+tempo.weekday() # diz o dia da semana segunda -> 0 domingo -> 6
+datetime(2024,11,10,3,54,12,1) # tempo personalizado pra uma data e horário
+date(2024,12,1) # objeto de data
+time(22,30,12) # objeto de hora
+tempo+timedelta(days=11) # soma 11 dias a data
+tempo.timestamp() # pega o POSIX de qualquer data com horário
+datetime.fromtimestamp(tempo.timestamp()) # pega a data de um posix
+fuso_brasilia = timezone(timedelta(hours=-3)) # objeto de fuso horário
+tempo.astimezone(fuso_brasilia) # aplica um fuso horário a uma data
+tempo.astimezone() # aplica o fuso horário local no horário
+agora = datetime.now(timezone.utc) # objeto em utc 00, útil pra posix globais
 
 import pytz # pip install pytz
 
