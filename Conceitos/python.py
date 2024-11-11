@@ -623,6 +623,10 @@ widget_anterior = lambda event:event.widget.tk_focusPrev().focus() # cursor vai 
 checar.set(False) # muda o valor bool de uma BooleanVar, sem fazer a conversão pra bool
 menu.focus_get().master # diz qual frame está ativo
 botao.focus() # foca em um widget ( mesmo que um clique manual)
+botao.place(x=500,y=250) # posicão relativa a janela pra exibir elementos
+def mudar():
+    texto.config(text=f"algo")# complemento
+    texto.after(200,mudar) # chama a função em tanto tempo pra modificar o comportamento de um widget
 menu.mainloop() # janela aberta
 
 import tkinter.font as tkFont
@@ -972,6 +976,8 @@ import select # manuseia vários sockets e faz mais de um cliente conectar com u
 import socketserver # framework de sockets
 import pickle
 import ssl
+import customtkinter as ct # extensao do tkinter
+import re
 
 import socket #comunicar com qualquer dispositivo da rede
 nome_da_maquina = socket.gethostname() # fala o nome dessa máquina
@@ -1110,3 +1116,70 @@ if __name__ == '__main__':
 
 import dis
 cpython = dis.Bytecode(function) # lista com o bytecode otimizado pelo interpretador
+
+import psutil #informações do sistema
+for interface_de_rede,detalhes in psutil.net_if_addrs().items():
+    print(interface_de_rede) # interface de rede
+    for each in detalhes:
+        print(f"Família : {each.family}") # familia do ip
+        print(f"Endereço : {each.address}") # endereço de ip
+        print(f"Máscara de rede : {each.netmask}") # mascara de rede
+        print(f"Endereço de broadcast : {each.broadcast}") # endereço de broadcast
+        print(f"ptp-Vpn : {each.ptp}") # conexões point-to-point
+familias = {
+    'AF_INET' : 2, # IPV4
+    'AF_INET6' : 10, # IPV6
+    'AF_PACKET' : 17 # ENDEREÇO MAC (linux)
+}
+for interface_de_rede,detalhes in psutil.net_if_stats().items():
+    print(interface_de_rede)
+    print(detalhes.isup) # se a interface de rede está ativa
+    print(detalhes.duplex) # tipo da comunicação duplex
+    print(detalhes.speed) # velocidade máxima em megas
+    print(detalhes.mtu) # tamanho máximo de pacotes
+    print(detalhes.flags) # indicadores da interface (up,running,broadcast,multicast,loopback)
+mss = [val.mtu - 40 for k,val in psutil.net_if_stats().items()]# tamanho máximo de pacote que a camada de rede de cada interface pode enviar (bytes)
+subprocess.run('sudo ip link set wlan0 down',shell=True) # desliga uma interface de rede
+subprocess.run('sudo ip link set wlan0 up',shell=True) # liga uma interface de rede
+for interface_de_rede,detalhes in psutil.net_io_counters(pernic=True).items():
+    print(interface_de_rede)
+    print(detalhes)# informações do envio e recepção de bytes e pacotes das interfaces de rede
+for con in psutil.net_connections(kind='inet'): # conexões ativas
+    print(con)
+for p in psutil.process_iter(['pid','name','username']): # processos
+    print(p.info['pid'])
+    print(p.info['name'])
+    print(p.info['username'])
+    print()
+
+pid = 3082
+process = psutil.Process(pid)
+for conn in process.connections(): # vê as conexões que esse processo faz
+    print(f"Tipo: {conn.type}, Status: {conn.status}, Local: {conn.laddr}, Remoto: {conn.raddr}")
+uso_cpu = psutil.cpu_percent(interval=1) # porcentagem do uso da cpu
+nucleos = psutil.cpu_count(logical=True) # quantidade de núcleos do cpu
+ram = psutil.virtual_memory() # informações da ram
+ram.total # total de ram do sistema em bytes
+ram.available # ram disponível
+ram.used # ram usada
+ram.percent # porcentagem de ram usada
+for particao in psutil.disk_partitions(): # partições do disco
+    particao.device # dispositivo
+    particao.mountpoint # ponto de montagem
+    particao.fstype # esquema de arquivos
+    psutil.disk_usage(particao.mountpoint).total # total de espaço de um disco (bytes)
+    psutil.disk_usage(particao.mountpoint).used # total usado
+    psutil.disk_usage(particao.mountpoint).free  # total livre
+    psutil.disk_usage(particao.mountpoint).percent # porcentagem
+psutil.cpu_freq().current # Frequencia atual da cpu
+psutil.cpu_freq().min # menor frequencia possivel da cpu, abaixo é underclock
+psutil.cpu_freq().max # maior frequencia possivel da cpu, acima é overclock
+for dispositivo, temperaturas in psutil.sensors_temperatures().items():#temperaturas
+    print(dispositivo)
+    for temperatura in temperaturas:
+        temperatura.current # temperatura atual
+        temperatura.high # temperatura máxima
+import platform
+platform.system() # sistema operacional
+platform.machine() # arquitetura do processador
+platform.node() # nome do host
