@@ -735,7 +735,7 @@ filename = codigo.save("codigo_de_barras") # gera a imagem
 from datetime import datetime,timezone,timedelta,date,time # opera com datas
 
 tempo = datetime.now() # objeto de tempo atual em ano/mes/dia hora/minuto/segundo/milissegundo
-f"{tempo:%X}" # horário atual em hora/minuto/segundo
+tempo.time() # horário atual em hora/minuto/segundo/milissegundo
 tempo.strftime("Dia %d do mês %m do ano %Y com horário %H : %M : %S") # formata o texto com dia mes ano hora minuto segundo
 tempo.date() # dia atual em ano/mes/dia
 tempo.weekday() # diz o dia da semana segunda -> 0 domingo -> 6
@@ -749,6 +749,7 @@ fuso_brasilia = timezone(timedelta(hours=-3)) # objeto de fuso horário
 tempo.astimezone(fuso_brasilia) # aplica um fuso horário a uma data
 tempo.astimezone() # aplica o fuso horário local no horário
 agora = datetime.now(timezone.utc) # objeto em utc 00, útil pra posix globais
+tempo.isocalendar()[1]# numero da semana do ano
 
 import pytz # pip install pytz
 
