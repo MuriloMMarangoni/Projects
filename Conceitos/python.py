@@ -1151,7 +1151,6 @@ for p in psutil.process_iter(['pid','name','username']): # processos
     print(p.info['name'])
     print(p.info['username'])
     print()
-
 pid = 3082
 process = psutil.Process(pid)
 for conn in process.connections(): # vê as conexões que esse processo faz
