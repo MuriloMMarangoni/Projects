@@ -16,6 +16,7 @@ matriz = np.array([],[],[])
 tabela = pd.DataFrame([1,2,3])
 vetorpd = pd.Series([1,2,3])
 valor:int = 1 # forma de tipar uma variável
+algo:int # declara mas não inicializa
 '''
 comentário da variável
 '''
@@ -653,6 +654,7 @@ def tracer(frame, event, arg): # tracer é uma função especial que tem informa
 sys.settrace(tracer) # usa uma função que busca eventos no programa
 fun()
 sys.settrace(None) # encerra a buscar eventos
+sys.platform # diz o sistema operacional
 
 import cProfile #--------------------------------------------------
 
