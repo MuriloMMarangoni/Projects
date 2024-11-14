@@ -1117,9 +1117,11 @@ if __name__ == '__main__':
     app.run(debug=True) # o site atualiza as modificações com o F5 sem precisar reiniciar
 
 import dis
+
 cpython = dis.Bytecode(function) # lista com o bytecode otimizado pelo interpretador
 
 import psutil #informações do sistema
+
 for interface_de_rede,detalhes in psutil.net_if_addrs().items():
     print(interface_de_rede) # interface de rede
     for each in detalhes:
