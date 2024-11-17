@@ -267,11 +267,12 @@ str.split() # separa a string em partes específicas e devolve uma lista        
 str.replace('antigo','novo') # substitui todos os caracteres especificados por outros                            (str) -> str
 str.join() # formata uma string com caracteres específicos                                        (str) -> str
 str.strip() # tira os caracteres especificados do sufixo e prefixo                                (str) -> str
-str.removeprefix() # tira os caracteres do prefixo                                                (str) -> str
-str.removesuffix() # tira os caracteres do sufixo                                                 (str) -> str
+str.removeprefix('') # tira uma substring do prefixo                                                (str) -> str
+str.removesuffix('') # tira uma substring do sufixo                                                 (str) -> str
 str.maketrans() # faz uma tabela de tradução                                                      (str) -> dict
 str.translate() # traduz baseado em uma tabela de tradução                                        (dict) -> str
 str.endswith() # diz se a string termina com os caracteres especificados                          (str) -> bool
+str.startswith() # diz se uma string começa assim
 str.isalpha() #A-Z diz se a string só tem letras                                                  (str) -> bool
 str.isdecimal() #0-9 diz se a string inteira tem números positivos ou zero, não pode ser negativo (str) -> bool
 str.find() # pega o primeiro index de uma substring na string                                     (str) -> int
@@ -318,6 +319,9 @@ import sqlite3
 sqlite3.OperationalError # erro de comandos
 import requests
 requests.exceptions.JSONDecodeError # quando vc tenta transformar um url não json, em json
+requests.exceptions.MissingSchema # falta prefixo
+requests.exceptions.InvalidSchema # prefixo inválido
+requests.exceptions.ConnectionError # não conseguiu estabelecer conexão
 #keywords--------------------------------------------------------------------------------------------------------------------
 from math import sin as sen #from módulo import função sin, mas escreva como sen
 sen() == math.sin()

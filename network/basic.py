@@ -2,22 +2,28 @@
 import psutil
 import subprocess
 import requests
-def localOfIp(ip):
+import socket
+def localOfIp(ip:str)->list[str]:
     '''
-    Uses API for knowledge of an Public ip location
+    Uses API for knowledge of an Public ip location [country,state,city,(coordinates)]
     '''
     url = f'http://www.geoplugin.net/json.gp?ip={ip}'
     r = requests.get(url)
-    print(r.json())
+    data = r.json()
+    return [data['geoplugin_countryName'],data['geoplugin_regionName'],data['geoplugin_city'],(float(data['geoplugin_latitude']),float(data['geoplugin_longitude']))]
 
-def myIp()->list[str]:
-    # says your current private and public ipv4
+def myIp()->tuple[str]:
+    '''
+    Uses API to get a Tuple with your private and public IPV4s Adress
+    '''
     s = subprocess.run('hostname -I',shell=True,capture_output=True,text=True)
-    ss = subprocess.run('curl ifconfig.me',shell=True,capture_output=True,text=True)
-    return [s.stdout[:-2],ss.stdout]
+    r = requests.get('https://ifconfig.me')
+    return (s.stdout[:-2],r.text)
 
 def myMask()->str:
-    # says your current mask
+    '''
+    Says your current newtork mask
+    '''
     s = subprocess.run('hostname -I',shell=True,capture_output=True,text=True)
     ip = s.stdout
     ip += '.'
@@ -39,12 +45,9 @@ def myMask()->str:
         if bits[2] >= 0 and bits[2] < 256:
             return '255.255.255.0'
 
-def broadcast(ip:str)->str:
-    # says the broadcast ip of a subnet
-    pass
 def maskOfIp(ip:str)->str:
     '''
-    Says the newtork mask of a private IP address (ipv4)
+    Says the newtork mask of a private IPV4 address
     '''
     ip += '.'
     bits = []
@@ -67,3 +70,61 @@ def maskOfIp(ip:str)->str:
     else:
         return '[!] IP is not private'
 
+def networkInterfaces()->list[str]:
+    '''
+    Shows the available network interfaces
+    '''
+    return [*psutil.net_if_addrs().keys()]
+
+def deviceName()->str:
+    '''
+    Says the name of this device
+    '''
+    return socket.gethostname()
+
+def reverseDNSLookup(ip:str):
+    '''
+    Returns the name of the device in the network
+    '''
+    return socket.gethostbyaddr(ip)[0]
+
+def DNSLookup(link:str):
+    '''
+    Returns the IP of the given Domain
+    '''
+    return socket.gethostbyname(link)
+
+def usedPorts()->list[int]:
+    '''
+    Give a list of all used ports on all TCP and UDP connections
+    '''
+    ports=[conn.laddr.port for conn in psutil.net_connections(kind='inet')]
+    ports = list(set(ports))
+    ports.sort()
+    return ports
+
+def link_exists(link:str)->bool:
+    '''
+    Returns True if the link exists and says if the format is invalid
+    '''
+    try:
+        return True if requests.get(link).status_code == 200 else False
+    except (requests.exceptions.MissingSchema ,requests.exceptions.InvalidSchema):
+        return 'Link não está formatado da forma correta'
+    except requests.exceptions.ConnectionError:
+        return False
+
+def sockets_for_connection(domain:str)->dict:
+    '''
+    Says 4 different ways of configuring sockets to make a connection to a domain
+    '''
+    ways= socket.getaddrinfo(domain,'https')
+    d = {
+        'INET_TCP':ways[0],
+        'INET_UDP':ways[1],
+        'INET6_TCP':ways[2],
+        'INET6_UDP':ways[3]
+    }
+    return d
+
+test = [localOfIp,myIp,myMask,maskOfIp,networkInterfaces,deviceName,reverseDNSLookup,DNSLookup,usedPorts,link_exists,sockets_for_connection]
