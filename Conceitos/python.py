@@ -968,23 +968,6 @@ while window:                       # em loops infinitos, capture eventos e use 
 available_fonts = pygame.font.get_fonts()         # lista de fontes disponíveis do sistema operacional
 print(available_fonts)
 
-import django
-import sqlalchemy
-import asyncio
-import aiohttp
-import jinja2
-import pytest 
-import gunicorn
-import hashlib
-import fastapi
-import ftplib # transferência de arquivos
-import select # manuseia vários sockets e faz mais de um cliente conectar com um servidor
-import socketserver # framework de sockets
-import pickle
-import ssl
-import customtkinter as ct # extensao do tkinter
-import re
-
 import socket #comunicar com qualquer dispositivo da rede
 nome_da_maquina = socket.gethostname() # fala o nome dessa máquina
 ip = socket.gethostbyname(nome_da_maquina) # busca o [nome da máquina ou de um domínio] e via DNS diz o IPV4 dele
@@ -1190,3 +1173,29 @@ import platform
 platform.system() # sistema operacional
 platform.machine() # arquitetura do processador
 platform.node() # nome do host
+
+#segurança
+import hashlib
+import cryptography
+import pytest
+import ssl
+import re
+#redes
+import paramiko
+import http.client
+import scapy
+import ftplib # transferência de arquivos
+import select # manuseia vários sockets e faz mais de um cliente conectar com um servidor
+import socketserver # framework de sockets
+#analise
+import sqlalchemy
+#backend
+import django
+import fastapi
+import asyncio
+import aiohttp
+import gunicorn
+import jinja2
+import pickle
+#desktop
+import customtkinter as ct # extensao do tkinter
