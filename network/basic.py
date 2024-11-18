@@ -127,4 +127,16 @@ def sockets_for_connection(domain:str)->dict:
     }
     return d
 
-test = [localOfIp,myIp,myMask,maskOfIp,networkInterfaces,deviceName,reverseDNSLookup,DNSLookup,usedPorts,link_exists,sockets_for_connection]
+test = {'1':localOfIp(myIp()[1]),
+        '2':myIp(),
+        '3':myMask(),
+        '4':maskOfIp(myIp()[0]),
+        '5':networkInterfaces(),
+        '6':deviceName(),
+        '7':reverseDNSLookup(myIp()[1]),
+        '8':DNSLookup('www.google.com'),
+        '9':usedPorts(),
+        '10':link_exists('https://www.google.com'),
+        '11':sockets_for_connection('www.google.com')}
+for each,function in test.items():
+    print(function)
