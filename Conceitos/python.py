@@ -724,7 +724,6 @@ pdf.image(name="caminho completo",x=60,y=120,w=120) # coloca uma imagem (posiç�
 pdf.output('out.pdf') # Cria arquivo ou sobrescreve
 
 import qrcode # pip install qrcode
-
 qr = qrcode.QRCode(
     version=1, # quantidade de dados (1-40)
     error_correction=qrcode.constants.ERROR_CORRECT_L, #(correção de erros (L M Q H))
