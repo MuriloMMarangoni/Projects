@@ -1022,8 +1022,7 @@ t2.start() #roda o outro fluxo
 t3.start()
 t1.is_alive() # bool dizendo se a thread está rodando
 # thread main, que seria o principal do programa
-for each in range(5):
-    print(__name__)
+for each in range(5): print(__name__)
 
 import multiprocessing # gera processos(coleção de threads) que tem threads(fluxos)
 def func1():
