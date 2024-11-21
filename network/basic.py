@@ -135,9 +135,96 @@ def html(link:str)->None:
     with open(f'html.html','wb') as f:
         f.write(r.content)
 
+def networkInterfaceInfo(net:str)->tuple[list,list,list,list]:
+    '''
+    Gives information about
+    network interface status (up,mss)
+    ipv4 (address,netmask,broadcast)
+    ipv6 (address,netmask)
+    network card (address)
+    '''
+    stats = []
+    ipv4 = []
+    ipv6 = []
+    card = []
+    
+    stats.append(psutil.net_if_stats()[net].isup)
+    stats.append(mss := psutil.net_if_stats()[net].mtu-40)
 
+    for data in psutil.net_if_addrs()[net]:
+        match(data.family):
+            case 2:
+                ipv4.append(data.address)
+                ipv4.append(data.netmask)
+                ipv4.append(data.broadcast)
+            case 10:
+                ipv6.append(data.address)
+                ipv6.append(data.netmask)
+            case 17:
+                card.append(data.address)
+            case _:
+                print(f"! Foi encontrada uma interface além das suportadas ({data.family})")
+    return (stats,ipv4,ipv6,card)
 
-test = {'1':localOfIp(myIp()[1]),
+def interfaces_prontas()->list:
+    return [interface for interface,details in psutil.net_if_stats().items() if details.isup]
+
+def network_traffic(net:str)->list:
+    '''
+    Se uma interface estiver ligada, diz quantos bytes e pacotes foram enviados e recebidos por ela
+    '''
+    if net in interfaces_prontas():
+        traffic = psutil.net_io_counters(pernic=True)[net]
+        return [(traffic.bytes_sent,traffic.bytes_recv),(traffic.packets_sent,traffic.packets_recv)]  
+    return None
+
+def processo(pid:int):
+    '''
+    Nome e conexões de um processo
+    '''
+    p = psutil.Process(pid)
+    return (p.name(),p.connections())
+
+def conexoes():
+    '''
+    conexões de rede ativas no sistema inteiro
+    protocolo de endereçamento,(ip,porta) de quem começou a conexão,(ip,porta) de quem recebeu a conexão,protocolo de transmissão,status da conexão,pid,nome do processo
+    '''
+    con_unix = psutil.net_connections(kind='unix')
+    con_tcp = psutil.net_connections(kind='tcp')
+    con_udp = psutil.net_connections(kind='udp')
+    cons = [con_unix,con_tcp,con_udp]
+    for types in cons:
+        print(40*'-')
+        for connection in types:
+            match(connection.family):
+                case 1:
+                    print('unix ',end='')
+                    print(f"({connection.laddr}) ",end='')
+                case 2:
+                    print('ipv4 ',end='')
+                    print(f"{(connection.laddr.ip,connection.laddr.port)} ", end='')
+                    try:
+                        print(f"{(connection.raddr.ip,connection.raddr.port)} ", end='')
+                    except AttributeError:
+                        print(f"() ",end='')
+                case 10:
+                    print('ipv6 ',end='')
+                    print(f"{(connection.laddr.ip,connection.laddr.port)} ", end='')
+                    try:
+                        print(f"{(connection.raddr.ip,connection.raddr.port)} ", end='')
+                    except AttributeError:
+                        print(f"() ",end='')
+            match(connection.type):
+                case 1 : print('tcp ',end='')
+                case 2 : print('udp ',end='')
+                case 5 : print('packet ',end='')
+            print(f"{connection.status} ",end='')
+            print(f"{connection.pid} ",end='')
+            p = psutil.Process(connection.pid)
+            print(f"{p.name()}")
+
+test_return = {'1':localOfIp(myIp()[1]),
         '2':myIp(),
         '3':myMask(),
         '4':maskOfIp(myIp()[0]),
@@ -148,7 +235,14 @@ test = {'1':localOfIp(myIp()[1]),
         '9':usedPorts(),
         '10':link_exists('https://www.google.com'),
         '11':sockets_for_connection('www.google.com'),
-        '12':html('https://youtube.com')
+        '12':html('https://youtube.com'),
+        '13':networkInterfaceInfo('wlan0'),
+        '14':interfaces_prontas(),
+        '15':network_traffic('wlan0'),
+        '16':processo(591)
         }
-for each,function in test.items():
+
+conexoes()
+
+for each,function in test_return.items():
     print(function)
