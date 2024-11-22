@@ -113,7 +113,17 @@ o //= 1  # o = o // 1
 4 >> 1 # 100 -> 10 = 4
 i & 255 == i % 256
 i & 1 == i % 2
+i & i == i
 i ^ 0 == i
+i ^ i == 0
+def swap(a:int,b:int) -> tuple[int, int]:
+    # troca dois valores (memory efficient)
+    a = a ^ b
+    b = a ^ b
+    a = a ^ b
+    return a,b
+bitmask = 2 ** (i.bit_length()) -1 # todos os bits preenchidos com 1
+i ^ bitmask == bitmask - i
 lista[0] # acessa uma posição (0)
 lista[0:2] # acessa um começo e um fim (0,1)
 lista[0:10:3] # acessa um começo e um fim num passo(0,3,6,9)
@@ -295,6 +305,7 @@ dict.values() #iteravel sobre os valores de um dict                             
 dict.items() #iteravel sobre chave,valor                                                          (dict) -> iterável
 dict.update({}) # adiciona um par {chave:valor} no dict                                           (dict) -> None
 dict.fromkeys(list) # cria um dicionário apartir de uma lista                                     (list) -> dict
+int.bit_length() # quantos bits são usados pra representar
 #exceções-------------------------------------------------------------------------------------------------------------------
 ValueError # Quando o problema está no valor, não no tipo
 TypeError # Quando o problema está no tipo
