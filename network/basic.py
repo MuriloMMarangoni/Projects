@@ -167,6 +167,9 @@ def networkInterfaceInfo(net:str)->tuple[list,list,list,list]:
     return (stats,ipv4,ipv6,card)
 
 def interfaces_prontas()->list:
+    '''
+    Diz as interfaces prontas pra estabelecer conexões
+    '''
     return [interface for interface,details in psutil.net_if_stats().items() if details.isup]
 
 def network_traffic(net:str)->list:
