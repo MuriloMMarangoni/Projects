@@ -1179,6 +1179,7 @@ for dispositivo, temperaturas in psutil.sensors_temperatures().items():#temperat
         temperatura.current # temperatura atual
         temperatura.high # temperatura máxima
 psutil.Process() # muitos dados de um processo
+psutil.process_iter() # muitos dados de todos os processos
 import platform
 platform.system() # sistema operacional
 platform.machine() # arquitetura do processador

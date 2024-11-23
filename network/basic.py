@@ -227,6 +227,51 @@ def conexoes():
             p = psutil.Process(connection.pid)
             print(f"{p.name()}")
 
+def rede_wireless(interface:str)->tuple[str,str,str]:
+    '''
+    Informações da rede wireless que está conectada(rede_conectada,velocidade,sinal)
+    '''
+
+    dados = subprocess.run(f'iwconfig {interface}',shell=True,text=True,capture_output=True)
+    saida = dados.stdout
+
+    termos = ''
+    for each in saida:
+        if each != ' ':
+            termos += each
+
+    rede_conectada = ''
+    velocidade = ''
+    sinal = ''
+
+    for each in termos[termos.find('ESSID:"') + 7:]:
+        if each == '"':
+            break
+        rede_conectada += each
+    
+    for each in termos[termos.find('BitRate=') + 8:]:
+        if each == 'T':
+            break
+        velocidade += each
+
+    for each in termos[termos.find('Signallevel=') + 12:]:
+        if each == '\n':
+            break
+        sinal += each
+
+    return rede_conectada,velocidade,sinal
+
+def get_pids()->dict[int,str]:
+    '''
+    Diz os pids e nomes de cada processo rodando
+    '''
+    d = {}
+    for p in psutil.process_iter():
+        d.update({p.pid:p.name()})
+    return d
+
+conexoes()
+
 test_return = {'1':localOfIp(myIp()[1]),
         '2':myIp(),
         '3':myMask(),
@@ -242,10 +287,10 @@ test_return = {'1':localOfIp(myIp()[1]),
         '13':networkInterfaceInfo('wlan0'),
         '14':interfaces_prontas(),
         '15':network_traffic('wlan0'),
-        '16':processo(591)
+        '16':processo(1),
+        '17':rede_wireless('wlan0'),
+        '18':get_pids()
         }
-
-conexoes()
 
 for each,function in test_return.items():
     print(function)
