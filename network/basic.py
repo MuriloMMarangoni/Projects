@@ -293,4 +293,5 @@ test_return = {'1':localOfIp(myIp()[1]),
         }
 
 for each,function in test_return.items():
+    print(each)
     print(function)
