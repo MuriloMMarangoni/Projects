@@ -185,8 +185,10 @@ def processo(pid:int):
     '''
     Nome e conexões de um processo
     '''
-    p = psutil.Process(pid)
-    return (p.name(),p.connections())
+    if psutil.pid_exists(pid):
+        p = psutil.Process(pid)
+        return (p.name(),p.connections())
+    return "Pid não está em execução"
 
 def conexoes():
     '''
@@ -270,6 +272,29 @@ def get_pids()->dict[int,str]:
         d.update({p.pid:p.name()})
     return d
 
+def redes_disponiveis():
+    '''
+    List with available wifis
+    '''
+    s = subprocess.run('nmcli dev wifi list',shell=True,text=True,capture_output=True)
+    saida = s.stdout.splitlines()
+    linhas = ''
+    todas_linhas = []
+    final = []
+    for line in saida[1:]:
+        for each in line:
+            if each != ' ':
+                linhas += each
+        todas_linhas.append(linhas)
+        linhas = ''
+
+    for each in todas_linhas:
+        if each[0] == '*':
+            final.append(each[18:each.find('Infra')])
+        else:
+            final.append(each[17:each.find('Infra')])
+    return final
+
 conexoes()
 
 test_return = {'1':localOfIp(myIp()[1]),
@@ -289,8 +314,9 @@ test_return = {'1':localOfIp(myIp()[1]),
         '15':network_traffic('wlan0'),
         '16':processo(1),
         '17':rede_wireless('wlan0'),
-        '18':get_pids()
-        }
+        '18':get_pids(),
+        '19':redes_disponiveis()
+}
 
 for each,function in test_return.items():
     print(each)

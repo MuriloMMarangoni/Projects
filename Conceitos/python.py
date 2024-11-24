@@ -686,7 +686,42 @@ p = subprocess.Popen('sleep 5',shell=True,cwd='caminhoQueVaiRodarESSEComando') #
 p = subprocess.Popen('pwd',shell=True,stdout=subprocess.PIPE,text=True) # pega a saída de um Popen
 saida = p.communicate() # tupla com a saída e o erro, usar saida[0] pra pegar a saída
 p.wait() # Espera que o comando seja executado pra continuar o script (só com Popen)
-subprocess.run('pyinstaller arquivo.py',shell=True) # cria um executável de um arquivo.py
+comandos_bash = {
+    '1': subprocess.run('sudo ip link set wlan0 down',shell=True),  # Desativa a interface de rede `wlan0`
+    '2': subprocess.run('sudo ip link set wlan0 up',shell=True),    # Ativa a interface de rede `wlan0`
+    '3': subprocess.run('whois 8.8.8.8',shell=True),                # Consulta informações de WHOIS para o IP 8.8.8.8 (Google DNS)
+    '4': subprocess.run('nslookup google.com',shell=True),          # Realiza uma consulta DNS para resolver o domínio google.com
+    '5': subprocess.run('dnsenum google.com',shell=True),           # Executa varredura de DNS avançada em google.com, listando subdomínios
+    '6': subprocess.run('theHarvester -d google.com -b duckduckgo',shell=True),  # Coleta informações sobre google.com usando o theHarvester, focando em resultados do DuckDuckGo
+    '7': subprocess.run('wireshark',shell=True),                    # Abre o Wireshark, ferramenta para análise de pacotes de rede
+    '8': subprocess.run('host 8.8.8.8',shell=True),                 # Realiza uma consulta DNS reversa para o IP 8.8.8.8
+    '9': subprocess.run('ifconfig',shell=True),                     # Exibe as configurações das interfaces de rede (não é mais padrão em alguns sistemas)
+    '10': subprocess.run('route',shell=True),                       # Mostra a tabela de roteamento IP do sistema
+    '11': subprocess.run('iwconfig',shell=True),                    # Exibe as configurações de interfaces sem fio
+    '12': subprocess.run('ip route',shell=True),                    # Exibe ou manipula a tabela de roteamento IP do sistema (substitui `route` em sistemas modernos)
+    '13': subprocess.run('ping google.com -c 10',shell=True),       # Envia 10 pacotes ICMP para google.com para testar conectividade
+    '14': subprocess.run('hostname',shell=True),                    # Mostra o nome do host da máquina
+    '15': subprocess.run('hostname -i',shell=True),                 # Exibe o endereço IP associado ao nome do host
+    '16': subprocess.run('cd /etc/NetworkManager/system-connections && sudo cat *',shell=True),  # Lista o conteúdo das conexões salvas no NetworkManager
+    '17': subprocess.run('nmcli dev wifi list',shell=True),         # Lista as redes Wi-Fi disponíveis
+    '18': subprocess.run("sudo nmcli dev wifi connect 'MARANGONI NET'",shell=True),  # Conecta-se à rede Wi-Fi "MARANGONI NET"
+    '19': subprocess.run("sudo nmcli dev wifi connect 'MARANGONI NET' password '123456789@'",shell=True),  # Conecta-se à rede Wi-Fi "MARANGONI NET" com senha
+    '20': subprocess.run('nmcli device status',shell=True),         # Exibe o status dos dispositivos de rede (conectado, desconectado, etc.)
+    '21': subprocess.run('nmcli connection show --active',shell=True),  # Lista as conexões de rede ativas
+    '22': subprocess.run("nmcli connection modify 'MARANGONI NET' connection.autoconnect yes",shell=True),  # Configura a rede "MARANGONI NET" para conectar automaticamente
+    '23': subprocess.run("nmcli connection modify 'MARANGONI NET' connection.autoconnect no",shell=True),   # Configura a rede "MARANGONI NET" para não conectar automaticamente
+    '24': subprocess.run("sudo nmcli connection delete 'Marcia'",shell=True),  # Exclui a conexão de rede chamada "Marcia"
+    '25': subprocess.run('traceroute google.com',shell=True),       # Mapeia o caminho dos pacotes até google.com
+    '26': subprocess.run('netstat -tuln',shell=True),               # Mostra todas as conexões de rede abertas e suas portas de escuta
+    '27': subprocess.run('sudo iw dev wlan0 scan',shell=True),      # Realiza uma varredura de redes Wi-Fi disponíveis usando a interface `wlan0`
+    '28': subprocess.run('sudo arp-scan --localnet',shell=True),    # Realiza uma varredura ARP para detectar dispositivos na rede local
+    '29': subprocess.run('dig google.com',shell=True),              # Realiza uma consulta DNS detalhada para google.com
+    '30': subprocess.run('mtr google.com',shell=True),              # Combina as funcionalidades de `traceroute` e `ping` para monitorar a rota até google.com
+    '31': subprocess.run('speedtest-cli',shell=True),               # Executa um teste de velocidade de internet (download/upload)
+    '32': subprocess.run('cat /etc/resolv.conf',shell=True),         # Exibe o conteúdo do arquivo resolv.conf, onde ficam armazenados os servidores DNS
+    '33': subprocess.run('curl ifconfig.me',shell=True), # ip publico
+    '34': subprocess.run('pyinstaller arquivo.py',shell=True) # cria um executável de um arquivo.py
+}
 
 from fpdf import FPDF # pip install fpdf
 
@@ -1139,8 +1174,7 @@ for interface_de_rede,detalhes in psutil.net_if_stats().items():
     print(detalhes.mtu) # tamanho máximo de pacotes
     print(detalhes.flags) # indicadores da interface (up,running,broadcast,multicast,loopback)
 mss = [val.mtu - 40 for k,val in psutil.net_if_stats().items()]# tamanho máximo de pacote que a camada de rede de cada interface pode enviar (bytes)
-subprocess.run('sudo ip link set wlan0 down',shell=True) # desliga uma interface de rede
-subprocess.run('sudo ip link set wlan0 up',shell=True) # liga uma interface de rede
+
 for interface_de_rede,detalhes in psutil.net_io_counters(pernic=True).items():
     print(interface_de_rede)
     print(detalhes)# informações do envio e recepção de bytes e pacotes das interfaces de rede
@@ -1178,8 +1212,10 @@ for dispositivo, temperaturas in psutil.sensors_temperatures().items():#temperat
     for temperatura in temperaturas:
         temperatura.current # temperatura atual
         temperatura.high # temperatura máxima
-psutil.Process() # muitos dados de um processo
-psutil.process_iter() # muitos dados de todos os processos
+psutil.Process(1) # várias informações de um PID
+psutil.process_iter() # iterador com dados de todos os PIDs
+psutil.pids() # lista de pids ativos
+psutil.pid_exists(1) # diz se um pid está ativo
 import platform
 platform.system() # sistema operacional
 platform.machine() # arquitetura do processador
