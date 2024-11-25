@@ -1220,7 +1220,8 @@ import platform
 platform.system() # sistema operacional
 platform.machine() # arquitetura do processador
 platform.node() # nome do host
-
+import pprint
+pprint.pprint('') # identa um objeto
 #segurança
 import hashlib
 import cryptography

@@ -3,6 +3,10 @@ import psutil
 import subprocess
 import requests
 import socket
+import pprint
+import os
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 def localOfIp(ip:str)->list[str]:
     '''
     Uses API for knowledge of an Public ip location [country,state,city,(coordinates)]
@@ -295,7 +299,54 @@ def redes_disponiveis():
             final.append(each[17:each.find('Infra')])
     return final
 
+def download_images(url:str)->None:
+    '''
+    Baixa png,webp,jpeg e gifs de uma página simples
+    '''
+    resp = requests.get(url)
+    repr_str = resp.text 
+    soup = BeautifulSoup(features="html.parser",markup=repr_str)
+    formats = [".png",".webp",".jpeg",".gif"]
+
+    todas_as_imagens = []
+    for images in formats:
+        for each in soup.find_all("img",src=lambda src: str(src).endswith(images)):
+            todas_as_imagens.append(each)
+
+    ocorrencias = []
+    for images in todas_as_imagens:
+        ocorrencias.append(images.get('src'))
+
+
+    ocorrencias_acessiveis = []
+    for each in ocorrencias:
+        ocorrencias_acessiveis.append(urljoin(url,each))
+    del ocorrencias
+
+    if ocorrencias_acessiveis != []: os.makedirs("img",exist_ok=True)
+
+    for each in ocorrencias_acessiveis:
+        if each.endswith(formats[0]):
+            path = os.path.join("img",f"{ocorrencias_acessiveis.index(each)}{formats[0]}")
+            with open(path,'wb') as f:
+                f.write(requests.get(each).content)
+        elif each.endswith(formats[1]):
+            path = os.path.join("img",f"{ocorrencias_acessiveis.index(each)}{formats[1]}")
+            with open(path,'wb') as f:
+                f.write(requests.get(each).content)
+        elif each.endswith(formats[2]):
+            path = os.path.join("img",f"{ocorrencias_acessiveis.index(each)}{formats[2]}")
+            with open(path,'wb') as f:
+                f.write(requests.get(each).content)
+        elif each.endswith(formats[3]):
+            path = os.path.join("img",f"{ocorrencias_acessiveis.index(each)}{formats[3]}")
+            with open(path,'wb') as f:
+                f.write(requests.get(each).content)
+
+    pprint.pprint(f"Foram baixadas {len(todas_as_imagens)} imagens")
+
 conexoes()
+download_images("https://en.wikipedia.org/wiki/World_War_II_casualties")
 
 test_return = {'1':localOfIp(myIp()[1]),
         '2':myIp(),
@@ -321,4 +372,4 @@ test_return = {'1':localOfIp(myIp()[1]),
 
 for each,function in test_return.items():
     print(each)
-    print(function)
+    pprint.pprint(function)
