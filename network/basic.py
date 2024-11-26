@@ -7,6 +7,7 @@ import pprint
 import os
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+import ipaddress
 def localOfIp(ip:str)->list[str]:
     '''
     Uses API for knowledge of an Public ip location [country,state,city,(coordinates)]
@@ -295,6 +296,12 @@ def download_images(url:str)->None:
 
     pprint.pprint(f"Foram baixadas {len(todas_as_imagens)} imagens")
 
+def privateIp(ip:str)->bool:
+    '''
+    Returns True if ipv4 is private
+    '''
+    return ipaddress.ip_address(ip).is_private
+
 conexoes()
 download_images("https://en.wikipedia.org/wiki/World_War_II_casualties")
 
@@ -314,7 +321,8 @@ test_return = {'1':localOfIp(myIp()[1]),
         '16':processo(1),
         '17':rede_wireless('wlan0'),
         '18':get_pids(),
-        '19':redes_disponiveis()
+        '19':redes_disponiveis(),
+        '20':privateIp('192.168.1.10')
 }
 
 
