@@ -24,56 +24,6 @@ def myIp()->tuple[str]:
     r = requests.get('https://ifconfig.me')
     return (s.stdout[:-2],r.text)
 
-def myMask()->str:
-    '''
-    Says your current newtork mask
-    '''
-    s = subprocess.run('hostname -I',shell=True,capture_output=True,text=True)
-    ip = s.stdout
-    ip += '.'
-    bits = []
-    temp = ''
-    for each in ip:
-        if each != '.':
-            temp += each
-        else:
-            bits.append(int(temp))
-            temp = ''
-
-    if bits[0] == 10:
-        return '255.0.0.0'
-    elif bits[0] == 172 and bits[1] >= 16:
-        if bits[1] < 32:
-            return '255.255.0.0'
-    elif bits[0] == 192 and bits[1] == 168:
-        if bits[2] >= 0 and bits[2] < 256:
-            return '255.255.255.0'
-
-def maskOfIp(ip:str)->str:
-    '''
-    Says the newtork mask of a private IPV4 address
-    '''
-    ip += '.'
-    bits = []
-    temp = ''
-    for each in ip:
-        if each != '.':
-            temp += each
-        else:
-            bits.append(int(temp))
-            temp = ''
-
-    if bits[0] == 10:
-        return '255.0.0.0'
-    elif bits[0] == 172 and bits[1] >= 16:
-        if bits[1] < 32:
-            return '255.255.0.0'
-    elif bits[0] == 192 and bits[1] == 168:
-        if bits[2] >= 0 and bits[2] < 256:
-            return '255.255.255.0'
-    else:
-        return '[!] IP is not private'
-
 def networkInterfaces()->list[str]:
     '''
     Shows the available network interfaces
@@ -350,8 +300,6 @@ download_images("https://en.wikipedia.org/wiki/World_War_II_casualties")
 
 test_return = {'1':localOfIp(myIp()[1]),
         '2':myIp(),
-        '3':myMask(),
-        '4':maskOfIp(myIp()[0]),
         '5':networkInterfaces(),
         '6':deviceName(),
         '7':reverseDNSLookup(myIp()[1]),
