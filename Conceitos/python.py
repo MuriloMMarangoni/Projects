@@ -425,7 +425,8 @@ os.chdir('pasta') # entra em uma pasta
 os.rmdir('pasta') # apaga uma pasta
 os.system('comandos bash') # executa comandos bash
 os.mkdir('pasta') # cria uma pasta
-
+os.makedirs('pasta',exist_ok=True) # cria pasta e se já existir não faz nada
+os.path.join('pasta','arquivo') # cria um diretório pra pasta/arquivo
 import math
 
 math.ceil() # arredonda pra cima                                                                            (num) -> num
@@ -1118,6 +1119,7 @@ with open("nomeDoArquivo.algumacoisa","wb") as f: f.write(binar) # baixa qualque
 from bs4 import BeautifulSoup # filtra conteúdos de um HTML # pip install beautifulsoup4
 soup = BeautifulSoup(features="html.parser",markup=repr_str) # objeto parser
 tag = soup.find_all('span') # filtra todas as ocorrências dessa tag HTML
+tag = soup.find_all('img',src=lambda src : str(src).endswith('.png')) # filtra formatos
 conteudo = [each.text for each in tag] # pega o conteúdo dessas tags
 for atributes in tag:
     a = atributes.get('width') # pega o atributo de uma tag
@@ -1222,6 +1224,18 @@ platform.machine() # arquitetura do processador
 platform.node() # nome do host
 import pprint
 pprint.pprint('') # identa um objeto
+import ipaddress
+ipv4 = '10.0.1.10'
+ipv6 = 'fe80::22e9:17ff:fe07:2978'
+obj4 = ipaddress.ip_address(ipv4) # objeto ipv4
+obj6 = ipaddress.ip_address(ipv6) # objeto ipv6
+obj4.version # 4 se for ipv4 e 6 se for ipv6
+obj4.reverse_pointer # domínio ptr (ip mais legível)
+obj4 = obj4 + 1 # operações com ip
+obj4 = obj4 - 1
+str(obj4) == '10.0.1.10' # str do ip
+obj4.is_private # se é privado
+obj4 > obj4-1 # compara ips
 #segurança
 import hashlib
 import cryptography
