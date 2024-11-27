@@ -302,6 +302,12 @@ def privateIp(ip:str)->bool:
     '''
     return ipaddress.ip_address(ip).is_private
 
+def ipIsBigger(bigger:str,lower:str):
+    '''
+    Says if the first ip is bigger than the second
+    '''
+    return ipaddress.ip_address(bigger) > ipaddress.ip_address(lower)
+
 conexoes()
 download_images("https://en.wikipedia.org/wiki/World_War_II_casualties")
 
@@ -322,7 +328,8 @@ test_return = {'1':localOfIp(myIp()[1]),
         '17':rede_wireless('wlan0'),
         '18':get_pids(),
         '19':redes_disponiveis(),
-        '20':privateIp('192.168.1.10')
+        '20':privateIp('192.168.1.10'),
+        '21':ipIsBigger('10.0.1.11','10.0.1.10')
 }
 
 
