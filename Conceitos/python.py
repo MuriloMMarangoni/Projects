@@ -671,7 +671,7 @@ sys.settrace(tracer) # usa uma função que busca eventos no programa
 fun()
 sys.settrace(None) # encerra a buscar eventos
 sys.platform # diz o sistema operacional
-
+sys.argv # lista com os argumentos de cli [__file__,arg1,arg2]
 import cProfile #--------------------------------------------------
 
 cProfile.run('anonima(1,2)') # roda uma função com parâmetros especificados e diz o tempo de execução
@@ -819,7 +819,7 @@ from functools import lru_cache
 def somas(n):
     return n+1
 
-from collections import namedtuple,deque
+from collections import *
 
 cliente = namedtuple('cliente',['Nome','Gastos']) # cria uma via de regra
 cliente1 = cliente('nometal','gastostal') 
@@ -833,6 +833,7 @@ fila.appendleft(0) # adiciona no começo
 fila.pop() # remove no final
 fila.popleft() # remove no começo
 listaBase = list(fila) # converte queue pra lista
+Counter([0,1,2,3,0,0,0]) # dict com a quantidade de repetições de elementos {0:4,1:1,2:1,3:1}
 
 import time
 
