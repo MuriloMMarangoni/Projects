@@ -259,6 +259,7 @@ globals()['nome'] = 'algo' # cria uma variável com esse nome e esse valor
 eval('expressãoQualquer') # executa uma str como comando
 globals() # dicionário com o par nomedavariável:valor , com escopo global
 locals() # dicionário com o par nomedavariável:valor , com valores do escopo atual
+boo = any(number < 5 for number in [1,2,3,4,5]) # tem pelo menos um valor que é True?
 #métodos--------------------------------------------------------------------------------------------------------------------
 list.append() # adiciona um objeto no final da lista                                              (list) -> None
 list.remove() # remove o primeiro elemento com esse valor                                         (list) -> None
@@ -532,6 +533,7 @@ plt.pie(x,colors=cores,labels=nomes) # gráfico de pizza
 plt.suptitle('Vários Gráficos') # Título de um conjunto de tabelas
 plt.savefig('arquivo.png') # baixa uma print do gráfico
 plt.show() # abre a tela com o gráfico
+plt.ticklabel_format(useOffset=False)
 
 from scipy.interpolate import * # pip install scipy
 
@@ -833,7 +835,8 @@ fila.appendleft(0) # adiciona no começo
 fila.pop() # remove no final
 fila.popleft() # remove no começo
 listaBase = list(fila) # converte queue pra lista
-Counter([0,1,2,3,0,0,0]) # dict com a quantidade de repetições de elementos {0:4,1:1,2:1,3:1}
+lista = Counter(['ab','ab','ac','ac']) # quantas repetições tem cada termo?
+palavra = Counter('abacaxi') # quantas repetições tem cada símbolo?
 
 import time
 
@@ -1237,6 +1240,14 @@ obj4 = obj4 - 1
 str(obj4) == '10.0.1.10' # str do ip
 obj4.is_private # se é privado
 obj4 > obj4-1 # compara ips
+import pickle
+
+with open('objeto.pkl','wb') as f: # preciso salvar um objeto na memória?
+    pickle.dump([1,2,3],f)
+with open('objeto.pkl','rb') as f: # preciso ler um objeto da memória?
+    objeto_na_memoria = pickle.load(f)
+print(objeto_na_memoria)
+
 #segurança
 import hashlib
 import cryptography
@@ -1259,6 +1270,5 @@ import asyncio
 import aiohttp
 import gunicorn
 import jinja2
-import pickle
 #desktop
 import customtkinter as ct # extensao do tkinter
