@@ -1,29 +1,29 @@
 #tipos de dados--------------------------------------------------------------------------------------------------------------
-inteiro = 10
-real = 10.1
-complexo = 1 + 1j
-booleano = True | False
-vazio = None
-string = '123' | f"123"
-lista = [1,2,3]
-tupla = (1,2,3)
-conjunto = {1,2,3}
-dicionario = {"1":2}
-CONSTANTE = 1
-file = open("arquivo.txt",'a')
-vetor = np.array([])
-matriz = np.array([],[],[])
-tabela = pd.DataFrame([1,2,3])
-vetorpd = pd.Series([1,2,3])
-valor:int = 1 # forma de tipar uma variável
-algo:int # declara mas não inicializa
+inteiro = 10 # preciso de um número inteiro?
+real = 10.1 # preciso de um número decimal?
+complexo = 1 + 1j # preciso de um número complexo?
+booleano = True | False # preciso de uma confirmação?
+vazio = None # preciso de um valor inicializado que pode mudar depois?
+string = '123' | f"123" # preciso de uma palavra ou símbolos?
+lista = [1,2,3] # preciso saber a posição de vários dados?
+tupla = (1,2,3) # preciso ter vários dados que não mudam?
+conjunto = {1,2,3} # preciso ter vários dados únicos?
+dicionario = {"1":2} # preciso mapear valores pra entradas específicas?
+CONSTANTE = 1 # preciso de um dado que não muda
+file = open("arquivo.txt",'a') # preciso abrir um arquivo?
+vetor = np.array([]) #
+matriz = np.array([],[],[]) #
+tabela = pd.DataFrame([1,2,3]) #
+vetorpd = pd.Series([1,2,3]) #
+valor:int = 1 # preciso dizer o tipo da variável?
+algo:int # preciso só dizer que a varíavel existe?
 '''
-comentário da variável
+preciso comentar uma variável?
 '''
 #f-strings-----------------------------------------------------------------------------------------------------------------
-f'{real:.2e}' #-> Notação científica
-f'{real:.5f}' #-> Casas decimais
-f'{string:<10}' #-> alinha um texto a esquerda em tantas casas
+f'{real:.2e}' #-> preciso de Notação científica?
+f'{real:.5f}' #-> preciso mostrar só algumas casas decimais?
+f'{string:<10}' #-> alinha um texto a esquerda em tantas casass
 f'{string:>10}' #-> alinha um texto a direita em tantas casas
 f'{string:^10}' #-> alinha um texto ao centro em tantas casas
 #tipos de funções------------------------------------------------------------------------------------------------------------
@@ -212,8 +212,8 @@ for each in range(1,11):
     l.append(Factory.criar(f'{each}',each))
 print(l)
 #dunder--------------------------------------------------------------------------------------
-object.__class__ # diz a classe que um objeto faz parte
-object.__class__.__name__ # diz a classe com nome mais legível
+object.__class__ # preciso saber a classe de um objeto?
+object.__class__.__name__ # preciso saber a classe de um objeto de forma legível?
 class dunder():
     def __init__(self):# definir atributos de uma instância
         pass
@@ -229,7 +229,7 @@ class dunder():
         return self.list[index]
     def __call__(self,arg): # faz a instância ser tratada como função, os argumentos aqui são os usados na chamada
         pass
-print(__file__) # mostra caminho pro arquivo atual
+print(__file__) # preciso do diretório desse arquivo?
 #funções---------------------------------------------------------------------------------------------------------------------
 print('',end='') # Escreve algo no CLI                                                            (object) -> None
 sum() # soma os valores de um iteravel e uma constante                                            (iteravel,num) -> num
@@ -260,6 +260,7 @@ eval('expressãoQualquer') # executa uma str como comando
 globals() # dicionário com o par nomedavariável:valor , com escopo global
 locals() # dicionário com o par nomedavariável:valor , com valores do escopo atual
 boo = any(number < 5 for number in [1,2,3,4,5]) # tem pelo menos um valor que é True?
+boo = all(each < 4 for each in [1,2,3]) # todos os valores satisfazem a condição?
 #métodos--------------------------------------------------------------------------------------------------------------------
 list.append() # adiciona um objeto no final da lista                                              (list) -> None
 list.remove() # remove o primeiro elemento com esse valor                                         (list) -> None
@@ -415,6 +416,9 @@ import random
 random.randint(1,10) # escolhe um número ente esse período
 random.choice(l) # escolhe um elemento aleatório
 random.shuffle(l) # organiza aleatoriamente uma sequência
+escolha_n_naorepete = random.sample(l,3)
+escolha_n_repete = random.choices(l,k=11)
+de_0_a_1 = random.random()
 
 import os
 
