@@ -538,7 +538,7 @@ plt.suptitle('Vários Gráficos') # Título de um conjunto de tabelas
 plt.savefig('arquivo.png') # baixa uma print do gráfico
 plt.show() # abre a tela com o gráfico
 plt.ticklabel_format(useOffset=False)
-
+plt.fill_between(x[1:3],y[1:3],color='red')# preenche em baixo do gráfico
 from scipy.interpolate import * # pip install scipy
 
 pontox = [1,2,3,4]
