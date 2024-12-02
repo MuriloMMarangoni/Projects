@@ -539,6 +539,9 @@ plt.savefig('arquivo.png') # baixa uma print do gráfico
 plt.show() # abre a tela com o gráfico
 plt.ticklabel_format(useOffset=False)
 plt.fill_between(x[1:3],y[1:3],color='red')# preenche em baixo do gráfico
+plt.xlim(1,5) # limita o gráfico x em começo,fim
+plt.ylim(1,25) # limita o gráfico y em começo,fim
+plt.text(x[1],y[1],'algo') # texto em um ponto do gráfico(literalmente na coordenada)
 from scipy.interpolate import * # pip install scipy
 
 pontox = [1,2,3,4]
