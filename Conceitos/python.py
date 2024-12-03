@@ -542,6 +542,9 @@ plt.fill_between(x[1:3],y[1:3],color='red')# preenche em baixo do gráfico
 plt.xlim(1,5) # limita o gráfico x em começo,fim
 plt.ylim(1,25) # limita o gráfico y em começo,fim
 plt.text(x[1],y[1],'algo') # texto em um ponto do gráfico(literalmente na coordenada)
+plt.annotate('Algo',(2,4),(3,3),arrowprops=dict(facecolor='black',shrink=0.05))# seta (texto,ponta,começoDaSeta,cor,zoom)
+plt.xticks([0,2,4,6]) # personaliza os marcadores do eixo x
+plt.yticks([0,1,4,9,22])# personaliza os marcadores do eixo y
 from scipy.interpolate import * # pip install scipy
 
 pontox = [1,2,3,4]
