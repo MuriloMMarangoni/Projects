@@ -496,57 +496,93 @@ resolucao = sp.solve(equacao) # resolver ela = 0
 
 import matplotlib.pyplot as plt # pip install matplotlib
 
-fonte = {'family':'serif','color':'red','size':12}
-x0 = 1
-xf = 3
-y0 = 10
-yf = 30
-linhas = 2
-colunas = 3
-plt.subplot(linhas,colunas,1) # cria múltiplos gráficos
-plt.title('linha',fontdict=fonte) # Nome do gráfico
-x = [1,2,3,4,5]
-y = [10,20,30,40,50]
-plt.axis((x0,xf,y0,yf)) # usa parte do gráfico
-plt.xlabel('Título do x',fontdict=fonte) # texto do eixo x
-plt.ylabel('Título do y',fontdict=fonte) # texto do eixo y
-plt.plot(x,y,color='r',marker='o',linestyle='--',linewidth=2,label='significado') # gráfico de linha
-plt.subplot(linhas,colunas,2)
-plt.title('vertical',fontdict=fonte)
-plt.bar(x,y,width=0.4,color='red',edgecolor='black') # gráfico de barra vertical
-plt.subplot(linhas,colunas,3)
-plt.title('horizontal',fontdict=fonte)
-plt.barh(x,y,height=0.4,color='red',edgecolor='black') # gráfico de barra horizontal
-plt.subplot(linhas,colunas,4)
-plt.title('função',fontdict=fonte)
-f = sp.lambdify(sp.Symbol('x'), sp.sympify('x**2'),'numpy')
-pontox=np.array([2,4,6,8,10])
-pontoy = f(pontox)
-plt.grid(axis='y') # grade 
-plt.plot(pontox,pontoy,color='r',marker='o',linestyle='--',linewidth=2,label='significado')#gráfico de função matemática
-plt.subplot(linhas,colunas,5)
-plt.title('pontos',fontdict=fonte)
-tamanho = 50
-plt.scatter(x,y,color='red',edgecolors='black',s=tamanho) # gráfico de pontos
-plt.subplot(linhas,colunas,6)
-plt.title('pizza',fontdict=fonte)
-nomes = ['primeiro','segundo','terceiro','quarto','quinto']
-cores = ['black','red','green','blue','brown']
-plt.legend(title='titulo da legenda') # nome da tabela de significados
-plt.pie(x,colors=cores,labels=nomes) # gráfico de pizza
-plt.suptitle('Vários Gráficos') # Título de um conjunto de tabelas
-plt.savefig('arquivo.png') # baixa uma print do gráfico
-plt.show() # abre a tela com o gráfico
-plt.ticklabel_format(useOffset=False)
-plt.fill_between(x[1:3],y[1:3],color='red')# preenche em baixo do gráfico
-plt.xlim(1,5) # limita o gráfico x em começo,fim
-plt.ylim(1,25) # limita o gráfico y em começo,fim
-plt.text(x[1],y[1],'algo') # texto em um ponto do gráfico(literalmente na coordenada)
-plt.annotate('Algo',(2,4),(3,3),arrowprops=dict(facecolor='black',shrink=0.05))# seta (texto,ponta,começoDaSeta,cor,zoom)
-plt.xticks([0,2,4,6]) # personaliza os marcadores do eixo x
-plt.yticks([0,1,4,9,22])# personaliza os marcadores do eixo y
-plt.axhline(y=20, color='red', linestyle='--', label='Meta') # linha de metas(antes do legend)
-plt.figure(figsize=(8, 6),facecolor='white') # personaliza o fundo envolta do gráfico
+def linha(x:list,y:list,nome:str,lax:str,lay:str
+          ,embaixo:bool,cor:str,linha:str,grossura:int,marcador:str
+          ,legenda:str,grade:bool,limx:tuple,limy:tuple,texto:str,postext:tuple
+          ,comecoDaSeta:tuple,ponta:tuple,corSeta:str):
+    fonte = {
+        'family':'serif',
+        'color':'red',
+        'size':12}
+    plt.figure(figsize=(8, 6),facecolor='white') # personaliza o fundo envolta do gráfico
+    plt.title(nome) # nome em cima do gráfico
+    plt.xlabel(lax,fontdict=fonte) # texto eixo x
+    plt.ylabel(lay) # texto eixo y
+    plt.plot(x,y,color=cor,linestyle=linha,linewidth=grossura,marker=marcador,label=legenda) # cria uma linha
+    plt.plot(x,[t+5 for t in y]) # outra linha
+    if embaixo:
+        plt.fill_between(x,y)# preenche em baixo do gráfico
+    plt.axhline(y=20, color='red', linestyle='--', label='Meta') # linha de metas(antes do legend) horizontal
+    plt.axvline(x=2, color='red', linestyle='--', label='Meta') # meta vertical
+    plt.legend(title='tabela de legendas') # mostrar uma tabela de legendas
+    plt.grid(grade) # coloca uma grade no gráfico
+    plt.xlim(limx[0],limx[1]) # limita o gráfico x em começo,fim
+    plt.ylim(limy[0],limy[1]) # limita o gráfico y em começo,fim
+    plt.text(postext[0],postext[1],texto) # texto em um ponto do gráfico(literalmente na coordenada)
+    plt.annotate('Algo',ponta,comecoDaSeta,arrowprops=dict(facecolor=corSeta,shrink=0.05))# seta (texto,ponta,começoDaSeta,cor,zoom)
+    plt.xticks(x) # personaliza os marcadores do eixo x
+    plt.yticks(y)# personaliza os marcadores do eixo y
+    plt.axis((1,5,1,25))# gera só essa parte do gráfico
+    plt.savefig('arquivo.png') # baixa uma print do gráfico
+    plt.show() # exibe o gráfico
+    linha([1,2,3,4,5],[1,4,9,16,25],'nomeDoTítulo','texto X','texto Y',False,'green','--',2,'o','linha',True,(1,5),(1,25),'texto',(3,9),(3,3),(3,9),'black')
+def barrav():
+    x = ['primeira','segunda','terceira','quarta','quinta']
+    y = [1,4,9,16,25]
+    cores = ['blue','red','yellow','red','blue']
+    cores_borda = ['black','white','black','white','black']
+    color=['blue' if value < 30 else 'red' for value in y] # condição pra pegar uma cor
+    plt.bar(x,y,color=cores,edgecolor=cores_borda,label=['primeiro','segundo','terceiro','quarto','quinto']) # gráfico de barra vertical
+    plt.legend(title='significados')
+    count = 0
+    for each in y: # textos em cima das barras
+        plt.text(x[count],each,f'{each}',horizontalalignment='center', verticalalignment='bottom')
+        count += 1
+    plt.show()
+    barrav()
+def barrah():
+    x = ['primeira','segunda','terceira','quarta','quinta']
+    y = [1,4,9,16,25]
+    cores = ['blue','red','yellow','red','blue']
+    cores_borda = ['black','white','black','white','black']
+    plt.barh(y,x,color=cores,edgecolor=cores_borda,label=['primeiro','segundo','terceiro','quarto','quinto']) # gráfico de barra vertical
+    plt.legend(title='significados')
+    count = 0
+    for each in y: # textos em cima das barras
+        plt.text(x[count],each,f'{each}',horizontalalignment='left', verticalalignment='center')
+        count += 1
+    plt.show()
+    barrah()
+def pontos():
+    x = [1,2,3,4,5]
+    y = [1,4,9,16,25]
+    tamanho_ponto = 50
+    transparencia = 0.6
+    plt.scatter(x,y,color='red',edgecolors='black',s=tamanho_ponto,marker='^',alpha=transparencia) # gráfico de pontos
+    plt.show()
+    pontos()
+def pizza():
+    x = [1,2,3,4,5]
+    textos = ['um','dois','tres','quatro','cinco']
+    cores = ['red','blue','yellow','brown','green']
+    destaque = [0,0,0.1,0,0]
+    porcentagem = '%1.1f%%'
+    angulo = 90
+    plt.pie(x,labels=textos,colors=cores,explode=destaque,autopct=porcentagem,startangle=angulo)
+    plt.show()
+    pizza()
+def varios_graficos():
+    x = [1,2,3,4,5,6]
+    y = [2,4,6,8,10,12]
+    linhas = 2
+    colunas = 3
+    for n in range(1,7):
+        plt.subplot(linhas,colunas,n)
+        plt.plot(x,y)
+    plt.suptitle('Vários Gráficos')
+    plt.show()
+    varios_graficos()
+
 from scipy.interpolate import * # pip install scipy
 
 pontox = [1,2,3,4]
