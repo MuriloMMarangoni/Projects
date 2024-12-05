@@ -546,6 +546,7 @@ plt.annotate('Algo',(2,4),(3,3),arrowprops=dict(facecolor='black',shrink=0.05))#
 plt.xticks([0,2,4,6]) # personaliza os marcadores do eixo x
 plt.yticks([0,1,4,9,22])# personaliza os marcadores do eixo y
 plt.axhline(y=20, color='red', linestyle='--', label='Meta') # linha de metas(antes do legend)
+plt.figure(figsize=(8, 6),facecolor='white') # personaliza o fundo envolta do gráfico
 from scipy.interpolate import * # pip install scipy
 
 pontox = [1,2,3,4]
