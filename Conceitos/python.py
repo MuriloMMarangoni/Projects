@@ -81,6 +81,7 @@ def decorador(fun): #decorador
 @decorador # usa essa função como input do decorador
 def fun():
     pass
+
 #condições-----------------------------------------------------------------------------
 object == object # se o objeto1 é  igual ao objeto2
 object != object # se o objeto1 é diferente do objeto2
