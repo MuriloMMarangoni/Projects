@@ -1,29 +1,29 @@
 #tipos de dados--------------------------------------------------------------------------------------------------------------
-inteiro = 10 # preciso de um número inteiro?
-real = 10.1 # preciso de um número decimal?
-complexo = 1 + 1j # preciso de um número complexo?
-booleano = True | False # preciso de uma confirmação?
-vazio = None # preciso de um valor inicializado que pode mudar depois?
-string = '123' | f"123" # preciso de uma palavra ou símbolos?
-lista = [1,2,3] # preciso saber a posição de vários dados?
-tupla = (1,2,3) # preciso ter vários dados que não mudam?
-conjunto = {1,2,3} # preciso ter vários dados únicos?
-dicionario = {"1":2} # preciso mapear valores pra entradas específicas?
-CONSTANTE = 1 # preciso de um dado que não muda
-file = open("arquivo.txt",'a') # preciso abrir um arquivo?
-vetor = np.array([]) #
-matriz = np.array([],[],[]) #
-tabela = pd.DataFrame([1,2,3]) #
-vetorpd = pd.Series([1,2,3]) #
-valor:int = 1 # preciso dizer o tipo da variável?
-algo:int # preciso só dizer que a varíavel existe?
+inteiro = 10
+real = 10.1
+complexo = 1 + 1j
+booleano = True | False
+vazio = None
+string = '123' | f"123"
+lista = [1,2,3]
+tupla = (1,2,3)
+conjunto = {1,2,3}
+dicionario = {"1":2}
+CONSTANTE = 1
+file = open("arquivo.txt",'a')
+vetor = np.array([])
+matriz = np.array([],[],[])
+tabela = pd.DataFrame([1,2,3])
+vetorpd = pd.Series([1,2,3])
+valor:int = 1 # forma de tipar uma variável
+algo:int # declara mas não inicializa
 '''
-preciso comentar uma variável?
+comentário da variável
 '''
 #f-strings-----------------------------------------------------------------------------------------------------------------
-f'{real:.2e}' #-> preciso de Notação científica?
-f'{real:.5f}' #-> preciso mostrar só algumas casas decimais?
-f'{string:<10}' #-> alinha um texto a esquerda em tantas casass
+f'{real:.2e}' #-> Notação científica
+f'{real:.5f}' #-> Casas decimais
+f'{string:<10}' #-> alinha um texto a esquerda em tantas casas
 f'{string:>10}' #-> alinha um texto a direita em tantas casas
 f'{string:^10}' #-> alinha um texto ao centro em tantas casas
 #tipos de funções------------------------------------------------------------------------------------------------------------
@@ -81,7 +81,6 @@ def decorador(fun): #decorador
 @decorador # usa essa função como input do decorador
 def fun():
     pass
-
 #condições-----------------------------------------------------------------------------
 object == object # se o objeto1 é  igual ao objeto2
 object != object # se o objeto1 é diferente do objeto2
@@ -130,6 +129,7 @@ lista[0:2] # acessa um começo e um fim (0,1)
 lista[0:10:3] # acessa um começo e um fim num passo(0,3,6,9)
 lista = [x**2 for x in range(0,11) if x!=0] # cria uma lista baseada em uma regra
 dict['1'] # acessa o valor da chave '1'
+dict['2'] = 2 # dinamicamente cria um par chave-valor
 #classes---------------------------------------------------------------------------------------------------------------------
 type(object) # diz a classe que um objeto pertence
 range(comeco=int,fim=int,passo=int) # iterador com começo,fim e passo
@@ -213,8 +213,8 @@ for each in range(1,11):
     l.append(Factory.criar(f'{each}',each))
 print(l)
 #dunder--------------------------------------------------------------------------------------
-object.__class__ # preciso saber a classe de um objeto?
-object.__class__.__name__ # preciso saber a classe de um objeto de forma legível?
+object.__class__ # diz a classe que um objeto faz parte
+object.__class__.__name__ # diz a classe com nome mais legível
 class dunder():
     def __init__(self):# definir atributos de uma instância
         pass
@@ -230,7 +230,7 @@ class dunder():
         return self.list[index]
     def __call__(self,arg): # faz a instância ser tratada como função, os argumentos aqui são os usados na chamada
         pass
-print(__file__) # preciso do diretório desse arquivo?
+print(__file__) # mostra caminho pro arquivo atual
 #funções---------------------------------------------------------------------------------------------------------------------
 print('',end='') # Escreve algo no CLI                                                            (object) -> None
 sum() # soma os valores de um iteravel e uma constante                                            (iteravel,num) -> num
@@ -261,7 +261,6 @@ eval('expressãoQualquer') # executa uma str como comando
 globals() # dicionário com o par nomedavariável:valor , com escopo global
 locals() # dicionário com o par nomedavariável:valor , com valores do escopo atual
 boo = any(number < 5 for number in [1,2,3,4,5]) # tem pelo menos um valor que é True?
-boo = all(each < 4 for each in [1,2,3]) # todos os valores satisfazem a condição?
 #métodos--------------------------------------------------------------------------------------------------------------------
 list.append() # adiciona um objeto no final da lista                                              (list) -> None
 list.remove() # remove o primeiro elemento com esse valor                                         (list) -> None
@@ -417,9 +416,6 @@ import random
 random.randint(1,10) # escolhe um número ente esse período
 random.choice(l) # escolhe um elemento aleatório
 random.shuffle(l) # organiza aleatoriamente uma sequência
-escolha_n_naorepete = random.sample(l,3)
-escolha_n_repete = random.choices(l,k=11)
-de_0_a_1 = random.random()
 
 import os
 
@@ -433,6 +429,7 @@ os.system('comandos bash') # executa comandos bash
 os.mkdir('pasta') # cria uma pasta
 os.makedirs('pasta',exist_ok=True) # cria pasta e se já existir não faz nada
 os.path.join('pasta','arquivo') # cria um diretório pra pasta/arquivo
+
 import math
 
 math.ceil() # arredonda pra cima                                                                            (num) -> num
@@ -480,6 +477,7 @@ array.min() #menor elemento
 array.max() # maior elemento
 
 import sympy as sp # pip install sympy
+
 #função
 funcao = '2*x'
 f = sp.lambdify(sp.Symbol('x'), sp.sympify(funcao),'numpy') #pega o x da função e da significado algébrico
@@ -497,92 +495,48 @@ resolucao = sp.solve(equacao) # resolver ela = 0
 
 import matplotlib.pyplot as plt # pip install matplotlib
 
-def linha(x:list,y:list,nome:str,lax:str,lay:str
-          ,embaixo:bool,cor:str,linha:str,grossura:int,marcador:str
-          ,legenda:str,grade:bool,limx:tuple,limy:tuple,texto:str,postext:tuple
-          ,comecoDaSeta:tuple,ponta:tuple,corSeta:str):
-    fonte = {
-        'family':'serif',
-        'color':'red',
-        'size':12}
-    plt.figure(figsize=(8, 6),facecolor='white') # personaliza o fundo envolta do gráfico
-    plt.title(nome) # nome em cima do gráfico
-    plt.xlabel(lax,fontdict=fonte) # texto eixo x
-    plt.ylabel(lay) # texto eixo y
-    plt.plot(x,y,color=cor,linestyle=linha,linewidth=grossura,marker=marcador,label=legenda) # cria uma linha
-    plt.plot(x,[t+5 for t in y]) # outra linha
-    if embaixo:
-        plt.fill_between(x,y)# preenche em baixo do gráfico
-    plt.axhline(y=20, color='red', linestyle='--', label='Meta') # linha de metas(antes do legend) horizontal
-    plt.axvline(x=2, color='red', linestyle='--', label='Meta') # meta vertical
-    plt.legend(title='tabela de legendas') # mostrar uma tabela de legendas
-    plt.grid(grade) # coloca uma grade no gráfico
-    plt.xlim(limx[0],limx[1]) # limita o gráfico x em começo,fim
-    plt.ylim(limy[0],limy[1]) # limita o gráfico y em começo,fim
-    plt.text(postext[0],postext[1],texto) # texto em um ponto do gráfico(literalmente na coordenada)
-    plt.annotate('Algo',ponta,comecoDaSeta,arrowprops=dict(facecolor=corSeta,shrink=0.05))# seta (texto,ponta,começoDaSeta,cor,zoom)
-    plt.xticks(x) # personaliza os marcadores do eixo x
-    plt.yticks(y)# personaliza os marcadores do eixo y
-    plt.axis((1,5,1,25))# gera só essa parte do gráfico
-    plt.savefig('arquivo.png') # baixa uma print do gráfico
-    plt.show() # exibe o gráfico
-    linha([1,2,3,4,5],[1,4,9,16,25],'nomeDoTítulo','texto X','texto Y',False,'green','--',2,'o','linha',True,(1,5),(1,25),'texto',(3,9),(3,3),(3,9),'black')
-def barrav():
-    x = ['primeira','segunda','terceira','quarta','quinta']
-    y = [1,4,9,16,25]
-    cores = ['blue','red','yellow','red','blue']
-    cores_borda = ['black','white','black','white','black']
-    color=['blue' if value < 30 else 'red' for value in y] # condição pra pegar uma cor
-    plt.bar(x,y,color=cores,edgecolor=cores_borda,label=['primeiro','segundo','terceiro','quarto','quinto']) # gráfico de barra vertical
-    plt.legend(title='significados')
-    count = 0
-    for each in y: # textos em cima das barras
-        plt.text(x[count],each,f'{each}',horizontalalignment='center', verticalalignment='bottom')
-        count += 1
-    plt.show()
-    barrav()
-def barrah():
-    x = ['primeira','segunda','terceira','quarta','quinta']
-    y = [1,4,9,16,25]
-    cores = ['blue','red','yellow','red','blue']
-    cores_borda = ['black','white','black','white','black']
-    plt.barh(y,x,color=cores,edgecolor=cores_borda,label=['primeiro','segundo','terceiro','quarto','quinto']) # gráfico de barra vertical
-    plt.legend(title='significados')
-    count = 0
-    for each in y: # textos em cima das barras
-        plt.text(x[count],each,f'{each}',horizontalalignment='left', verticalalignment='center')
-        count += 1
-    plt.show()
-    barrah()
-def pontos():
-    x = [1,2,3,4,5]
-    y = [1,4,9,16,25]
-    tamanho_ponto = 50
-    transparencia = 0.6
-    plt.scatter(x,y,color='red',edgecolors='black',s=tamanho_ponto,marker='^',alpha=transparencia) # gráfico de pontos
-    plt.show()
-    pontos()
-def pizza():
-    x = [1,2,3,4,5]
-    textos = ['um','dois','tres','quatro','cinco']
-    cores = ['red','blue','yellow','brown','green']
-    destaque = [0,0,0.1,0,0]
-    porcentagem = '%1.1f%%'
-    angulo = 90
-    plt.pie(x,labels=textos,colors=cores,explode=destaque,autopct=porcentagem,startangle=angulo)
-    plt.show()
-    pizza()
-def varios_graficos():
-    x = [1,2,3,4,5,6]
-    y = [2,4,6,8,10,12]
-    linhas = 2
-    colunas = 3
-    for n in range(1,7):
-        plt.subplot(linhas,colunas,n)
-        plt.plot(x,y)
-    plt.suptitle('Vários Gráficos')
-    plt.show()
-    varios_graficos()
+fonte = {'family':'serif','color':'red','size':12}
+x0 = 1
+xf = 3
+y0 = 10
+yf = 30
+linhas = 2
+colunas = 3
+plt.subplot(linhas,colunas,1) # cria múltiplos gráficos
+plt.title('linha',fontdict=fonte) # Nome do gráfico
+x = [1,2,3,4,5]
+y = [10,20,30,40,50]
+plt.axis((x0,xf,y0,yf)) # usa parte do gráfico
+plt.xlabel('Título do x',fontdict=fonte) # texto do eixo x
+plt.ylabel('Título do y',fontdict=fonte) # texto do eixo y
+plt.plot(x,y,color='r',marker='o',linestyle='--',linewidth=2,label='significado') # gráfico de linha
+plt.subplot(linhas,colunas,2)
+plt.title('vertical',fontdict=fonte)
+plt.bar(x,y,width=0.4,color='red',edgecolor='black') # gráfico de barra vertical
+plt.subplot(linhas,colunas,3)
+plt.title('horizontal',fontdict=fonte)
+plt.barh(x,y,height=0.4,color='red',edgecolor='black') # gráfico de barra horizontal
+plt.subplot(linhas,colunas,4)
+plt.title('função',fontdict=fonte)
+f = sp.lambdify(sp.Symbol('x'), sp.sympify('x**2'),'numpy')
+pontox=np.array([2,4,6,8,10])
+pontoy = f(pontox)
+plt.grid(axis='y') # grade 
+plt.plot(pontox,pontoy,color='r',marker='o',linestyle='--',linewidth=2,label='significado')#gráfico de função matemática
+plt.subplot(linhas,colunas,5)
+plt.title('pontos',fontdict=fonte)
+tamanho = 50
+plt.scatter(x,y,color='red',edgecolors='black',s=tamanho) # gráfico de pontos
+plt.subplot(linhas,colunas,6)
+plt.title('pizza',fontdict=fonte)
+nomes = ['primeiro','segundo','terceiro','quarto','quinto']
+cores = ['black','red','green','blue','brown']
+plt.legend(title='titulo da legenda') # nome da tabela de significados
+plt.pie(x,colors=cores,labels=nomes) # gráfico de pizza
+plt.suptitle('Vários Gráficos') # Título de um conjunto de tabelas
+plt.savefig('arquivo.png') # baixa uma print do gráfico
+plt.show() # abre a tela com o gráfico
+plt.ticklabel_format(useOffset=False)
 
 from scipy.interpolate import * # pip install scipy
 
@@ -701,6 +655,7 @@ import tkinter.font as tkFont
 
 fonte_personalizada = tkFont.Font(family="Helvetica",size=18,weight='bold',slant='italic',underline=1) # objeto de fonte
 tk.Label(font=fonte_personalizada) # aplica a fonte Helvetica de tamanho 18 em negrito,itálico e sublinhado
+
 import sys #---------------------------------------------------------
 
 sys.getsizeof(object) # diz o espaço em bytes que algo ocupa
@@ -723,6 +678,7 @@ fun()
 sys.settrace(None) # encerra a buscar eventos
 sys.platform # diz o sistema operacional
 sys.argv # lista com os argumentos de cli [__file__,arg1,arg2]
+
 import cProfile #--------------------------------------------------
 
 cProfile.run('anonima(1,2)') # roda uma função com parâmetros especificados e diz o tempo de execução
@@ -822,6 +778,7 @@ pdf.image(name="caminho completo",x=60,y=120,w=120) # coloca uma imagem (posiç�
 pdf.output('out.pdf') # Cria arquivo ou sobrescreve
 
 import qrcode # pip install qrcode
+
 qr = qrcode.QRCode(
     version=1, # quantidade de dados (1-40)
     error_correction=qrcode.constants.ERROR_CORRECT_L, #(correção de erros (L M Q H))
@@ -897,7 +854,6 @@ total = cronometro - tempoFinal # tempo percorrido
 from abc import ABC, abstractmethod # classe e métodos abstratos
 
 class Abstrata(ABC): # não pode ser instânciada, só herdada
-
     @abstractmethod # toda classe herdeira DEVE ter uma cópia aplicada de cada método abstrato
     def metodoabstrato(self):
         print('Esse método deve ser implementado na classe herdeira')
@@ -952,6 +908,7 @@ finally:
     server.quit() # encerra conexão
 
 import sqlite3 # banco de dados
+
 conectar = sqlite3.connect('banco.db') # criar ou conectar
 cursor = conectar.cursor()             # interagir com o banco
 cursor.execute('''CREATE TABLE IF NOT EXISTS planta (
@@ -1068,6 +1025,7 @@ available_fonts = pygame.font.get_fonts()         # lista de fontes disponíveis
 print(available_fonts)
 
 import socket #comunicar com qualquer dispositivo da rede
+
 nome_da_maquina = socket.gethostname() # fala o nome dessa máquina
 ip = socket.gethostbyname(nome_da_maquina) # busca o [nome da máquina ou de um domínio] e via DNS diz o IPV4 dele
 ip_geral = '0.0.0.0'                       # ip especial onde qualquer máquina pode conectar (servidores usam)
@@ -1106,6 +1064,7 @@ socket_client.settimeout(5) # 5s pro cliente conectar/receber/enviar dados
 socket.setdefaulttimeout(5) # todos os sockets criados vão ter timeout 5s
 
 import threading # partes diferentes do programa rodando simultaneamente
+
 def func1(n):
     for each in range(n):
         print(each)
@@ -1125,6 +1084,7 @@ t1.is_alive() # bool dizendo se a thread está rodando
 for each in range(5): print(__name__)
 
 import multiprocessing # gera processos(coleção de threads) que tem threads(fluxos)
+
 def func1():
     for each in range(500000):
         print(each)
@@ -1170,6 +1130,7 @@ binar = resp.content # pega a representação da página em binário, útil pra 
 with open("nomeDoArquivo.algumacoisa","wb") as f: f.write(binar) # baixa qualquer tipo de mídia de um site, usando binário
 
 from bs4 import BeautifulSoup # filtra conteúdos de um HTML # pip install beautifulsoup4
+
 soup = BeautifulSoup(features="html.parser",markup=repr_str) # objeto parser
 tag = soup.find_all('span') # filtra todas as ocorrências dessa tag HTML
 tag = soup.find_all('img',src=lambda src : str(src).endswith('.png')) # filtra formatos
@@ -1179,13 +1140,17 @@ for atributes in tag:
     url_do_elemento = atributes.get('src') # pega a url de um elemento
 
 from urllib.parse import urljoin # transforma URLs
+
 url_de_acesso = urljoin(url,url_do_elemento) # transforma a url do elemento em uma url de acesso
 
-from flask import Flask,redirect,url_for,render_template # microframework pra manipular websites # pip install flask
-
+from flask import * # microframework pra manipular websites # pip install flask
+# tome bastante cuidado com a sintaxe no html, erros implícitos são sutís
 app = Flask(__name__) # objeto do site
-@app.route("/") # roteamento: urls do site, quando acessadas executam essa função
+@app.route("/") # roteamento: urls do site, quando acessadas executam essa função # precisam ter return (render_template ou jsonify)
 # / é a página principal
+# <arg> é qualquer texto na url
+# ? é uma query
+
 def pagina_principal(): # view: página do roteamento
     return render_template("nomedo.html") # usa essa página HTML, precisa estar em uma pasta chamada templates
     return render_template("index.html",variavel='algo') # no HTML substitui {{variável}}
@@ -1198,6 +1163,20 @@ def redirecionar():
 def outros(arg):
     return f"Você acessou /{arg}"
 
+@app.route('/get-user', methods=['GET']) # url próprio pra request GET da api
+def get():
+    if request.method == 'GET':
+        query = request.args.get('q') # pega o q=algo depois do ? da url (http://127.0.0.1:5000/get-user?q=10)
+        if query: # se a query existir exibir o json com o valor da query e o status 200
+            return jsonify(query),200
+        return redirect(url_for('pagina_principal'))
+    return redirect(url_for('pagina_principal'))
+
+@app.route('/formulario', methods=['POST'])
+def formulario(): # no html, o formulario DEVE ter o action="/pasta", e o method="POST"
+    if request.method == 'POST':
+        info = request.form.get('nome')
+        return info
 if __name__ == '__main__': 
     app.run() # precisa pra rodar
     app.run(debug=True) # o site atualiza as modificações com o F5 sem precisar reiniciar
@@ -1271,13 +1250,19 @@ psutil.Process(1) # várias informações de um PID
 psutil.process_iter() # iterador com dados de todos os PIDs
 psutil.pids() # lista de pids ativos
 psutil.pid_exists(1) # diz se um pid está ativo
+
 import platform
+
 platform.system() # sistema operacional
 platform.machine() # arquitetura do processador
 platform.node() # nome do host
+
 import pprint
+
 pprint.pprint('') # identa um objeto
+
 import ipaddress
+
 ipv4 = '10.0.1.10'
 ipv6 = 'fe80::22e9:17ff:fe07:2978'
 obj4 = ipaddress.ip_address(ipv4) # objeto ipv4
@@ -1289,6 +1274,7 @@ obj4 = obj4 - 1
 str(obj4) == '10.0.1.10' # str do ip
 obj4.is_private # se é privado
 obj4 > obj4-1 # compara ips
+
 import pickle
 
 with open('objeto.pkl','wb') as f: # preciso salvar um objeto na memória?
