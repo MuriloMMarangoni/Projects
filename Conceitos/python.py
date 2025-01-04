@@ -1144,42 +1144,42 @@ from urllib.parse import urljoin # transforma URLs
 url_de_acesso = urljoin(url,url_do_elemento) # transforma a url do elemento em uma url de acesso
 
 from flask import * # microframework pra manipular websites # pip install flask
-# tome bastante cuidado com a sintaxe no html, erros implícitos são sutís
-app = Flask(__name__) # objeto do site
-@app.route("/") # roteamento: urls do site, quando acessadas executam essa função # precisam ter return (render_template ou jsonify)
-# / é a página principal
-# <arg> é qualquer texto na url
-# ? é uma query
+# tome bastante cuidado com a sintaxe no html, erros implícitos são sutís (principalmente vírgulas nas tags)
+# o url é http://127.0.0.1:5000/ e depois disso, o tratamento individual é feito com o @app.route()
+app = Flask(__name__) # objeto da aplicação web / api
 
-def pagina_principal(): # view: página do roteamento
-    return render_template("nomedo.html") # usa essa página HTML, precisa estar em uma pasta chamada templates
-    return render_template("index.html",variavel='algo') # no HTML substitui {{variável}}
+option = 1
 
-@app.route("/redirecionar")
-def redirecionar():
-    return redirect(url_for("pagina_principal")) # quando acessar /redirecionar, ele vai pra /
+@app.route("/",methods=['GET']) # página principal, só entra
+def index():
+    if option == 1:
+        return 'Texto qualquer no site' # texto genérico na tela
+    if option == 2:
+        return render_template('arquivohtml.html') # carrega página html
+    if option == 3:
+        return redirect(url_for('form')) # vai pra url da função especificada
+    if option == 4:
+        if request.method == 'GET': # entrar no site, ou usar requests.get()
+            if option == 'json':
+                return jsonify('dado') # Pelo Método GET, da pra pegar um arquivo .json
+            if option == 'query':
+                query = request.args.get('q') # pega o valor de ?q= na url
+        
+@app.route("/formulario",methods=['GET','POST']) # site acessável, que tem um formulário no html
+# o formulário html DEVE ter method="POST" e action="/caminhoDoRouteDoForm"
+def form():
+    if option == 5:
+        if request.method == 'POST':
+            dados = request.form.get('atributoNAMEDoElementoHtmlDoForm') # pega a resposta de um elemento do form, após o clique do botão submit
+            
+@app.route("/formulario/<args>",methods=["GET"]) # filtra argumentos via url OU urls que não correspondem
+def alternatives(args):
+    if args == 'resultado' : return jsonify(args)
+    if args != 'resultado' : return redirect(url_for(index))
 
-@app.route("/<arg>") # qualquer outra url
-def outros(arg):
-    return f"Você acessou /{arg}"
-
-@app.route('/get-user', methods=['GET']) # url próprio pra request GET da api
-def get():
-    if request.method == 'GET':
-        query = request.args.get('q') # pega o q=algo depois do ? da url (http://127.0.0.1:5000/get-user?q=10)
-        if query: # se a query existir exibir o json com o valor da query e o status 200
-            return jsonify(query),200
-        return redirect(url_for('pagina_principal'))
-    return redirect(url_for('pagina_principal'))
-
-@app.route('/formulario', methods=['POST'])
-def formulario(): # no html, o formulario DEVE ter o action="/pasta", e o method="POST"
-    if request.method == 'POST':
-        info = request.form.get('nome')
-        return info
-if __name__ == '__main__': 
-    app.run() # precisa pra rodar
-    app.run(debug=True) # o site atualiza as modificações com o F5 sem precisar reiniciar
+if __name__ == '__main__' :
+    app.run(debug=True) # roda o WSGI pro Servidor Web rotear a aplicação web; o debug atualiza modificações no arquivo python só com F5
+    
 
 import dis
 
