@@ -1157,7 +1157,7 @@ def index():
     if option == 2:
         return render_template('arquivohtml.html') # carrega página html
     if option == 3:
-        return redirect(url_for('form')) # vai pra url da função especificada
+        return redirect(url_for('form'),param=1,param=2)# vai pra url da função especificada; pode passar argumentos pra função
     if option == 4:
         if request.method == 'GET': # entrar no site, ou usar requests.get()
             if option == 'json':
@@ -1172,10 +1172,14 @@ def form():
         if request.method == 'POST':
             dados = request.form.get('atributoNAMEDoElementoHtmlDoForm') # pega a resposta de um elemento do form, após o clique do botão submit
             
-@app.route("/formulario/<args>",methods=["GET"]) # filtra argumentos via url OU urls que não correspondem
-def alternatives(args):
-    if args == 'resultado' : return jsonify(args)
-    if args != 'resultado' : return redirect(url_for(index))
+@app.route("/formulario/<var>",methods=["GET"]) # filtra argumentos via url OU urls que não correspondem
+def alternatives(var):
+    if var == 'resultado' : return jsonify(var)
+    if var != 'resultado' : return redirect(url_for(index))
+
+@app.route("/favicon.ico",methods=['GET']) # colocar ícone no site
+def icon():#carregue o arquivo favicon.ico do tipo .icon na pasta static
+    return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == '__main__' :
     app.run(debug=True) # roda o WSGI pro Servidor Web rotear a aplicação web; o debug atualiza modificações no arquivo python só com F5
