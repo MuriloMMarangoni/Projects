@@ -1150,7 +1150,7 @@ app = Flask(__name__) # objeto da aplicação web / api
 
 option = 1
 
-@app.route("/",methods=['GET']) # página principal, só entra
+@app.route("/",methods=['GET']) # faz o roteamento dos endpoints da api;página principal que só é acessada por navegador ou requests.get
 def index():
     if option == 1:
         return 'Texto qualquer no site' # texto genérico na tela
