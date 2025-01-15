@@ -11,4 +11,5 @@ powercfg /setactive 381b4222-f694-41f0-9685-ff5bb260df2e       #ativa um plano d
 comando /?                                                     #mostra como usar as variações de um comando
 shutdown /r /t 60                                              # reinicia o pc em 1m
 shutdown /a                                                    #aborta um desligamento
-shutdown /s                                                    #desliga o pc 
+shutdown /s                                                    #desliga o pc
+sc config wuauserv start= disabled                             #faz um serviço não iniciar mais

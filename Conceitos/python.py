@@ -1303,7 +1303,6 @@ import socketserver # framework de sockets
 #analise
 import sqlalchemy
 #backend
-import django
 import fastapi
 import asyncio
 import aiohttp
