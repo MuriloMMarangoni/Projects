@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Página Html</title>
 </head>
 <body>
-    <p>Teste html</p>
+    <p>Teste html pra {{nomehtml}} em {{data}}</p>
+    <form action="outrapg" method="get">
+        <input type="text" name="texto" id="">
+        <input type="text" name="texto2" id="">
+        <input type="submit" value="">
+    </form>
+    <form action="outrapgp" method="post">
+        {% csrf_token %}
+        <input type="text" name="botao_post">
+        <input type="submit" value="">
+    </form>
 </body>
 </html>
