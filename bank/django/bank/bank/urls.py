@@ -19,5 +19,5 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('django_bank/',include('django_bank.urls'))
+    path('',include('django_bank.urls')) # url que vai ser acessado como base
 ]

@@ -538,12 +538,6 @@ plt.savefig('arquivo.png') # baixa uma print do gráfico
 plt.show() # abre a tela com o gráfico
 plt.ticklabel_format(useOffset=False)
 
-from scipy.interpolate import * # pip install scipy
-
-pontox = [1,2,3,4]
-pontoy = [5,6,7,8]
-interpolacao = lagrange(pontox,pontoy) # função que passa pelos pontos (pontox[n],pontoy[n])
-
 import pandas as pd # pip install pandas
 
 media = vetorpd.mean() # media de um vetor
@@ -678,10 +672,6 @@ fun()
 sys.settrace(None) # encerra a buscar eventos
 sys.platform # diz o sistema operacional
 sys.argv # lista com os argumentos de cli [__file__,arg1,arg2]
-
-import cProfile #--------------------------------------------------
-
-cProfile.run('anonima(1,2)') # roda uma função com parâmetros especificados e diz o tempo de execução
 
 import subprocess #-----------------------------------------------
 
@@ -974,56 +964,6 @@ keyboard.press('a')  # Pressiona a tecla
 keyboard.release('a')  # Solta a tecla
 Key.enter # tecla enter
 
-import pygame # pip install pygame
-
-pygame.init()                                    # inicia a janela
-window = pygame.display.set_mode((578,324),pygame.RESIZABLE) # tamanho da janela; quadrado de trocar de resolução
-pygame.display.set_caption("Nome da Janela") # nome da janela
-pygame.mixer_music.load('') # escolha o audio
-pygame.mixer_music.play(-1) # toque o audio
-#Image
-surf_img = pygame.image.load('caminhodaimagem').convert_alpha()# carrega a imagem, transforma em surface = área do desenho
-rect_img = surf_img.get_rect(left=0,top=0)# rectangle = posição que o surf fica(topo esquerdo)
-window.blit(source=surf_img,dest=rect_img)               # aplica surface e rectangle na tela
-pygame.display.flip()                            # atualiza a janela com todas as modificações feitas do blit
-#Text
-tamanho = 20 # elementos básicos de um texto
-fonte = 'Lucida Sans Typewriter'
-texto = 'texto'
-cor = (255,255,255)
-posicao = (576/2 , 200)
-fonteAplicada  = pygame.font.SysFont(name=fonte, size=tamanho) # cria uma fonte pro texto
-surf_txt  = fonteAplicada.render(texto, True, cor).convert_alpha() # aplica a cor ao texto e transforma em surface; suporte pra fundo transparente
-rect_txt  = surf_txt.get_rect(center=posicao)   # o centro do texto fica na posição                  
-window.blit(source=surf_txt, dest=rect_txt)
-window.fill((0,0,0)) # preenche a janela inteira com essa cor
-pygame.display.flip()
-#
-rect_txt.centerx # centro horizontal do rect
-rect_txt.left    # esqurda do rect
-rect_txt.right   # parte direita do rect
-rect_txt.x       # coordenada do rect na tela
-rect_txt.y       # coordenada do rect na tela
-clock = pygame.time.Clock()
-while window:                       # em loops infinitos, capture eventos e use blit e flip apenas
-    for event in pygame.event.get():# checa os eventos
-        if event.type == pygame.QUIT:# tipos de eventos, se clicar no X da tela
-            pygame.quit()            # fechar janela
-            quit()                   # encerrar pygame
-        if event.type == pygame.KEYDOWN: # se apertar tecla
-            if event.key == pygame.K_a: pass# checa as teclas, se for 'a'
-            if event.key == pygame.K_RETURN: pass        # tecla enter
-            if event.key == pygame.K_0: pass             # tecla 0
-        if event.type == pygame.KEYUP: # se soltar a tecla
-            print(nome_das_teclas := pygame.key.name(event.key)) # diz o nome da tecla apertada
-        if event.type == pygame.VIDEORESIZE: pass # se o tamanho da janela mudar
-    clock.tick(60) # deixa o jogo a tantos Hz
-    fps = f'{clock.get_fps():.0f}' # depois do tick definido, ele diz o fps
-    teclas_pressionadas = pygame.key.get_pressed() # diz as teclas que estão sendo pressionadas
-    if teclas_pressionadas[pygame.K_0]: pass # se o 0 faz parte das teclas pressionadas
-available_fonts = pygame.font.get_fonts()         # lista de fontes disponíveis do sistema operacional
-print(available_fonts)
-
 import socket #comunicar com qualquer dispositivo da rede
 
 nome_da_maquina = socket.gethostname() # fala o nome dessa máquina
@@ -1184,11 +1124,6 @@ def icon():#carregue o arquivo favicon.ico do tipo .icon na pasta static
 if __name__ == '__main__' :
     app.run(debug=True) # roda o WSGI pro Servidor Web rotear a aplicação web; o debug atualiza modificações no arquivo python só com F5
     
-
-import dis
-
-cpython = dis.Bytecode(function) # lista com o bytecode otimizado pelo interpretador
-
 import psutil #informações do sistema
 
 for interface_de_rede,detalhes in psutil.net_if_addrs().items():
@@ -1287,6 +1222,10 @@ with open('objeto.pkl','rb') as f: # preciso ler um objeto da memória?
     objeto_na_memoria = pickle.load(f)
 print(objeto_na_memoria)
 
+import fastapi
+
+from django import *
+
 #segurança
 import hashlib
 import cryptography
@@ -1303,7 +1242,7 @@ import socketserver # framework de sockets
 #analise
 import sqlalchemy
 #backend
-import fastapi
+
 import asyncio
 import aiohttp
 import gunicorn
