@@ -1068,7 +1068,22 @@ respostaJson = resp.json() # SE o link for .json; pega a resposta json e transfo
 repr_str = resp.text # pega a representação da página em str (html em str,json em str, ou binário em str)
 binar = resp.content # pega a representação da página em binário, útil pra mídias e docs
 with open("nomeDoArquivo.algumacoisa","wb") as f: f.write(binar) # baixa qualquer tipo de mídia de um site, usando binário
-
+def coisas_novas():
+    argumentos = { # forma de usar query dinâmica, transforma o url em : url?p1=1&p2=2 ; fica em 'args'
+        'p1':1,
+        'p2':2
+    }
+    payload = { # dados pra post, fica em 'form'
+        'd' : 1
+    }
+    url_g = "https://httpbin.org/get"
+    url_p = "https://httpbin.org/post"
+    r = requests.get(url_g,params=argumentos)
+    r = requests.post(url_p,data=payload)
+    r.url # url da Response
+    r.headers # headers da Response
+    r.elapsed # tempo de resposta
+    
 from bs4 import BeautifulSoup # filtra conteúdos de um HTML # pip install beautifulsoup4
 
 soup = BeautifulSoup(features="html.parser",markup=repr_str) # objeto parser
@@ -1222,7 +1237,13 @@ with open('objeto.pkl','rb') as f: # preciso ler um objeto da memória?
     objeto_na_memoria = pickle.load(f)
 print(objeto_na_memoria)
 
-import fastapi
+from fastapi import FastAPI
+
+api = FastAPI()
+
+@api.get("/")
+def home():
+    return {'Dado':'valor'}
 
 from django import *
 
