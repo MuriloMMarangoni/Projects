@@ -39,7 +39,7 @@ def primeiro_metodo(): # obsoleto, só deixo aqui pra referência
 
     print(resultado)
 
-sinais = ['+','-','*','/','**','**(1/2)','fatorar','%','%%']
+sinais = ['+','-','*','/','**','**(1/2)','fatorar','%','%%','pa','pg']
 aleatorio = random.choice(sinais)
 n = 1
 m = 1
@@ -89,7 +89,9 @@ operacoes = {
     '**(1/2)': f'{n} ** (1/2)',
     'fatorar':fatorar(n),
     '%':f'{(n / m)*100}',
-    '%%': f'{(n/100)*m}'
+    '%%': f'{(n/100)*m}',
+    'pa':'',
+    'pg':'',
 }
 
 resultado = operacoes[aleatorio]
@@ -123,6 +125,42 @@ elif aleatorio == '%%':
     else:
         print('Incorreto')
     print(f"{final} %")
+elif aleatorio == 'pa':
+    sinais = ['-','+'] # mais ou menos 
+    escolha = random.choice(sinais) # pa positiva ou negativa
+    num = random.randint(1,100) # primeiro termo de 1 a 100
+    r = random.randint(1,num) # a razão tem que ser menor que o primeiro termo porque sim
+    seq = [num]
+    for each in range(1,5):
+        seq.append(eval(f"{seq[-1]}{escolha}{r}"))
+    print('Qual é a razão da Progressão Aritmética?')
+    print(seq)
+    i = input("")
+    if escolha == '-': r = int(f"-{r}")
+    if i == f"{str(r)}": print('Correto')
+    else:
+        print('Incorreto')
+        print(r)
+elif aleatorio == 'pg':
+    sinal = random.choice(['*','/'])
+    l = []
+    n = random.randint(1,100)
+    m = random.randint(2,10)
+    l.append(n)
+    if sinal == '/':
+        for each in range(1,5):
+            l.append(float(f"{ float(l[-1]) / m :.2f}"))
+    elif sinal == '*':
+        for each in range(1,5):
+            l.append(int(f"{int(l[-1])*m}"))
+    print('Qual é a razão da Progressão Geométrica?')
+    print(l)
+    i = input('')
+    if i == str(m):
+        print('Correto')
+    else:
+        print('Incorreto')
+        print(m)
 else:
     print(resultado)
     i = input('')
