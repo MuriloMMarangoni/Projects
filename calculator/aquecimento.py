@@ -1,5 +1,6 @@
 # o objetivo desse script é aquecer pra sessões de programação, com questões de TI, matemática e lógica
 import random
+PI = 3.14
 def primeiro_metodo(): # obsoleto, só deixo aqui pra referência
     sinais = ['+','-','*','/','**','**(1/2)'] # sinais
 
@@ -39,7 +40,7 @@ def primeiro_metodo(): # obsoleto, só deixo aqui pra referência
 
     print(resultado)
 
-sinais = ['+','-','*','/','**','**(1/2)','fatorar','%','%%','pa','pg']
+sinais = ['+','-','*','/','**','**(1/2)','fatorar','%','%%','pa','pg','area','volume']
 aleatorio = random.choice(sinais)
 n = 1
 m = 1
@@ -64,7 +65,6 @@ match(aleatorio):
         n = random.randint(0,100)
         m = random.randint(0,100)
 
-
 def fatorar(number:int):
     numeros = [x for x in range(2,101)]
     fatores = []
@@ -77,7 +77,6 @@ def fatorar(number:int):
         a += f"{each}*"
 
     if len(fatores) == 1: return 'primo'
-
     return a[:-1]
 
 operacoes = {
@@ -92,9 +91,85 @@ operacoes = {
     '%%': f'{(n/100)*m}',
     'pa':'',
     'pg':'',
+    'area':'',
+    'volume':''
 }
 
+def area():
+    figura = random.choice(['quadrado','triângulo','círculo'])
+    l = random.randint(2,20)
+    h = random.randint(2,20)
+    formula = {
+        'quadrado': l*l,
+        'triângulo':l*h / 2,
+        'círculo': PI*l*l
+    }
+    match (figura):
+        case 'quadrado': 
+            print(f"Qual é a área de um quadrado com lado {l}")
+            i = input('')
+            if i == f"{formula['quadrado']:.2f}":
+                print('Correto')
+                return 0
+            else:
+                print('Incorreto')
+                print(f"{formula['quadrado']:.2f}")
+        case 'triângulo':
+            print(f"Qual é a área de um triângulo com base {l} e altura {h}")
+            i = input('')
+            if i == f"{formula['triângulo']:.2f}":
+                print('Correto')
+                return 0
+            else:
+                print('Incorreto')
+                print(f"{formula['triângulo']:.2f}")
+        case 'círculo':
+            print(f"Qual é a área de uma circunferência de raio {l}")
+            i = input('')
+            if i == f"{formula['círculo']:.2f}":
+                print('Correto')
+                return 0
+            else:
+                print('Incorreto')
+                print(f"{formula['círculo']:.2f}")
+                
+def volume():
+    figura = random.choice(['cubo','pirâmide','esfera'])
+    l = random.randint(2,20)
+    h = random.randint(2,20)
+    formula = {
+        'cubo': f'{l * l * l:.2f}',
+        'pirâmide':f'{l*h / 3:.2f}',
+        'esfera': f'{(float(f"{4/3:.2f}")) * PI * l*l*l:.2f}'
+    }
+    match (figura):
+        case 'cubo':
+            print(f"Qual é o volume de um cubo de lado {l}?")
+            i = input('')
+            if i == formula['cubo']:
+                print('Correto')
+                return 0
+            print('Incorreto')
+            print(formula['cubo'])
+        case 'pirâmide':
+            print(f"Qual é o volume de uma pirâmide de base {l} e altura {h}?")
+            i = input('')
+            if i == formula['pirâmide']:
+                print('Correto')
+                return 0
+            print('Incorreto')
+            print(formula['pirâmide'])
+        case 'esfera':
+            print(f"Qual é o volume de uma esfera de raio {l}?")
+            i = input('')
+            if i == formula['esfera']:
+                print('Correto')
+                return 0
+            print('Incorreto')
+            print(formula['esfera'])
+
 resultado = operacoes[aleatorio]
+
 if aleatorio == 'fatorar':
     print(f"Fatorar {n}")
     i = input('')
@@ -161,6 +236,10 @@ elif aleatorio == 'pg':
     else:
         print('Incorreto')
         print(m)
+elif aleatorio == 'area':
+    area()
+elif aleatorio == 'volume':
+    volume()
 else:
     print(resultado)
     i = input('')
