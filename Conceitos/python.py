@@ -1247,6 +1247,14 @@ def home():
 
 from django import *
 
+import mysql.connector # interagir com servidor mysql
+#pip install mysql-connector-python
+db = mysql.connector.connect(
+    host='localhost',user='root',passwd='root'
+)
+# database='' seleciona um banco de dados
+meucursor = db.cursor()
+meucursor.execute('CREATE DATABASE teste')
 #segurança
 import hashlib
 import cryptography
