@@ -40,7 +40,7 @@ def primeiro_metodo(): # obsoleto, só deixo aqui pra referência
 
     print(resultado)
 
-sinais = ['+','-','*','/','**','**(1/2)','fatorar','%','%%','pa','pg','area','volume']
+sinais = ['+','-','*','/','**','**(1/2)','fatorar','%','%%','pa','pg','area','volume','m']
 aleatorio = random.choice(sinais)
 n = 1
 m = 1
@@ -167,6 +167,27 @@ def volume():
                 return 0
             print('Incorreto')
             print(formula['esfera'])
+def mem():
+    memory1 = { # quanto que é relativo aos bytes
+        'b': 1,
+        'kb': 1024
+    }
+    memory2 = {
+        'mb': 1024 * 1024,
+        'gb': 1024 * 1024 * 1024
+    }
+
+    primeira = random.choice([*memory1.keys()])
+    segunda  = random.choice([*memory2.keys()])
+    num = random.randint(1,100)
+    resposta = num * (memory2[segunda]//memory1[primeira])
+    print(f"Quantos {primeira} tem em {num} {segunda}")
+    i = input('')
+    if i == str(resposta):
+        print('Correto')
+        return 0
+    print('Errado')
+    print(resposta)
 
 resultado = operacoes[aleatorio]
 
@@ -240,6 +261,7 @@ elif aleatorio == 'area':
     area()
 elif aleatorio == 'volume':
     volume()
+elif aleatorio =='m': mem()
 else:
     print(resultado)
     i = input('')
