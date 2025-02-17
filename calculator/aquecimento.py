@@ -92,7 +92,8 @@ operacoes = {
     'pa':'',
     'pg':'',
     'area':'',
-    'volume':''
+    'volume':'',
+    'm':'',
 }
 
 def area():
