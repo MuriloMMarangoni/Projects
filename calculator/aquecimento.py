@@ -40,7 +40,7 @@ def primeiro_metodo(): # obsoleto, só deixo aqui pra referência
 
     print(resultado)
 
-sinais = ['+','-','*','/','**','**(1/2)','fatorar','%','%%','pa','pg','area','volume','m']
+sinais = ['+','-','*','/','**','**(1/2)','fatorar','%','%%','pa','pg','area','volume','m','not','xor','or','and']
 aleatorio = random.choice(sinais)
 n = 1
 m = 1
@@ -94,6 +94,10 @@ operacoes = {
     'area':'',
     'volume':'',
     'm':'',
+    'not':'',
+    'or':'',
+    'xor':'',
+    'and':''
 }
 
 def area():
@@ -190,6 +194,57 @@ def mem():
     print('Errado')
     print(resposta)
 
+def not_bitwise():
+    '''
+    n xor mascara = not n
+    '''
+    n = random.randint(1,100)
+    print(f"~ {n}")
+    i = input("")
+    tamanho = int.bit_length(n) # 5
+    b = '0b'
+    for each in range(0,tamanho):
+        b += '1'
+    mascara = int(b,base=2)
+    if i == str(n ^ mascara):
+        print('Correto')
+        return 0
+    print('Errado')
+    print(n ^ mascara)
+def and_bitwise():
+    n = random.randint(1,100)
+    m = random.randint(1,100)
+    r = n & m
+    print(f'{n} & {m}')
+    i = input()
+    if i == str(r):
+        print('Correto')
+        return 0
+    print('Errado')
+    print(r)
+def or_bitwise():
+    n = random.randint(1,100)
+    m = random.randint(1,100)
+    r = n | m
+    print(f'{n} | {m}')
+    i = input()
+    if i == str(r):
+        print('Correto')
+        return 0
+    print('Errado')
+    print(r)
+def xor_bitwise():
+    n = random.randint(1,100)
+    m = random.randint(1,100)
+    r = n ^ m
+    print(f'{n} ^ {m}')
+    i = input()
+    if i == str(r):
+        print('Correto')
+        return 0
+    print('Errado')
+    print(r)
+
 resultado = operacoes[aleatorio]
 
 if aleatorio == 'fatorar':
@@ -263,6 +318,10 @@ elif aleatorio == 'area':
 elif aleatorio == 'volume':
     volume()
 elif aleatorio =='m': mem()
+elif aleatorio =='not': not_bitwise()
+elif aleatorio =='and': and_bitwise()
+elif aleatorio =='xor': xor_bitwise()
+elif aleatorio =='or': or_bitwise()
 else:
     print(resultado)
     i = input('')
