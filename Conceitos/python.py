@@ -257,7 +257,9 @@ next(iterador,'valorquandoexaurido') # percorre o iterador
 help() # da dicas de como usar alguma instrução                                                   (object) -> None
 repr() # mostra o __repr__ de uma instância
 globals()['nome'] = 'algo' # cria uma variável com esse nome e esse valor
-eval('expressãoQualquer') # executa uma str como comando
+eval('expressãoQualquer') # executa uma linha de str como comando, retorna o resultado
+exec('e -= 1') # roda um código de mais de uma linha (str ou compilado), sem retorno
+f = compile('e += 1', "<string>", "exec") # compila um código pra byte code, pode ser acessado com exec()
 globals() # dicionário com o par nomedavariável:valor , com escopo global
 locals() # dicionário com o par nomedavariável:valor , com valores do escopo atual
 boo = any(number < 5 for number in [1,2,3,4,5]) # tem pelo menos um valor que é True?
@@ -416,6 +418,7 @@ import random
 random.randint(1,10) # escolhe um número ente esse período
 random.choice(l) # escolhe um elemento aleatório
 random.shuffle(l) # organiza aleatoriamente uma sequência
+sample = random.sample([1,2,3,4,5],2) # pega n numeros aleatorios de uma lista
 
 import os
 
