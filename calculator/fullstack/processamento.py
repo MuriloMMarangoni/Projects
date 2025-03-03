@@ -51,7 +51,7 @@ def data_dif(de:list,para:list)->int:
     d2 = date(*para)
     return (d1 - d2).days
 
-data_dif([2005,1,26],[2025,2,27])
+print(data_dif([2025,3,3],[2025,3,31]))
 
 #quantos dias tem cada mês
 mes = {

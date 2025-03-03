@@ -480,21 +480,27 @@ array.min() #menor elemento
 array.max() # maior elemento
 
 import sympy as sp # pip install sympy
+from sympy.parsing.sympy_parser import parse_expr
 
-#função
-funcao = '2*x'
-f = sp.lambdify(sp.Symbol('x'), sp.sympify(funcao),'numpy') #pega o x da função e atribui o significado algébrico
-x = np.array([1,2,3,4,5]) # valores de x da função
-y = f(x) # usa um np.array e aplica a função nele
-#expressao algébrica
-x = sp.symbols('x')
-y = sp.symbols('y')
-expressao_algebrica = (x+y)**2
-expansao = sp.expand(expressao_algebrica)
-simplificar = sp.simplify(expressao_algebrica)
-#equação
-equacao = 2*x+1 # forma da equação
-resolucao = sp.solve(equacao) # resolver ela = 0
+x = sp.symbols('x') # transforma um x de str pra um algébrico
+expressao = x**2 + 1 # faz uma expressão
+solucao = sp.solve(expressao,x) # resolve a expressao = 0 pra x
+funcao = sp.lambdify(x,expressao) # transforma uma expressao em funcao em respeito a x
+funcao(2) # chama a função com x=2 ( pode usar arrays do numpy pra vários inputs de uma vez)
+y = sp.symbols('y',real=True) # real=True filtra só números reais
+expressao_nova = expressao.subs([(x,y)]) # substitui x por y ( pode passar mais pares de tuplas dentro da lista, não muda a expressão original, é só temporário)
+z = sp.symbols('z',positive=True) # positive=True filtra só positivos
+a,b,c = sp.symbols('a b c') # múltipla atribuição
+sp.Rational(1,2) # fração 1/2 que respeita formas algébricas
+sp.root(100,2) # raiz quadrada de 100, com normas algébricas
+expressao2 = sp.root(25,2) * sp.Rational(1,2) # expressão raizde25 / 2
+str_pra_algebra = sp.sympify('x**2+x+1') # transforma strings em objetos do sympy (estando na notação do python)
+sp.sympify('x**2+x+1') == x**2+x+1
+parse_expr("√x",transformations='all')  # transforma strings em objetos do sympy (notações normais) {** -> ^ , 2*x -> 2x,**(1/2) -> √  }
+expressao.subs(x,3) # resolve substituindo uma variável algébrica por um valor
+sp.simplify(x+x+x+x) # simplifica equações
+sp.factor(x**2-9) # fatora equações
+sp.expand(2*(4+x)) # expande equações
 
 import matplotlib.pyplot as plt # pip install matplotlib
 
