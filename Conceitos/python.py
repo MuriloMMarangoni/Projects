@@ -483,7 +483,7 @@ import sympy as sp # pip install sympy
 
 #função
 funcao = '2*x'
-f = sp.lambdify(sp.Symbol('x'), sp.sympify(funcao),'numpy') #pega o x da função e da significado algébrico
+f = sp.lambdify(sp.Symbol('x'), sp.sympify(funcao),'numpy') #pega o x da função e atribui o significado algébrico
 x = np.array([1,2,3,4,5]) # valores de x da função
 y = f(x) # usa um np.array e aplica a função nele
 #expressao algébrica
@@ -807,6 +807,13 @@ tempo.astimezone(fuso_brasilia) # aplica um fuso horário a uma data
 tempo.astimezone() # aplica o fuso horário local no horário
 agora = datetime.now(timezone.utc) # objeto em utc 00, útil pra posix globais
 tempo.isocalendar()[1]# numero da semana do ano
+tempo.day # dia
+tempo.month # mes
+tempo.year # ano
+tempo.hour # hora
+tempo.minute # minutos
+tempo.second # segundos
+tempo.ctime() # data formatada (dia da semana, mes , dia, hora, ano)
 
 import pytz # pip install pytz
 
