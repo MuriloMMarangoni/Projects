@@ -87,6 +87,8 @@ def is_leap(year:int) -> bool | None:
     return True if (year % 400 == 0) or (year % 100 != 0 and year % 4 == 0) else False
 
 def bhaskara(equacao:str):
-    return
+    x = sp.symbols('x')
+    eq = sp.sympify(equacao)
+    return sp.solve(eq,x)
 
-print(bhaskara('2x**2+x-1'))
+print(bhaskara('2*x**2+x-1'))
