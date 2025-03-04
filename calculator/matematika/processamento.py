@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sp
+from sympy.parsing.sympy_parser import parse_expr
 from datetime import *# contas de datas
 
 #cambio relativo ao dolar ( futuramente vai ser implementado via API)
@@ -86,9 +87,23 @@ def is_leap(year:int) -> bool | None:
 
     return True if (year % 400 == 0) or (year % 100 != 0 and year % 4 == 0) else False
 
-def bhaskara(equacao:str):
-    x = sp.symbols('x')
-    eq = sp.sympify(equacao)
+def is_segundo_grau(equacao:str):
+    '''
+    Diz se uma equação é do segundo grau
+    '''
+    return True if ('**2' or '^2') in equacao else False
+def bhaskara(equacao:str,complexo:bool=True):
+    '''
+    Valores, ou valor de x que faz y = 0
+    '''
+    if complexo: x = sp.symbols('x')
+    else: x = sp.symbols('x',real=True)
+
+    eq = parse_expr(equacao,transformations='all')
     return sp.solve(eq,x)
+
+equacao = "x**2-1"
+print(bhaskara(equacao))
+print(is_segundo_grau(equacao))
 
 print(bhaskara('2*x**2+x-1'))
