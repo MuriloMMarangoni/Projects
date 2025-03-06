@@ -13,3 +13,4 @@ shutdown /r /t 60                                              # reinicia o pc e
 shutdown /a                                                    #aborta um desligamento
 shutdown /s                                                    #desliga o pc
 sc config wuauserv start= disabled                             #faz um serviço não iniciar mais
+sfc /scannow                                                   #verifica arquivos corrompidos em cache
