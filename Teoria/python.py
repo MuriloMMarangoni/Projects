@@ -13,7 +13,7 @@ CONSTANTE = 1
 file = open("arquivo.txt",'a')
 vetor = np.array([])
 matriz = np.array([],[],[])
-tabela = pd.DataFrame([1,2,3])
+tabela = pd.DataFrame([1,2,3]) # data frames são imutáveis
 vetorpd = pd.Series([1,2,3])
 valor:int = 1 # forma de tipar uma variável
 algo:int # declara mas não inicializa
@@ -554,6 +554,30 @@ moda = vetorpd.mode().iloc[0] # moda de um vetor, com suporte a excessões
 mediana = vetorpd.median() # mediana de um vetor
 variancia = vetorpd.var() # variância de um vetor
 desvio_padrao = vetorpd.std() # desvio padrão de um vetor
+datas = [['26','4','2025'],['27','4','2025'],['28','4','2025']] # formato de inserção 1
+datas = { # formato de inserção 2
+    'dia':[26,27,28],
+    'mes':['4','4','4'],
+    'ano':['2025','2025','2025']
+}
+df = pd.DataFrame(data=datas,columns=['dia','mes','ano']) # dataframe simples
+df.to_csv("dados.csv", index=False) # cria um csv a partir de um dataframe
+csv = pd.read_csv('dados.csv') # lê um csv e faz um dataframe
+csv.shape # diz (linhas-1,colunas) de um dataframe
+df_personalizado = pd.DataFrame(data=[[1,2,3],[4,5,6],[7,8,9]],columns=['c1','c2','c3'],index=['l1','l2','l3']) # cria um dataframe com linhas personalizadas
+df.to_excel("planilha.xlsx", index=False) # cria um excel a partir de um dataframe
+excel = pd.read_excel('planilha.xlsx') # faz um dataframe a partir de um excel
+df['dia'] # dataframe com uma coluna específica
+df['dia'].tolist() # seleciona uma coluna e transforma ela em lista
+df.to_dict() # transforma um dataframe em dict
+df.loc[df['dia']>26] # condições pra filtragem
+df.loc[0,'dia'] # acessa a primeira linha de uma coluna
+for dia in df['dia'].tolist(): print(dia) # acessa as cédulas de uma coluna
+for val in range(tamanho_da_linha:=df.shape[0]): #acessar linha por linha
+    for col in df:
+        print(df.loc[val,col])
+df.loc[:,'dia':'mes'] # dataframe menor com colunas específicas
+df.to_numpy() # converte um dataframe pra array do numpy
 
 import tkinter as tk # pip install tkinter
 
