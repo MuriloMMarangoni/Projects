@@ -20,12 +20,13 @@ algo:int # declara mas não inicializa
 '''
 comentário da variável
 '''
-#f-strings-----------------------------------------------------------------------------------------------------------------
+#strings-----------------------------------------------------------------------------------------------------------------
 f'{real:.2e}' #-> Notação científica
 f'{real:.5f}' #-> Casas decimais
 f'{string:<10}' #-> alinha um texto a esquerda em tantas casas
 f'{string:>10}' #-> alinha um texto a direita em tantas casas
 f'{string:^10}' #-> alinha um texto ao centro em tantas casas
+r'texto\nliteral' #-> texto 100% sem formatação alguma
 #tipos de funções------------------------------------------------------------------------------------------------------------
 def procedimento(): #procedimento
     print('Não retorna nada')
@@ -417,6 +418,7 @@ import random
 
 random.randint(1,10) # escolhe um número ente esse período
 random.choice(l) # escolhe um elemento aleatório
+random.choices(l,k=10) # escolhe 10 elementos aleatórios
 random.shuffle(l) # organiza aleatoriamente uma sequência
 sample = random.sample([1,2,3,4,5],2) # pega n numeros aleatorios de uma lista
 
@@ -890,13 +892,20 @@ class Abstrata(ABC): # não pode ser instânciada, só herdada
     @abstractmethod
     def metodoabstrato2(self):
         print('Esse método também deve ser implementado na classe herdeira')
+    @property
+    def atributo(self):
+        return 'pode ser acessado como atributo'
 class Real(Abstrata):
     def metodoabstrato(self):
         print('Usando a classe abstrata como base pra classe real')
     def metodoabstrato2(self):
         print('Todos os métodos abstratos precisam ser implementados')
+    @property
+    def atributo(self):
+        return 'pode ser acessado como atributo'
 r = Real().metodoabstrato() # a classe abstrata não pode ser usada aqui, só a real
 rr = Real().metodoabstrato2()
+rrr = Real().atributo
 
 import sched # agendar eventos
 
@@ -1295,12 +1304,40 @@ db = mysql.connector.connect(
 # database='' seleciona um banco de dados
 meucursor = db.cursor()
 meucursor.execute('CREATE DATABASE teste')
+
+import re # expressoes regulares
+r'\d+' # digitos de 0-9 compostos, ou seja seguidos um do outro, como 09,10,123
+r'\w+' # palavras em um texto, tira vírgulas e pontos
+r'\s+' # espaços \t e \n
+r'\d{4,}' # procura todos os números que tenham pelo menos 4 dígitos
+r'termo' # todas as ocorrências de um termo
+r'termo1|termo2' # todas as occorências desses termos
+re.findall('padrão','texto') # lista com todas as ocorrências desse padrão em um texto
+
+import string # bases pra textos
+repr(string.printable) # todos os caracteres que podem ser imprimidos
+string.ascii_lowercase # a-z
+string.ascii_uppercase # A-Z
+string.punctuation # pontuações internacionais
+texto = 'Hoje eu fiz algo'
+string.capwords(texto) # todas as palavras vão começar com uppercase
+
+import argparse # fazer scripts
+parser = argparse.ArgumentParser( # objeto parser simples (tem que rodar no terminal)
+    description='script profissa',
+    add_help=True
+)
+parser.add_argument('expressao',help='Expressão matemática qualquer') # argumento posicional
+parser.add_argument('-extra','-verbose',help='outro') # argumento nomeado
+args = parser.parse_args() # objeto com os argumentos
+print(args.expressao) # acessar
+print(args.extra)
+
 #segurança
 import hashlib
 import cryptography
 import pytest
 import ssl
-import re
 #redes
 import paramiko
 import http.client
