@@ -256,7 +256,7 @@ hasattr(inteiro,'__call__') # diz se o objeto tem esse atributo/nome do método
 getattr(object,'atributo','valorSeNãoExistir') # mesmo que objeto.atributo
 next(iterador,'valorquandoexaurido') # percorre o iterador                                          
 help() # da dicas de como usar alguma instrução                                                   (object) -> None
-repr() # mostra o __repr__ de uma instância
+repr() # mostra o __repr__ de uma instância, exibe códigos de formatação como \n \t
 globals()['nome'] = 'algo' # cria uma variável com esse nome e esse valor
 eval('expressãoQualquer') # executa uma linha de str como comando, retorna o resultado
 exec('e -= 1') # roda um código de mais de uma linha (str ou compilado), sem retorno
@@ -1332,6 +1332,38 @@ parser.add_argument('-extra','-verbose',help='outro') # argumento nomeado
 args = parser.parse_args() # objeto com os argumentos
 print(args.expressao) # acessar
 print(args.extra)
+
+import zipfile
+
+with zipfile.ZipFile('z.zip','w',compression=zipfile.ZIP_DEFLATED) as z: # cria um zip
+    z.write('arquivoqueexiste.txt') # adiciona um arquivo que já existe ao zip
+
+with zipfile.ZipFile('z.zip','r') as z: # lê um zip
+    z.namelist() # lista com os arquivos dentro
+    z.extractall('pasta') # extrai um zip pra uma pasta
+    z.extract('arquivoqueexiste.txt') # extrai um arquivo específico
+
+zipfile.is_zipfile('z.zip') # diz se um arquivo é zip, se não existir dá false
+
+import shutil
+
+shutil.make_archive('nome_pasta_final','zip','pasta_atual') # compacta uma pasta em zip
+
+import calendar
+cal = calendar.TextCalendar(calendar.SUNDAY) # calendario começa no domingo
+print(cal.formatmonth(2025,5)) # texto formatado com o calendario do mes
+print(calendar.monthrange(2025,5)) # qual o dia da semana que começa o mes e quantos dias tem o mes
+print(cal.formatyear(2025)) # texto formatado com o calendario do ano
+
+import winsound # fazer sons no windows
+
+winsound.Beep(frequency=440,duration=1000) # faz um som com frequência e tempo em ms
+winsound.PlaySound("som.wav",winsound.SND_FILENAME) # toca um arquivo.wav
+
+from PIL import Image
+img = Image.open("a.jpg") # seleciona uma imagem
+img.convert("RGB").save("saida.pdf") # converte ela pra diversos formatos e salva
+img.convert("L").save("p.pdf") # aplica efeito preto e branco e salva
 
 #segurança
 import hashlib
